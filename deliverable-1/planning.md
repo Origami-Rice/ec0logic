@@ -1,4 +1,4 @@
-# YOUR PRODUCT/TEAM NAME
+# WASTELESS
 > _Note:_ This document is meant to evolve throughout the planning phase of your project.   That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
@@ -8,13 +8,16 @@
 
  > Short (1 - 2 min' read)
  * Start with a single sentence, high-level description of the product.
+ We are building a mobile app with the objective of helping eco-concious consumers reduce food waste within their household. 
  * Be clear - Describe the problem you are solving in simple terms.
+Food waste is a huge enviornmental issue. We examined what consumer habits are the root cause of this problem. The biggest contributors or causes of household food waste are losing track of what food that you still have in stock resulting in overbuying or making unnecessary duplicate purchases, and losing track of when food will expiry, resulting in an accumlation of spoiled foods. Our product will provide users the ability to track foods that they have at home, and gives notifications about foods that are nearing their expiry dates. 
+ 
  * Be concrete. For example:
     * What are you planning to build? Is it a website, mobile app,
    browser extension, command-line app, etc.?      
     * When describing the problem/need, give concrete examples of common use cases.
     * Assume your the reader knows nothing about the problem domain and provide the necessary context. 
- * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.      
+ * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.  
    For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
  * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
 
