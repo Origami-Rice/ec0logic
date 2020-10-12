@@ -10,6 +10,7 @@
  * Start with a single sentence, high-level description of the product.
  We are building a mobile app with the objective of helping eco-concious consumers reduce food waste within their household. 
  * Be clear - Describe the problem you are solving in simple terms.
+
 Food waste is a huge enviornmental issue. We examined what consumer habits are the root cause of this problem. The biggest contributors or causes of household food waste are losing track of what food that you still have in stock resulting in overbuying or making unnecessary duplicate purchases, and losing track of when food will expiry, resulting in an accumlation of spoiled foods. Our product will provide users the ability to track foods that they have at home, and gives notifications about foods that are nearing their expiry dates. 
  
  * Be concrete. For example:
