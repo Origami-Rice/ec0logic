@@ -73,8 +73,13 @@ List each team member and:
 #### Q7: What operational events will you have as a team?
 
 Describe meetings (and other events) you are planning to have. 
- * When and where? Recurring or ad hoc? In-person or online?
- * What's the purpose of each meeting?
+We plan to have weekly online meetings. We have these scheduled for every Saturday at 7 PM EST. The purpose of these meetings is to:
+ * Act as a weekly sync, where we summarize what each team member has been working on in the past week, and then discuss, plan and assign tasks for the upcoming week
+ * Host a group coding session, which will give us an opportunity to detect and fix integration problems
+ * Review pull requests
+
+We also plan to set meetings as required to discuss and resolve any major issues that might arise. 
+ 
  * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
  * You must have at least 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
    * What did you discuss during the meetings?
@@ -84,7 +89,9 @@ Describe meetings (and other events) you are planning to have.
   
 #### Q8: What artifacts will you use to self-organize?
 
-List/describe the artifacts you will produce in order to organize your team.       
+List/describe the artifacts you will produce in order to organize your team.      
+
+We have set up a team workspace on Notion to manage our tasks. It includes various pages including a To-Do list, a calendar displaying deadlines and all scheduled meetings & events, a task board where we can assign different levels of priority, completion status and team members responsible for completing the task. We also have a section for recording all our meeting minutes. During our weekly meetings, we will work as a team to determine the weekly tasks that will move us closer to our larger goals and product requirements, and assign tasks to each team member. 
 
  * Artifacts can be To-Do lists, Task boards, schedule(s), meeting minutes, etc.
  * We want to understand:
@@ -101,11 +108,17 @@ Describe your team's working culture.
  * What is the expected frequency? What methods/channels are appropriate? 
  * If you have a partner project, what is your process (in detail) for communicating with your partner?
  
+ 
 **Meetings:**
  * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
+ We have given the product manager the role of moderating meetings and leading discussions. 
  
 **Conflict Resolution:**
  * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
+ 
+ * Conflict 1: If indecision occurs, we will (depending on the severity of the problem) either schedule a meeting or using chat discuss as group the cause of the indecision, whether it is a method of implementation, design concept, etc. As a group, we will weigh the pros and cons. If after considering everyone's arguments, we still aren't able to come to a consensus, we will consult our partner (especially if it is regarding product design choices as it relates to addressing users' needs) or the TA for more technical problems. 
+ 
+ * Conflict 2: 
 
 
 
