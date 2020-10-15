@@ -8,10 +8,14 @@
 
  > Short (1 - 2 min' read)
  * Start with a single sentence, high-level description of the product.
- We are building a mobile app with the objective of helping eco-concious consumers reduce food waste within their household. 
+ We are building a mobile app with the objective of helping eco-concious consumers reduce their household food waste. 
  * Be clear - Describe the problem you are solving in simple terms.
 
+##### Overall Problem:
 Food waste is a huge enviornmental issue. We examined what consumer habits are the root cause of this problem. The biggest contributors or causes of household food waste are losing track of what food that you still have in stock resulting in overbuying or making unnecessary duplicate purchases, and losing track of when food will expiry, resulting in an accumlation of spoiled foods. Our product will provide users the ability to track foods that they have at home, and gives notifications about foods that are nearing their expiry dates. 
+
+##### Product Description:
+We are expanding on our project partner's exisiting mobile app by adding new features, specifically an food inventory tracker, a shopping list tool, and a greenhouse gas emissions metric tracker. 
  
  * Be concrete. For example:
     * What are you planning to build? Is it a website, mobile app,
@@ -78,7 +82,9 @@ We plan to have weekly online meetings. We have these scheduled for every Saturd
  * Host a group coding session, which will give us an opportunity to detect and fix integration problems
  * Review pull requests
 
-We also plan to set meetings as required to discuss and resolve any major issues that might arise. 
+We also plan to set meetings as required to discuss and resolve any major issues that arise. 
+
+To keep our partner up to date, we plan to send her weekly reports summarizing important tasks that we completed over that week, our plan for the upcoming week and any pending non-urgent questions. In addition, since we have a discord group chat with our partner, throughout the week, we will notify our partner of any major progress or milestones that we achieve. 
  
  * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
  * You must have at least 2 meetings with your project partner (if you have one) before D1 is due. Describe them here:
