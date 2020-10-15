@@ -35,7 +35,7 @@ We are expanding on our project partner's exisiting mobile app by adding new fea
    You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
    
 ##### General Description of Target Users
-Our target users are people who are people who want to make steps to becoming more eco-friendly starting with their own food consumption, but find it difficult to organize their food and grocery purchases within their busy everyday lives. 
+Our target users are people who want to make steps to becoming more eco-friendly starting with their own food consumption, but find it difficult to organize their food and grocery purchases within their busy everyday lives. 
 
 ##### Personas 
 
