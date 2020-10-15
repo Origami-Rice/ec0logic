@@ -60,6 +60,15 @@ We are expanding on our project partner's exisiting mobile app by adding new fea
  * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
  * If you have a partner, these must be reviewed and accepted by them
  * The user stories should be written in Github and each one must have clear acceptance criteria.
+ 
+##### User Stories:
+ * As an environmentalist, I want an easy way to keep track of expiry dates in order to prevent food waste and reduce my carbon footprint.
+ * As an avid environmentalist, I want to be able to see my weekly progress with respect to how much food waste I’ve been able to reduce in order to evaluate the impact of my actions on the environment. 
+ * As the person who plans meals in my family, I want to track all types of food items, including produce, packaged foods, leftovers etc in order to have a comprehensive view of what I have and make plans on-the-go.
+ * As the main shopper in my house, I want to be able to easily check what items I still have at home and the quantity so that I don’t make duplicate purchases on my grocery trip
+ * As the person responsible for cooking meals, I want a way to be notified of the expiry dates so that I can use the older ingredients before they go to waste.
+ * As a consumer, I want an easy way to keep track of what types of food and how much of that food have been wasted in the past months, so I would know which foods to buy less of next time. 
+
 
 ----
 
