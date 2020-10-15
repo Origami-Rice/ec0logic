@@ -33,6 +33,14 @@ We are expanding on our project partner's exisiting mobile app by adding new fea
  * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
  * **Feel free (but not obligated) to use personas.         
    You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
+   
+##### General Description of Target Users
+Our target users are people who are people who want to make steps to becoming more eco-friendly starting with their own food consumption, but find it difficult to organize their food and grocery purchases within their busy everyday lives. 
+
+##### Personas 
+
+Miranda is a mother of two. Her goal is to live a sustainable life and have a healthy, happy family. She works during the week, so she usually does regular grocery trips once a week. She cooks for the family. Since she usually comes with meal ideas on the spot, she isn’t really tracking what foods she has on hand, except from what she can see by looking in the fridge. She is often finding spoiled milk that she doesn’t even remember buying. 
+
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
