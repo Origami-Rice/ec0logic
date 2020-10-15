@@ -52,6 +52,14 @@ Miranda is a mother of two. Her goal is to live a sustainable life and have a he
     * Provide users with more accurate and/or informative data (what kind of data? Why is it useful to them?)
     * Does this application exist in another form? If so, how does your differ and provide value to the users?
     * How does this align with your partner's organization's values/mission/mandate?
+    
+Our product will allow users to keep a record of their food inventory. This will allows them to see an overview of all the items they have on hand and their expected expiry dates that they have on hand wherever and whenever they want. There are other apps that also offer this feature of keeping track of list of food, but our app will allow users to filter the foods that are expiring soon, so that they can easily determine which foods they should eat/use first. Further, it will send notifications to users about foods that will expire soon, then users never have to worry about forgetting this and causing unnecessary food spoilage. In addition, when users add new items, the app will suggest an expected expiry date (at least for common food items) and best storage method. This will help with misconceptions or a lack of knowledge about how long foods last, especially foods without expiry dates (ex. produce, meats). 
+
+Currently, the most common tools for making a grocery shopping list is using a notes application or traditional pen and paper. This requires the user to manually cross reference their refrigerator and pantry. This also depends on the user to make the right decisions about what and how much to buy. Our shopping list feature is integrated with the inventory tracker, so that when they add items to the shopping list that they already have at home, the app gives a warning. It also stores a short history of the types and amounts of foods that the user has bought in the past, but ended up expiring. That way, the app will give a warning if they try to add that to their shopping list again. This addresses the partner's idea of predicting and preventing possible future food waste before it even gets to the consumer's home. 
+
+Another unique selling point of our product is the greenhouse gas (GHG) emissions calculator. This allows user to measure their food waste and see the impacts of their actions. This feature doesn't exist anywhere else. 
+
+
 
 #### Q4: How will you build it?
 
@@ -159,3 +167,6 @@ and/or collaborative process.
     * Explain why the option you decided on makes the most sense for your team/product/users.
  * Essentially, we want to understand how (and why) you ended up with your current product and process plan.
  * This section is useful for important information regarding your decision making process that may not necessarily fit in other sections. 
+
+##### Key Decision 1: Expanding the Shopping List Feature
+At least, we were skeptical about the value that a shopping list brings to our user. The exisitng implementation that our partner has was a very simple list where you can add, remove and check off items. 
