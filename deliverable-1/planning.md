@@ -23,7 +23,7 @@ Our product will:
 
 ##### First Mock-Up of Product
 
-The following is a link to a first mock-up. Note that the recipes and tips pages have already been implemented in our partner’s existing application, thus we did not include these in our mock-up demonstration. https://www.figma.com/proto/vqgLvz31CecYXUb1jzv71s/Wasteless?node-id=17%3A236&scaling=scale-down
+The following is a link to a first mock-up. Note that the recipes and tips pages have already been implemented in our partner’s existing application, thus we did not include these in our mock-up demonstration. https://www.figma.com/file/vqgLvz31CecYXUb1jzv71s/Wasteless?node-id=0%3A1
 
 
 #### Q2: Who are your target users?
