@@ -144,6 +144,7 @@ GHG Calculator
 #### Q6: What are the roles & responsibilities on the team?
 
 We have defined 5 different types of roles: product manager, front end developer, backend developer, QA tester, and designer. The exact descriptions of the responsibilities associated with each role is linked here: https://www.notion.so/Guide-to-Roles-6582b2a02add42918cadb5468ba5b017
+
 The following is a summary of the role of each member, as well as his/her strengths and weaknesses. The technical responsibilities associated with each role can be found in the link above. However, any other non-software related responsibilities are listed below. 
 
 ##### Jenny Zhang
