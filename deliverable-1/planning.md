@@ -70,9 +70,13 @@ Our plan for keeping track of the user's inventory involves designing a data str
  * Tags (used to filter the inventory contents)
  
 Another data structure would be required to store all the preset filter options that can be used to classify the various products that we add to the inventory. When adding an item to the inventory, the user can select from the list of available tags that will be fetched from the database. The tag will be added to the item description that we will store in the database.
+
 Second is to keep track of a short history of the types and amounts of food that the user has wasted in the past (so that if they try to add it again in the future to their shopping list, they will receive a warning). 
+
 Our plan for keeping track of the user's history of commonly wasted foods involves creating a MongoDB document that will list some fixed number of products that have been disposed of by the user. When an item expires, the user will receive a notification and the item will be removed from the inventory to an expired products section. From there, the user can inform the app if they disposed of the product, and the database will be updated accordingly. When a user attempts to add an item to their shopping cart, this list will be checked and if said item appears there, the user will be warned that they previously disposed of it due to spoilage. 
+
 The data structure that represents the user will have a field corresponding to the items currently in the shopping cart. Before the database is updated, we check if the product is already in the user’s inventory and notify them if it is. The user can then choose how to proceed with the addition to the cart. When an item is added to the shopping cart, the additional field quantity can be specified.
+
 Lastly, we need to keep track of the user’s GHG emissions caused by wasted food over the last 6 months (for example).
 Our plan for keeping track of the user's history of GHG emissions/environmental impact caused by wasted food involves using the stored weights and quantities of items that get disposed of to calculate an estimate of their contribution to carbon emissions.
 
@@ -141,14 +145,14 @@ GHG Calculator
 We have defined 5 different types of roles: product manager, front end developer, backend developer, QA tester, and designer. The exact descriptions of the responsibilities associated with each role is linked here: https://www.notion.so/Guide-to-Roles-6582b2a02add42918cadb5468ba5b017
 The following is a summary of the role of each member, as well as his/her strengths and weaknesses. The technical responsibilities associated with each role can be found in the link above. However, any other non-software related responsibilities are listed below. 
 
-##### Jenny
+##### Jenny Zhang
 
 She is assigned the roles of product manager, designer, and QA tester. Additional responsibilities include monitoring the workspace to ensure that tasks are being completed by assigned deadlines, checking in with other team members, leading meeting discussions, and sending weekly summary reports to our partner. 
 	
 Her strengths include having experience in UX/UI and user-centric design, and having a strong background in graphic design and art. She will take advantage of this in her role as a designer to design a user-friendly and modern UI, and then setting clear requirements for frontend developers to implement. Her experience in user testing will also be useful. Another strength is having experience setting up a SQLite, and doing queries with SQL. She will assist in setting up the database even though we are using a noSQL database.
 Her weaknesses include lacking experience with Node.js or Express.js, and MongoDB. Further, she also does not have extensive knowledge regarding setting up an effective CI/CD pipeline. She has some experience with React, but has not worked with React Native.
 
-##### Doreen
+##### Doreen Huang
 
 She is assigned the roles of designer and frontend developer. In addition, she will be taking meeting minutes every other week and aiding with TA and partner communication. 
 
@@ -156,7 +160,7 @@ Her strengths include having experience with React and React Native, and having 
 
 Her weaknesses include lack of familiarity with JavaScript, Node.js, Express.js, and setting up a CI/CD pipeline. Moreover, her only knowledge of databases is from a course she is currently taking.
 
-##### Jianyi
+##### Jianyi Chen
 
 He has been assigned the roles of backend and frontend developer. One of his key responsibilities is ensuring a good communication channel between client and server. 
 
@@ -164,7 +168,7 @@ His strengths include having experience with React and multiple React libraries,
 
 His weaknesses include only having basic knowledge of databases from a different course and having no experience with MongoDB. He is also unfamiliar with machine learning, which will be used for the scanner feature of the application. He also is not familiar with integration testing in React.
 
-##### Vassilisa
+##### Vassilisa Gotcheva
 
 She has been assigned the roles of backend developer and QA tester. Her main focus will be setting up the database. In addition, she will assist with setting up the CI/CD pipeline. 
 
@@ -172,7 +176,7 @@ Her strengths include a basic understanding of setting up a backend with Flask, 
 
 Her weaknesses include lacking experience with parts of the technology stack that was used to build the current version of the app, such as MongoDB and Express. She is also unfamiliar with the testing framework, Jest, and with developing the CI/CD pipeline.
 
-##### William
+##### William Chu
 
 He has been assigned the roles of frontend and backend developer. In addition, he will be responsible for recording meeting minutes on alternating weeks with Doreen. 
 
@@ -180,7 +184,7 @@ His strengths include experience in Javascript, HTML, and CSS. He has experience
 
 His weaknesses include a very shallow knowledge of databases, unfamiliarity with Node.js and Express.js, and a lack of experience with React and React Native. 
 
-##### Jamin
+##### Jamin Yang
 
 His assigned roles are QA tester and frontend developer. He is also flexible with assisting in the backend as required. His main responsibilities include using Jest to test out the features in our code.
 
