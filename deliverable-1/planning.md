@@ -17,9 +17,9 @@ Specifically, we are developing a food inventory tracker, a shopping list tool, 
 
 Our product will: 
 
-	* Keep a record of the food that the user has bought with their expected expiry dates, and notify the user close to the expiry date of any expiring food products that have not been used up yet
-	* Allow users to create a shopping list that will help them buy only what they need and reduce the chances of wasted food in the future
-	* Show users the impact that their specific food waste habits have on the environment, and track a user’s performance over time with respect to reducing food waste in their homes and show them the progress that they are making in reducing their GHG emissions
+* Keep a record of the food that the user has bought with their expected expiry dates, and notify the user close to the expiry date of any expiring food products that have not been used up yet
+* Allow users to create a shopping list that will help them buy only what they need and reduce the chances of wasted food in the future
+* Show users the impact that their specific food waste habits have on the environment, and track a user’s performance over time with respect to reducing food waste in their homes and show them the progress that they are making in reducing their GHG emissions
 
 ##### First Mock-Up of Product
 
