@@ -7,7 +7,7 @@
 #### Q1: What are you planning to build?
 
 ##### Problem & Motivation
-Household food waste is a huge problem that contributes significantly to climate change. According to the National Zero Waste Council’s research on household food waste in Canada, almost 2.2 million tonnes of food is wasted each year. Food waste not only wastes the resources required to produce and distribute that food, but decomposing food in landfills also produces more greenhouse gases, like methane. A major cause for household food waste is simply lack of planning. This can lead to losing track of what food you still have in stock, which may result in overbuying. Similarly, losing track of when foods will expire results in an accumulation of spoiled foods. 
+Household food waste is a huge problem that contributes significantly to climate change. According to the National Zero Waste Council’s research on household food waste in Canada, almost 2.2 million tonnes of food is wasted each year (Source: https://www.toronto.ca/services-payments/recycling-organics-garbage/long-term-waste-strategy/waste-reduction/food-waste/#:~:text=According%20to%20the%20National%20Zero,waste%20has%20substantial%20environmental%20impacts). Food waste not only wastes the resources required to produce and distribute that food, but decomposing food in landfills also produces more greenhouse gases, like methane. A major cause for household food waste is simply lack of planning. This can lead to losing track of what food you still have in stock, which may result in overbuying. Similarly, losing track of when foods will expire results in an accumulation of spoiled foods. 
 
 We are expanding the features of our project partner's existing mobile app with the objective of encouraging people to be conscious of their food waste, making it convenient for people to reduce the amount of food that they waste, and allowing them to quantify the environmental impact of their actions.  
 
@@ -46,7 +46,7 @@ Our product will allow users to track their food inventory and update items as t
 
 Current tools for making a grocery shopping list include using a note taking application or traditional pen and paper. This requires the user to manually cross reference their refrigerator and pantry. The user also needs to make the right decisions about what and how much to buy. Our shopping list feature is integrated with the inventory tracker so that when they try adding items to the shopping list that they still have in their inventory, the app will give a warning. It also stores a short history of the types and amounts of foods that the user has bought in the past but ended up wasting due to food spoilage. That way, the app will give a warning if they try to add the same food and quantity to their shopping list again. This builds on our partner's idea of predicting and preventing possible future food waste before it even gets to the consumer's home.
 
-Another unique selling point of our product is that we automatically calculate the user’s greenhouse gas (GHG) emissions over time based on the items in their inventory that have expired. This allows users to measure their food waste and see the impacts of their actions. We want to show that even if you are wasting a little food, it can build up over time. According to the City of Toronto website, “Canada’s 2.2 million tonnes of avoidable household food waste is equivalent to 9.8 million tonnes of CO2 and 2.1 million cars on the road.” (https://www.toronto.ca/services-payments/recycling-organics-garbage/long-term-waste-strategy/waste-reduction/food-waste/#:~:text=According%20to%20the%20National%20Zero,waste%20has%20substantial%20environmental%20impacts). Conversely, users can also see how they have progressed and how little improvements have big effects as well. We have not seen any existing alternatives that include this feature. 
+Another unique selling point of our product is that we automatically calculate the user’s greenhouse gas (GHG) emissions over time based on the items in their inventory that have expired. This allows users to measure their food waste and see the environmental impacts of their actions. We want to show that even if you are wasting a little food, it can build up over time. To put this into perspective, according to the City of Toronto website, “Canada’s 2.2 million tonnes of avoidable household food waste is equivalent to 9.8 million tonnes of CO2 and 2.1 million cars on the road.” (Source: https://www.toronto.ca/services-payments/recycling-organics-garbage/long-term-waste-strategy/waste-reduction/food-waste/#:~:text=According%20to%20the%20National%20Zero,waste%20has%20substantial%20environmental%20impacts). Conversely, users can see how they have progressed and how little improvements have big effects as well. We have not seen any existing alternatives that include this feature. 
 
 
 #### Q4: How will you build it?
@@ -150,6 +150,7 @@ The following is a summary of the role of each member, as well as his/her streng
 She is assigned the roles of product manager, designer, and QA tester. Additional responsibilities include monitoring the workspace to ensure that tasks are being completed by assigned deadlines, checking in with other team members, leading meeting discussions, and sending weekly summary reports to our partner. 
 	
 Her strengths include having experience in UX/UI and user-centric design, and having a strong background in graphic design and art. She will take advantage of this in her role as a designer to design a user-friendly and modern UI, and then setting clear requirements for frontend developers to implement. Her experience in user testing will also be useful. Another strength is having experience setting up a SQLite, and doing queries with SQL. She will assist in setting up the database even though we are using a noSQL database.
+
 Her weaknesses include lacking experience with Node.js or Express.js, and MongoDB. Further, she also does not have extensive knowledge regarding setting up an effective CI/CD pipeline. She has some experience with React, but has not worked with React Native.
 
 ##### Doreen Huang
@@ -228,7 +229,7 @@ For reference, we have included a link with view-only permissions to our Notion 
 
 ##### Working Culture
 
-Our team’s preferred working style is to break down large tasks into smaller ones, and then divide these amongst team members. We find it most effective to clearly define the requirements of each task, and then allow each person to work independently on completing their assigned tasks. Then, we regroup to combine our work. 
+Our team’s preferred working style is to break down large tasks into smaller ones, and then divide these amongst team members. We find it most effective to clearly define instructions and requirements for each task, and then allow each person to work independently on completing their assigned tasks. Then, we regroup to combine our work. 
 
 ##### Team Communication
 
