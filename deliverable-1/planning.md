@@ -6,15 +6,13 @@
  
 #### Q1: What are you planning to build?
 
- > Short (1 - 2 min' read)
- * Start with a single sentence, high-level description of the product.
- We are building a mobile app with the objective of helping eco-concious consumers reduce their household food waste. 
- * Be clear - Describe the problem you are solving in simple terms.
+##### Problem & Motivation
+Household food waste is a huge problem that contributes significantly to climate change. According to the National Zero Waste Council’s research on household food waste in Canada, almost 2.2 million tonnes of food is wasted each year. Food waste not only wastes the resources required to produce and distribute that food, but decomposing food in landfills also produces more greenhouse gases, like methane. A major cause for household food waste is simply lack of planning. This can lead to losing track of what food you still have in stock, which may result in overbuying. Similarly, losing track of when foods will expire results in an accumulation of spoiled foods. 
 
-##### Overall Problem:
-Food waste is a huge enviornmental issue. We examined what consumer habits are the root cause of this problem. The biggest contributors or causes of household food waste are losing track of what food that you still have in stock resulting in overbuying or making unnecessary duplicate purchases, and losing track of when food will expiry, resulting in an accumlation of spoiled foods. Our product will provide users the ability to track foods that they have at home, and gives notifications about foods that are nearing their expiry dates. 
+We are expanding the features of our project partner's existing mobile app with the objective of encouraging people to be conscious of their food waste, making it convenient for people to reduce the amount of food that they waste, and allowing them to quantify the environmental impact of their actions. 
 
-##### Product Description:
+
+##### Product Description
 We are expanding on our project partner's exisiting mobile app by adding new features, specifically an food inventory tracker, a shopping list tool, and a greenhouse gas emissions metric tracker. 
  
  * Be concrete. For example:
