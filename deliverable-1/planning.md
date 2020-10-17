@@ -42,11 +42,20 @@ George is a proud father and foodie. He is often going on impromptu shopping tri
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
 > Short (1 - 2 min' read max)
-Our product will allow users to track their food inventory and update items as they are being consumed or wasted. Thus, it will allow them to see a real time overview of all the food items they have along with their expected expiry dates wherever and whenever they want. There are similar apps that offer this feature but our app will allow users to filter the foods that are expiring soon so that they can easily determine which foods they should use first. Further, since the app will send notifications to users about foods that are expiring soon, users can easily stay informed and avoid unnecessary food spoilage. In addition, when users add new items, our app will suggest an expected expiry date and the best storage method for that item. This will help clear misconceptions about how long foods last, especially for common foods without expiry dates (ex. produce, meats).
+ * We want you to "connect the dots" for us - Why does your product (as described in your answer to Q1) fits the needs of your users (as described in your answer to Q2)?
+ * Explain the benefits of your product explicitly & clearly. For example:
+    * Save users time (how much?)
+    * Allow users to discover new information (which information? And, why couldn't they discover it before?)
+    * Provide users with more accurate and/or informative data (what kind of data? Why is it useful to them?)
+    * Does this application exist in another form? If so, how does your differ and provide value to the users?
+    * How does this align with your partner's organization's values/mission/mandate?
+    
+Our product will allow users to keep a record of their food inventory. This will allows them to see an overview of all the items they have on hand and their expected expiry dates that they have on hand wherever and whenever they want. There are other apps that also offer this feature of keeping track of list of food, but our app will allow users to filter the foods that are expiring soon, so that they can easily determine which foods they should eat/use first. Further, it will send notifications to users about foods that will expire soon, then users never have to worry about forgetting this and causing unnecessary food spoilage. In addition, when users add new items, the app will suggest an expected expiry date (at least for common food items) and best storage method. This will help with misconceptions or a lack of knowledge about how long foods last, especially foods without expiry dates (ex. produce, meats). 
 
-Current tools for making a grocery shopping list include using a note taking application or traditional pen and paper. This requires the user to manually cross reference their refrigerator and pantry. The user also needs to make the right decisions about what and how much to buy. Our shopping list feature is integrated with the inventory tracker so that when they try adding items to the shopping list that they still have in their inventory, the app will give a warning. It also stores a short history of the types and amounts of foods that the user has bought in the past but ended up wasting due to food spoilage. That way, the app will give a warning if they try to add the same food and quantity to their shopping list again. This builds on our partner's idea of predicting and preventing possible future food waste before it even gets to the consumer's home.
+Currently, the most common tools for making a grocery shopping list is using a notes application or traditional pen and paper. This requires the user to manually cross reference their refrigerator and pantry. This also depends on the user to make the right decisions about what and how much to buy. Our shopping list feature is integrated with the inventory tracker, so that when they add items to the shopping list that they already have at home, the app gives a warning. It also stores a short history of the types and amounts of foods that the user has bought in the past, but ended up expiring. That way, the app will give a warning if they try to add that to their shopping list again. This addresses the partner's idea of predicting and preventing possible future food waste before it even gets to the consumer's home. 
 
-Another unique selling point of our product is that we automatically calculate the user’s greenhouse gas (GHG) emissions over time based on the items that expire in their inventory. This allows users to measure their food waste and see the impacts of their actions. We want to show that even if you are wasting a little food, it can build up over time. According to the City of Toronto website, “Canada’s 2.2 million tonnes of avoidable household food waste is equivalent to 9.8 million tonnes of CO2 and 2.1 million cars on the road.” (https://www.toronto.ca/services-payments/recycling-organics-garbage/long-term-waste-strategy/waste-reduction/food-waste/#:~:text=According%20to%20the%20National%20Zero,waste%20has%20substantial%20environmental%20impacts). Conversely, users can also see how they have progressed and how little improvements have big effects as well. We have not seen any existing alternatives that include this feature.
+Another unique selling point of our product is the greenhouse gas (GHG) emissions calculator. This allows user to measure their food waste and see the impacts of their actions. This feature doesn't exist anywhere else. 
+
 
 
 #### Q4: How will you build it?
@@ -148,13 +157,17 @@ Describe your team's working culture.
 Specify 3 - 5 key decisions and/or insights that came up during your meetings
 and/or collaborative process.
 
- * Short (5 min' read max)
- * Decisions can be related to the product and/or the team process.
-    * Mention which alternatives you were considering.
-    * Present the arguments for each alternative.
-    * Explain why the option you decided on makes the most sense for your team/product/users.
- * Essentially, we want to understand how (and why) you ended up with your current product and process plan.
- * This section is useful for important information regarding your decision making process that may not necessarily fit in other sections. 
-
 ##### Key Decision 1: Expanding the Shopping List Feature
-At least, we were skeptical about the value that a shopping list brings to our user. The exisitng implementation that our partner has was a very simple list where you can add, remove and check off items. 
+Initially, when our partner told us that they wanted a shopping list feature, we were skeptical about the value that a shopping list brings to our user. The existing implementation that our partner has was a very simple list where you can add, remove and check off items. This can be easily done in any other note taking app, so we asked ourselves, what will be the unique selling point of our shopping list and how can we harmoniously integrate with the rest of the features of our app. Some ideas that we considered included:
+
+ * Give a warning when the user adds a item to the shopping list that is still in their inventory
+ * Keep a record of buyer’s history of wasted foods, and warn them if they add it to their list
+ * Custom shopping list templates for users who already have a predetermined set of products that they purchase on a regular basis, and the app automatically eliminate items you still have
+
+Ultimately, we chose to add the first two functionalities, since it adds useful solutions to users’ problems without overcomplicating the overall app.
+
+##### Key Decision 2: Making the Scanner An Extra Feature
+We considered: how much time does scanning foods really save as opposed to simply entering information? The initial idea was to scan barcodes and automatically input expiry date information. Not only does this not work for a majority of foods (ex. produce and any non-packaged items), but we were not certain if this was possible due to the large variety of different barcodes. Alternatively, we discussed scanning whole items and based on the item scanned, determine the expiry date. We determined that this would require some form of machine learning or computer vision, which our team is not familiar nor comfortable working with. Furthermore, it came back to the notion that users would have to take about the same amount of time to scan their food as to enter in its name, so scanning does not provide that much more benefit except that it is just an interesting feature to have. The underlying motivation or service that we wish to provide is to predict expiry dates. Therefore, we ultimately decided to create a library of common food items that users can search by entering in the name of the item, and each item will have preset expected expiry dates. This eliminates the need for users to enter in expiry information, which works especially well for items without expiry labels. However, since the scanner might prove to be an enticing feature that will motivate people to track their foods’ expiry dates, we will implement it if time allows.
+
+##### Key Decision 3: Choosing Manual Implementation over External API
+Initially, we were planning to use an GHG calculator API to calculate the amount of greenhouse gas emitted based on the amount of food wasted. When we were doing research on this, we discovered that there is a limited amount of API’s that we could use. The ones that would work are behind a paywall and do not necessarily have the function that we are looking for. So after careful consideration, we decided to manually create our own calculator in the app using formulas and data that we found online. This is the same situation that we had when looking for API’s that would give us exhaustive information about the shelf life of various food products. Hence, we plan to internally store a library of food items and their expected shelf life, which will likely come from data from various internet sources.
