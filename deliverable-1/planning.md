@@ -41,7 +41,6 @@ George is a proud father and foodie. He is often going on impromptu shopping tri
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
-> Short (1 - 2 min' read max)
     
 Our product will allow users to track their food inventory and update items as they are being consumed or wasted. Thus, it will allow them to see a real time overview of all the food items they have along with their expected expiry dates wherever and whenever they want. There are similar apps that offer this feature but our app will allow users to filter the foods that are expiring soon so that they can easily determine which foods they should use first. Further, since the app will send notifications to users about foods that are expiring soon, users can easily stay informed and avoid unnecessary food spoilage. In addition, when users add new items, our app will suggest an expected expiry date and the best storage method for that item. This will help clear misconceptions about how long foods last, especially for common foods without expiry dates (ex. produce, meats).
 
@@ -51,8 +50,6 @@ Another unique selling point of our product is that we automatically calculate t
 
 
 #### Q4: How will you build it?
-
-> Short (1-2 min' read max)
 
 The existing app uses the MERN techstack (MongoDB, Express, React, Node), so we will also be using this. It is simpler to maintain the same stack so that we can focus on implementing new features rather than having to migrate existing work to another platform/technology. 
 
@@ -64,12 +61,14 @@ We will be using our database to storing data for the following reasons:
  
 First is to keep track of information about items in the user’s inventory. 
 Our plan for keeping track of the user's inventory involves designing a data structure that will outline the necessary fields of information. The following fields should be included in the data structure representing each item in the inventory: 
+
  * Product name
  * Expiry date
  * Quantity 
  * Weight, volume, units 
  * Date the item was added
  * Tags (used to filter the inventory contents)
+ 
 Another data structure would be required to store all the preset filter options that can be used to classify the various products that we add to the inventory. When adding an item to the inventory, the user can select from the list of available tags that will be fetched from the database. The tag will be added to the item description that we will store in the database.
 Second is to keep track of a short history of the types and amounts of food that the user has wasted in the past (so that if they try to add it again in the future to their shopping list, they will receive a warning). 
 Our plan for keeping track of the user's history of commonly wasted foods involves creating a MongoDB document that will list some fixed number of products that have been disposed of by the user. When an item expires, the user will receive a notification and the item will be removed from the inventory to an expired products section. From there, the user can inform the app if they disposed of the product, and the database will be updated accordingly. When a user attempts to add an item to their shopping cart, this list will be checked and if said item appears there, the user will be warned that they previously disposed of it due to spoilage. 
