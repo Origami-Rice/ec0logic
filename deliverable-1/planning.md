@@ -26,18 +26,17 @@ We are expanding on our project partner's exisiting mobile app by adding new fea
 
 
 #### Q2: Who are your target users?
-
-  > Short (1 - 2 min' read max)
- * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
- * **Feel free (but not obligated) to use personas.         
-   You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).**
    
 ##### General Description of Target Users
 Our target users are people who want to make steps to becoming more eco-friendly starting with their own food consumption, but find it difficult to organize their food and grocery purchases within their busy everyday lives. 
 
 ##### Personas 
 
-Miranda is a mother of two. Her goal is to live a sustainable life and have a healthy, happy family. She works during the week, so she usually does regular grocery trips once a week. She cooks for the family. Since she usually comes with meal ideas on the spot, she isn’t really tracking what foods she has on hand, except from what she can see by looking in the fridge. She is often finding spoiled milk that she doesn’t even remember buying. 
+Miranda is a mother of two. Her goal is to live a sustainable life and have a healthy, happy family. She works during the week, so she usually does regular grocery trips once a week. She cooks for the family. Since she usually comes with meal ideas on the spot, she is not really tracking what foods she has on hand, except from what she can see by looking in the fridge. She is often finding spoiled milk that she does not even remember buying. 
+
+Laura is a university student and avid environmentalist. She is working hard not only towards her degree, but also towards a greener lifestyle. She lives on her own and cooks for herself. Due to her heavy course load, she has trouble keeping track of when her food expires and finds, much to her chagrin, that she is constantly throwing out spoiled food. She is making an effort to change that, but she wants to see the progress that she is making and understand the way she is helping the environment. 
+
+George is a proud father and foodie. He is often going on impromptu shopping trips on his way home from work. As he is making his way through the aisles, he is often asking himself, “Wait, do we have any more of this at home?” He never really creates a list and usually goes off his instincts, which is often to buy first. Unfortunately, he usually comes home realizing that he has double of half his inventory. He wants to reduce his carbon footprint and set a good example for his children. His main concern is controlling his purchases, but at the same time, he finds it too tedious to “plan” his grocery trips. 
 
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
