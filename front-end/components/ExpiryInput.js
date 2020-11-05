@@ -25,23 +25,34 @@ export default class AssetExample extends React.Component {
     this._loadFontsAsync();
   }
 
-  // TODO: Add checks for valid input
   onChangeMonth = (text) => {
-    this.setState({
-      expiryDate: this.state.expiryDate.setMonth(parseInt(text) - 1),
-    });
+    this.setState((state) => ({
+      expiryDate: new Date(
+        state.expiryDate.getFullYear(),
+        parseInt(text) - 1,
+        state.expiryDate.getDate()
+      ),
+    }));
   };
 
   onChangeDay = (text) => {
-    this.setState({
-      expiryDate: this.state.expiryDate.setDate(parseInt(text)),
-    });
+    this.setState((state) => ({
+      expiryDate: new Date(
+        state.expiryDate.getFullYear(),
+        state.expiryDate.getMonth(),
+        parseInt(text)
+      ),
+    }));
   };
 
   onChangeYear = (text) => {
-    this.setState({
-      expiryDate: this.state.expiryDate.setFullYear(parseInt(text)),
-    });
+    this.setState((state) => ({
+      expiryDate: new Date(
+        parseInt(text),
+        state.expiryDate.getMonth(),
+        state.expiryDate.getDate()
+      ),
+    }));
   };
 
   render() {
@@ -51,20 +62,17 @@ export default class AssetExample extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Month"
-            keyboardType="numeric"
             onChangeText={(text) => this.onChangeMonth(text)}
           />
           <TextInput
             style={styles.inputFormat}
             placeholder="Day"
-            keyboardType="numeric"
             onChangeText={(text) => this.onChangeDay(text)}
           />
           <TextInput
             style={styles.inputFormat}
             placeholder="Year"
-            keyboardType="numeric"
-            onChangeText={(text) => this.setState(text)}
+            onChangeText={(text) => this.onChangeYear(text)}
           />
         </View>
       );
@@ -76,16 +84,17 @@ export default class AssetExample extends React.Component {
 
 const styles = StyleSheet.create({
   viewFormat: {
-    flex: 1,
+    width: "100%",
+    height: 25,
+    flex: 0,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 11,
   },
 
   inputFormat: {
     width: "25%",
-    height: "25px",
+    height: 25,
     borderColor: "black",
     borderWidth: 1,
     fontSize: 11,
