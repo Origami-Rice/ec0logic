@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   listItem: {
     width: "85%",
     height: 80,
-    flex: 1,
+    flex: 0,
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 10,
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
-    flex: 11,
     fontFamily: "Montserrat_400Regular",
   },
 
@@ -80,7 +79,6 @@ const styles = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     fontSize: 14,
-    flex: 14,
     fontFamily: "Montserrat_500Medium",
   },
 
