@@ -1,5 +1,6 @@
 import React from "react";
-import { TextInput, View, StyleSheet, Picker } from "react-native";
+import { TextInput, View, StyleSheet } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
@@ -12,7 +13,7 @@ export default class AssetExample extends React.Component {
     super(props);
     this.state = {
       amount: "0",
-      unit: "default",
+      unit: "Units",
       fontsLoaded: false,
     };
   }
@@ -26,16 +27,12 @@ export default class AssetExample extends React.Component {
     this._loadFontsAsync();
   }
 
-  onValueChange = (itemValue) => {
-    this.setState({
-      unit: itemValue,
-    });
+  onChangeItem = (itemValue) => {
+    this.setState({ unit: itemValue });
   };
 
   onChangeText = (text) => {
-    this.setState({
-      amount: text,
-    });
+    this.setState({ amount: text });
   };
 
   render() {
@@ -47,17 +44,25 @@ export default class AssetExample extends React.Component {
             placeholder="Amount"
             onChangeText={(text) => this.setState(text)}
           />
-          <Picker
-            onValueChange={(itemValue) => this.setState(itemValue)}
-            style={styles.pickerFormat}
-          >
-            <Picker.Item label="Units" value="default" />
-            <Picker.Item label="g" value="g" />
-            <Picker.Item label="mg" value="mg" />
-            <Picker.Item label="kg" value="kg" />
-            <Picker.Item label="oz" value="oz" />
-            <Picker.Item label="mL" value="mL" />
-          </Picker>
+          <View style={styles.pickerFormat}>
+            <DropDownPicker
+              label="Units"
+              items={[
+                { label: "Units", value: "Units", selected: true },
+                { label: "g", value: "g" },
+                { label: "mg", value: "mg" },
+                { label: "kg", value: "kg" },
+                { label: "oz", value: "oz" },
+                { label: "ml", value: "mL" },
+              ]}
+              arrowStyle={styles.dropArrow}
+              containerStyle={styles.dropContainer}
+              itemStyle={{ justifyContent: "flex-start" }}
+              selectedLabelStyle={styles.dropItem}
+              labelStyle={styles.dropItem}
+              onChangeItem={(item) => this.onChangeItem(item.value)}
+            />
+          </View>
         </View>
       );
     } else {
@@ -68,29 +73,40 @@ export default class AssetExample extends React.Component {
 
 const styles = StyleSheet.create({
   viewFormat: {
-    flex: 1,
+    flex: 0,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 11,
-    color: "#BDBDBD",
   },
 
-  pickerFormat: {
+  dropContainer: {
     width: "25%",
-    height: "25px",
+    height: 31,
     borderColor: "black",
     borderWidth: 1,
-    fontFamily: "Montserrat_400Regular",
+  },
+
+  dropArrow: {
+    height: 19,
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
 
   inputFormat: {
     width: "25%",
-    height: "25px",
+    height: 31,
+    backgroundColor: "#ffffff",
     borderColor: "black",
     borderWidth: 1,
     fontSize: 11,
     padding: 5,
+    paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
+  },
+
+  dropItem: {
+    fontSize: 11,
+    fontFamily: "Montserrat_400Regular",
+    color: "#000000",
   },
 });
