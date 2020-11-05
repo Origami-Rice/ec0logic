@@ -28,8 +28,8 @@ const LibraryListItem = (props) => {
 const styles = StyleSheet.create({
   listItem: {
     width: "85%",
-    height: 80,
-    flex: 1,
+    height: 65,
+    flex: 0,
     flexDirection: "row",
     justifyContent: "space-between",
     borderRadius: 10,
@@ -49,14 +49,12 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
-    flex: 11,
     fontFamily: "Montserrat_400Regular",
   },
 
   textItem: {
     marginLeft: 10,
     fontSize: 12,
-    flex: 12,
     fontFamily: "Montserrat_500Medium",
   },
 });
