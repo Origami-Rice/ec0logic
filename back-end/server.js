@@ -3,17 +3,21 @@ const { Db } = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 const express = require('express');
+const app = express()
+// These will handle all of our routes
+const inventory = require('./routes/inventory.js')
+
 const Item = require('./schemas');
 
-const app = express()
-
-
 let cors = require('cors');
-const PORT = process.env.PORT || 5000;
 
 
 app.use(cors());
 
+// Routes
+app.use("/api/inventory", inventory);
+
+// Connecting to DB - test
 const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
 mongoose.connect(mongodbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
 
@@ -36,4 +40,5 @@ app.get('/', (req, res) => {
         })
 })
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log('Started listening on port 5000!'));
