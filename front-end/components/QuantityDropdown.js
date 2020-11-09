@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, View, StyleSheet } from "react-native";
+import { TextInput, View, StyleSheet, Dimensions } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
 
   dropContainer: {
-    width: "25%",
+    width: Dimensions.get("window").width * 0.25,
     height: 31,
     borderColor: "black",
     borderWidth: 1,

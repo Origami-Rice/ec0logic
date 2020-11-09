@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     alignSelf: "center",
+    marginVertical: 8.5,
   },
 
   textGroup: {
