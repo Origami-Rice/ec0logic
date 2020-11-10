@@ -7,7 +7,7 @@ const app = express()
 // These will handle all of our routes
 const inventory = require('./routes/inventory.js')
 
-const Item = require('./schemas');
+const Item = require('./models/schemas');
 
 let cors = require('cors');
 
