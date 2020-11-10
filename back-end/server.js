@@ -25,12 +25,12 @@ mongoose.connect(mongodbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
     console.log('connected')
 })
 
-app.get('/', (req, res) => {
+app.get('/inventory', (req, res) => {
     const item = new Item({
-        name: 'Banana',
-        expiryDate: 'November 15, 2020',
-        quantity: 2,
-        weight: 6
+        name: 'carrot',
+        expiryDate: 'Oct 13, 2020',
+        quantity: 5,
+        weight: 1
     });
 
     item.save()
