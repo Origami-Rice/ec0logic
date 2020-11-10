@@ -25,20 +25,23 @@ mongoose.connect(mongodbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
     console.log('connected')
 })
 
-app.get('/inventory', (req, res) => {
-    const item = new Item({
-        name: 'carrot',
-        expiryDate: 'Oct 13, 2020',
-        quantity: 5,
-        weight: 1
-    });
+// app.get('/inventory', (req, res) => {
+//     const item = new Item({
+//         name: 'carrot',
+//         expiryDate: 'Oct 13, 2020',
+//         quantity: 5,
+//         weight: 1
+//     });
 
-    item.save()
-        .then((result) => {
-            res.send(result)
-            console.log('sent')
-        })
-})
+//     item.save()
+//         .then((result) => {
+//             res.send(result)
+//             console.log('sent')
+//         })
+// })
+
+const userRoute = require('./dataAccess/userData')
+app.use('/users', userRoute)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log('Started listening on port 5000!'));

@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const {
+    get_user
+} = require('../dataAccess/userData')
 
 router
     .route('/:username')
@@ -7,6 +10,9 @@ router
         console.log('GET request to path /api/inventory/:username');
         // Decription: return all items in <username>'s inventory
         // TODO: implement
+        // const result = get_user()
+        // console.log(result)
+
     })
     .post((request, response) => {
         console.log('POST request to path /api/inventory/:username');

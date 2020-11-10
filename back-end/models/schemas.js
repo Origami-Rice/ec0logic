@@ -20,5 +20,6 @@ const UserSchema = new mongoose.Schema({
     inventory: [InventoryItemSchema]
 })
 
-const Item = mongoose.model('Item', InventoryItemSchema);
-module.exports = Item;
+const User = mongoose.model('User', UserSchema);
+module.exports = { User }
+
