@@ -1,6 +1,6 @@
 const { Db } = require('mongodb');
 
-const MongoClient = require('mongodb').MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express()
