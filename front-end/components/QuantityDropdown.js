@@ -61,6 +61,7 @@ export default class AssetExample extends React.Component {
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
               onChangeItem={(item) => this.onChangeItem(item.value)}
+              zIndex={5000}
             />
           </View>
         </View>
@@ -77,6 +78,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    margin: 5,
+    zIndex: 5000,
   },
 
   dropContainer: {
@@ -84,16 +87,18 @@ const styles = StyleSheet.create({
     height: 31,
     borderColor: "black",
     borderWidth: 1,
+    zIndex: 5000,
   },
 
   dropArrow: {
     height: 19,
     flexDirection: "row",
     justifyContent: "flex-start",
+    zIndex: 5000,
   },
 
   inputFormat: {
-    width: "25%",
+    width: Dimensions.get("window").width * 0.25,
     height: 31,
     backgroundColor: "#ffffff",
     borderColor: "black",
@@ -102,11 +107,13 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
+    zIndex: 5000,
   },
 
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
     color: "#000000",
+    zIndex: 5000,
   },
 });

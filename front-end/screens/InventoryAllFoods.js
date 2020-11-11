@@ -12,6 +12,7 @@ import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import InventoryListItem from "./components/InventoryListItem";
 
+// TODO: change to class component, add AppLoading return
 export default function App() {
   let [fontsLoaded] = useFonts({
     Montserrat_400Regular: require("./fonts/Montserrat-Regular.ttf"),
