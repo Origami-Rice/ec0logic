@@ -14,7 +14,20 @@ exports.add_user = async (username) => {
 //////////////////// INVENTORY QUERIES ////////////////////
 exports.add_item_to_inventorylist = async (username, item) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        {username: username}, {$addToSet: {inventory_list: item}}));
+        {username: username},
+        // {$addToSet: {inventory_list: item}}
+        {$push: {inventory_list: {$each: [item], $sort: {name: 1}}}}
+    ));
+};
+
+exports.check_if_item_in_inventory = async (username, itemName) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
+        // {username: username, "inventory_list.$.name": { $exists: true, $in: [ itemName ] }}
+        { username: username,
+          $and: [{'inventory_list.0': {$exists: true}},
+                 {"inventory_list.name": itemName}]},
+        {username: 1}
+    ));
 };
 
 exports.get_inventorylist = async (username) => {

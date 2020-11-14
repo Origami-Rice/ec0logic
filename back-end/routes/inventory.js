@@ -6,8 +6,10 @@ router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
 const {
-    get_inventorylist,
     add_item_to_inventorylist,
+    check_if_inventory_has_items,
+    check_if_item_in_inventory,
+    get_inventorylist,
     remove_item_from_inventory,
     update_inventory_item
 } = require('../dataAccess/userData');
@@ -56,18 +58,34 @@ router
         
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
-        console.log(username);
+        // console.log(username);
         // extract the item from the json object
         const item = request.body.item;
-        console.log(item);
-        
+        // console.log(item);
+        const itemName = item["name"];
+        console.log(itemName);
+
+        // Check if the item is already in the user's inventory
         try {
-            const result = await add_item_to_inventorylist(username, item)
-            if (result) { 
-                console.log(result);
+            const exists = await check_if_item_in_inventory(username, itemName);
+            console.log(exists);
+            if (exists) {
+                return response
+                .status(409)
+                .json({error: "Item already exists in user's inventory."})
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        // The item does not exist in the user's inventory so we can add it
+        try {
+            const result = await add_item_to_inventorylist(username, item);
+            if (result.result.nModified === 1) { 
+                // console.log(result);
                 return response
                     .status(200)
-                    .json(result);
+                    .json({"success": "Item was successfully added."});
             }else{
                 // this may not be the correct status code ???????????????????????????????????????????
                 return response.status(404).json({"error": "Item could not be added."});
@@ -75,7 +93,6 @@ router
         } catch (error) {
             console.log(error);
         }
-
     })
 
 router
