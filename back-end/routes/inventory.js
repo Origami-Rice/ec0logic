@@ -7,7 +7,6 @@ router.use(bodyParser.json());
 
 const {
     add_item_to_inventorylist,
-    check_if_inventory_has_items,
     check_if_item_in_inventory,
     get_inventorylist,
     remove_item_from_inventory,
