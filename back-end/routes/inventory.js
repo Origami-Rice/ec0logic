@@ -31,9 +31,8 @@ router
                 delete result._id; // im guessing this deletes the id field that mongodb automatically assigns to 
                 console.log(result)
 
-                // NO LONGER NEEDED SINCE ITEMS ARE SORTED AS THEY ARE ADDED ??????????????????????
-                // // sort them in alphabetical order by the 'name' field
-                // result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                // sort them in alphabetical order by the 'name' field
+                result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
                 return response
                     .status(200)
@@ -101,22 +100,24 @@ router
                 const inventory = result.inventory_list;
 
                 // get the date a week from now
-                var nextWeek = new Date();
+                let nextWeek = new Date();
                 nextWeek.setDate(nextWeek.getDate() + 7);
+                // get the date today
+                let today = new Date();
                 // find the items that will expire before nextWeek
                 const expiring = []; 
                 // Note that the expiryDate field must be an ISO 8601 string ?????????????????????????????????????????????
                 for (let i = 0; i < inventory.length; i++) {
-                    if(new Date(inventory[i]["expiryDate"]) < nextWeek) {
+                    let itemDate = new Date(inventory[i]["expiryDate"]);
+                    if(today < itemDate && itemDate < nextWeek) {
                         // add the item of format InventoryItemSchema in the inventory
                         // to a list of expiring items
                         expiring.push(inventory[i]);
                     }
                 }
 
-                // NO LONGER NEEDED SINCE ITEMS ARE SORTED ALREADY ??????????????????????
-                // // sort them in alphabetical order by the 'name' field
-                // expiring.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                // sort them in alphabetical order by the 'name' field
+                expiring.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
                 return response
                     .status(200)

@@ -19,7 +19,7 @@ app.use(cors());
 // Routes
 app.use("/api/inventory", inventory);
 app.use('/api/user', users);
-app.user('/api/food-library', food_library);
+app.use('/api/food-library', food_library);
 
 // // Connecting to DB - test
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';

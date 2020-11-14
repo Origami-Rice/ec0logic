@@ -14,7 +14,7 @@ exports.add_user = async (username) => {
 //////////////////// INVENTORY QUERIES ////////////////////
 exports.add_item_to_inventorylist = async (username, item) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        {username: username}, {$addToSet: {inventory_list: {$each: [item], $sort: 1}}}));
+        {username: username}, {$addToSet: {inventory_list: item}}));
 };
 
 exports.get_inventorylist = async (username) => {
