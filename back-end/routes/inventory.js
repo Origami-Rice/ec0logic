@@ -91,7 +91,6 @@ router
 
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
-        console.log(username);
 
         // store the result of calling get_inventorylist()
         try {
@@ -122,6 +121,52 @@ router
                 return response
                     .status(200)
                     .json({expiringItems: expiring});
+            }else{
+                // This may be wrong
+                return response.status(404).json({"error": "No inventory list detected."});
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+router
+    .route('/:username/expired')
+    .get(async (request, response) => {
+        console.log('GET request to path /api/inventory/:username/expired');
+        // Decription: return all items in <username>'s inventory that
+        // already expired
+        // TOOD: implement
+        // --- Possibly get all the items in the user's inventory from DB
+        // --- and then filter the ones that have expiry dates from before today
+
+        // assign the username passed to the endpoint to a variable
+        const username = request.params.username;
+
+        // store the result of calling get_inventorylist()
+        try {
+            const result = await get_inventorylist(username);
+            if(result && result.inventory_list){
+                delete result._id; // im guessing this deletes the id field that mongodb automatically assigns to 
+                console.log(result)
+                const inventory = result.inventory_list;
+
+                // get today's date
+                var today = new Date();
+                // find the items that have already expired
+                const expired = []; 
+                // Note that the expiryDate field must be an ISO 8601 string ?????????????????????????????????????????????
+                for (let i = 0; i < inventory.length; i++) {
+                    if(new Date(inventory[i]["expiryDate"]) < today) {
+                        // add the item of format InventoryItemSchema in the inventory
+                        // to a list of expiring items
+                        expired.push(inventory[i]);
+                    }
+                }
+
+                return response
+                    .status(200)
+                    .json({expiredItems: expired});
             }else{
                 // This may be wrong
                 return response.status(404).json({"error": "No inventory list detected."});
