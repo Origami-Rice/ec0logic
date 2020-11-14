@@ -1,0 +1,7 @@
+Running the server:
+
+install node,js and npm
+install nodemon: sudo npm install -g nodemon
+run db with nodemon server.js
+
+install express: npm install express

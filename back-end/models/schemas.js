@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const InventoryItemSchema = new mongoose.Schema({
     name: String,
-    expiryDate: String,
+    expiryDate: { type: Date, default: Date.now },
     quantity: Number,
     weight: Number
 });
@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    inventory: [InventoryItemSchema]
+    inventory_list: [InventoryItemSchema]
 })
 
 const User = mongoose.model('User', UserSchema);
