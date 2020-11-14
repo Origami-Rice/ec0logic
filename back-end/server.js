@@ -7,6 +7,7 @@ const app = express()
 // These will handle all of our routes
 const inventory = require('./routes/inventory.js')
 const users = require('./routes/users.js');
+const food_library = require('./routes/foodlib.js')
 
 // const User = require('./models/schemas');
 
@@ -18,6 +19,7 @@ app.use(cors());
 // Routes
 app.use("/api/inventory", inventory);
 app.use('/api/user', users);
+app.user('/api/food-library', food_library);
 
 // // Connecting to DB - test
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
