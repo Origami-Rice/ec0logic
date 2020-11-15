@@ -21,6 +21,7 @@ DESCRIPTION OF THE ENDPOINTS IN INVETORY.JS ------------------------------------
 - otw if a different error occurs (i.e the user specified isnt in the database), return status 404 and {"error": "Item could not be added."}
 - returned object will be json
 - since im sorting the items alphabetically by the name field, can you ensure that the name has a capital first letter?
+- i'm not sure how we will handle pluralized items vs singular since mongodb won't consider them a duplicate
 - also the dates need to be converted to ISO 8601 strings so that later i can reconvert them into date objects when im checking for expired items but i believe that when you turn the object into json, that this should happen by default so you may not need to actually do anything
 
 3. GET request to path /api/inventory/:username/expiring
