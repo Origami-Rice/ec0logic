@@ -19,7 +19,7 @@ const InventoryItemSchema = new mongoose.Schema({
 
 const CommonFoodSchema = new mongoose.Schema({
     name: String,
-    expiryDate: Date,
+    days: Number,
 });
 
 const WastedItemSchema = new mongoose.Schema({

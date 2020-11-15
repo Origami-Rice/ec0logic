@@ -61,10 +61,10 @@ exports.update_inventory_item = async (username, itemName, expiryDate, quantity,
 exports.get_common_food = async () => {
     // Return all the foods in our food library
     return await executeQuery(db, async (db) => await db.collection(food_lib).find(
-        {name: 1, expiryDate: 1} ));
+        {name: 1, days: 1} ));
 };
 
-exports.add_common_food = async (name, expiry) => {
+exports.add_common_food = async (name, days) => {
     return await executeQuery(db, async (db) => await db.collection(food_lib).insertOne(
-        {name: name, expiryDate: expiry}));
+        {name: name, days: days}));
 };

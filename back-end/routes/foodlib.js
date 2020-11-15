@@ -40,17 +40,17 @@ router
         // TODO: Add a new item to the library
         // This item will have a name and shelf life passed in
 
-        //Json must include name and expiry date
+        //Json must include name(String) and days(Number)
         const name = request.body.name
-        const expiry = request.body.expiry
+        const days = request.body.days
 
         try {
-            const item = await add_common_food(name, expiry);
+            const item = await add_common_food(name, days);
             console.log(item)
             if (item) {
                 return response
                     .status(200)
-                    .json({ success: "Common food " + name + " added with shelf life" + expiry});
+                    .json({ success: "Common food " + name + " added with shelf life: " + days +" days"});
             }
             return response.status(404).json({ error: "Error: Adding common food" });
         } catch (error) {
