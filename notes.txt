@@ -15,7 +15,8 @@ DESCRIPTION OF THE ENDPOINTS IN INVETORY.JS ------------------------------------
 - the returned object will be json
 
 2. POST request to path /api/inventory/:username
-- adds item to the users inventory if it has not already been added
+- adds item to the user's inventory if it has not already been added
+- the object passed needs to be of the form {"item": InventoryItemSchema}
 - if successful, status 200 and {"success": "Item was successfully added."}
 - if unsuccessful due to attempting to add a duplicate item, status 409 and {error: "Item already exists in user's inventory."} are returned
 - otw if a different error occurs (i.e the user specified isnt in the database), return status 404 and {"error": "Item could not be added."}

@@ -29,7 +29,7 @@ const WastedItemSchema = new mongoose.Schema({
         minlength: 1,
         trim: true
     },
-    date: Number,
+    date: Date,
     quantity: Number,
     weight: Number
 });
