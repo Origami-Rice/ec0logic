@@ -9,6 +9,11 @@ const InventoryItemSchema = new mongoose.Schema({
     weight: Number
 });
 
+const CommonFoodSchema = new mongoose.Schema({
+    name: String,
+    expiryDate: Date,
+});
+
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
