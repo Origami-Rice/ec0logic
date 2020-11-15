@@ -3,8 +3,16 @@
 const mongoose = require('mongoose')
 
 const InventoryItemSchema = new mongoose.Schema({
-    name: String,
-    expiryDate: { type: Date, default: Date.now },
+    name: {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true
+    },
+    expiryDate: { 
+        type: Date,
+        default: Date.now 
+    },
     quantity: Number,
     weight: Number
 });
@@ -12,6 +20,18 @@ const InventoryItemSchema = new mongoose.Schema({
 const CommonFoodSchema = new mongoose.Schema({
     name: String,
     expiryDate: Date,
+});
+
+const WastedItemSchema = new mongoose.Schema({
+    name:  {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true
+    },
+    date: Number,
+    quantity: Number,
+    weight: Number
 });
 
 const UserSchema = new mongoose.Schema({
@@ -22,9 +42,11 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    inventory_list: [InventoryItemSchema]
-})
+    inventory_list: [InventoryItemSchema],
+    wasted_items: [WastedItemSchema]
+});
 
 const User = mongoose.model('User', UserSchema);
-module.exports = { User }
+const CommonFood = mongoose.model("CommonFood", CommonFoodSchema);
+module.exports = { User, CommonFood };
 
