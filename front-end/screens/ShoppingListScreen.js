@@ -11,12 +11,12 @@ import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
-import ShoppingListItem from "./components/ShoppingListItem";
+import ShoppingListItem from "../components/ShoppingListItem";
 
 let customFonts = {
-  Montserrat_400Regular: require("./fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("./fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
+  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
+  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
+  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 // SHOPPING LIST SCREEN
@@ -80,10 +80,7 @@ export default class ShoppingListScreen extends React.Component {
             </Text>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => this.setState({ visibleModal: 1 })}
-            >
+            <TouchableOpacity style={styles.addButton}>
               <Text style={styles.addText}>↑</Text>
             </TouchableOpacity>
             <Text style={styles.addButtonLabel}>
