@@ -8,39 +8,53 @@ import {
   Dimensions,
 } from "react-native";
 import Constants from "expo-constants";
-import { useFonts } from "expo-font";
+import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QualityDropdown from "../components/QualityDropdown";
 import ExpiryInput from "../components/ExpiryInput";
 
-// TODO: change to class component, add AppLoading return
-export default function App() {
-  let [fontsLoaded] = useFonts({
-    Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-    Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-    Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-  });
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.cancelButton}>
-        <Text style={styles.cancelText}>x</Text>
-      </TouchableOpacity>
-      <TextInput style={styles.inputFormat} placeholder="Enter New Food Item" />
-      <Text style={styles.label}>Quantity:</Text>
-      <QualityDropdown></QualityDropdown>
-      <Text style={styles.label}>Enter Expiry Date:</Text>
-      <ExpiryInput></ExpiryInput>
-      <View style={{ zIndex: -1 }}>
-        <TouchableOpacity style={styles.confirmButton}>
-          <Text style={styles.confirmText}>Cancel</Text>
+let customFonts = {
+  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
+  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
+  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
+};
+
+export default class InventoryInputScreen extends React.Component {
+  async _loadFontsAsync() {
+    await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
+  }
+
+  componentDidMount() {
+    this._loadFontsAsync();
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.cancelButton}>
+          <Text style={styles.cancelText}>x</Text>
         </TouchableOpacity>
+        <TextInput
+          style={styles.inputFormat}
+          placeholder="Enter New Food Item"
+        />
+        <Text style={styles.label}>Quantity:</Text>
+        <QualityDropdown></QualityDropdown>
+        <Text style={styles.label}>Enter Expiry Date:</Text>
+        <ExpiryInput></ExpiryInput>
+        <View style={{ zIndex: -1 }}>
+          <TouchableOpacity style={styles.confirmButton}>
+            <Text style={styles.confirmText}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: Dimensions.get("window").height,
     padding: 8,
     flex: 1,
     flexDirection: "column",

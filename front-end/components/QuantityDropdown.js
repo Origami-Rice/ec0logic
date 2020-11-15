@@ -8,7 +8,7 @@ let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
 };
 
-export default class AssetExample extends React.Component {
+export default class QualityDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +44,7 @@ export default class AssetExample extends React.Component {
             placeholder="Amount"
             onChangeText={(text) => this.setState(text)}
           />
-          <View style={styles.pickerFormat}>
+          <View>
             <DropDownPicker
               label="Units"
               items={[
