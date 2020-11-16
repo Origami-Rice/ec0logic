@@ -89,16 +89,17 @@ router
                 // items should be sorted by date with the most recent at index 0
                 const history = result.wasted_items;
                 // find the items in the specified range
-                let filtered = [];
+                const filtered = [];
 
                 // loop through all the dates
                 for (let i = 0; i < history.length; i++) {
                     let dateWasted = new Date(history[i]["date"]);
                     if (dateWasted < beginDate) {
                         // since items are sorted by most recent date, no other items
-                        // will be within the desired range
-                        filtered = history.slice(0, i);
+                        // will be within the desired range.
                         break;
+                    } else {
+                        filtered.push(history[i]);
                     }
                 }
                 
@@ -108,7 +109,7 @@ router
             } else {
                 return response
                     .status(404)
-                    .json({"error": "No history of wasted item detected."});
+                    .json({"error": "Could not find user or history of wasted items detected."});
             }
         } catch (error) {
             console.log(error);
@@ -118,13 +119,13 @@ router
 router
     .route('/months/:username/:months')
     .get(async (request, response) => {
-        console.log('GET request to path /api/history/months/:username/:months');
+        console.log('GET request to path /api/history/months/:username/:numMonths');
         // Description: Return the user's history of wasted items during the
         // requested last few months.
 
         // extract the username and the months from the route
         const username = request.params.username;
-        const months = request.params.months;
+        const numMonths = request.params.numMonths;
 
         // extract the provided current date, should be an ISO 8601 string
         const endDate = new Date(request.body.date);
@@ -140,7 +141,7 @@ router
                 // items should be sorted by date with the most recent at index 0
                 const history = result.wasted_items;
                 // find the items in the specified range
-                let filtered = [];
+                const filtered = [];
 
                 // loop through all the dates
                 for (let i = 0; i < history.length; i++) {
@@ -148,8 +149,9 @@ router
                     if (dateWasted < beginDate) {
                         // since items are sorted by most recent date, no other items
                         // will be within the desired range
-                        filtered = history.slice(0, i);
                         break;
+                    } else {
+                        filtered.push(history[i]);
                     }
                 }
                 
@@ -159,38 +161,24 @@ router
             } else {
                 return response
                     .status(404)
-                    .json({"error": "No history of wasted item detected."});
+                    .json({"error": "Could not find user or history of wasted items detected."});
             }
         } catch (error) {
             console.log(error);
         }
     })
 
-function calculateWeeksBefore(numWeeks, dateString) {
-    // dateString is an ISO 8601 string 
-    // Calculate the date numWeeks before dateString
-    let date = new Data(dateString);
-
-    if (numWeeks * 7 > date.getDate()) {
-        // subtracting the number of weeks would result in a new month
-        // get the month
-        var month = date.getMonth();
-        if (month){ // the month isn't january
-            
-        } else { // the month is january
-            //
-        }
-    } else {
-        // month remains the same so subtract the number of days to get
-        // the new date
-        let newDate = new Date();
-        newDate.setDate(newDate.getDate() - (numWeeks * 7));
-        return newDate;
-    }
+function calculateWeeksBefore(numWeeks, date) {
+    // Calculate the date numWeeks before date
+    const days = numWeeks * 7;
+    const newDate = new Date(date.getTime() - days * 24 * 60 * 60 * 1000);
+    return newDate;
 }
 
-function calculateMonthsBefore(numMonths, dateString) {
-    // dateString is an ISO 8601 string 
-    // Calculate the date numMonths before dateString
+function calculateMonthsBefore(numMonths, date) {
+    // Calculate the date numMonths before date
+    const days = numMonths * 30;
+    const newDate = new Date(date.getTime() - days * 24 * 60 * 60 * 1000);
+    return newDate;
 }
 module.exports = router;
