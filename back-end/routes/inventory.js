@@ -104,8 +104,7 @@ router
                 const inventory = result.inventory_list;
 
                 // get the date a week from now
-                let nextWeek = new Date();
-                nextWeek.setDate(nextWeek.getDate() + 7);
+                let nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
                 // get the date today
                 let today = new Date();
                 // find the items that will expire before nextWeek
