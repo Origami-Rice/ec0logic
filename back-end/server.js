@@ -3,11 +3,12 @@
 // const MongoClient = require('mongodb').MongoClient;
 // const mongoose = require('mongoose');
 const express = require('express');
-const app = express()
+const app = express();
 // These will handle all of our routes
-const inventory = require('./routes/inventory.js')
+const inventory = require('./routes/inventory.js');
 const users = require('./routes/users.js');
-const food_library = require('./routes/foodlib.js')
+const food_library = require('./routes/foodlib.js');
+const history = require('./routes/history');
 
 // const User = require('./models/schemas');
 
@@ -20,7 +21,7 @@ app.use(cors());
 app.use("/api/inventory", inventory);
 app.use('/api/user', users);
 app.use('/api/food-library', food_library);
-
+app.use('/api/history', history);
 // // Connecting to DB - test
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
 // mongoose.connect(mongodbUrl, { useNewUrlParser: true, useUnifiedTopology: true})

@@ -30,9 +30,10 @@ router
             if(result && result.inventory_list){
                 delete result._id; // im guessing this deletes the id field that mongodb automatically assigns to 
                 // console.log(result)
-
-                // sort them in alphabetical order by the 'name' field
-                result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                
+                // NO LONGER NEEDED ?????????????????????????????????????????
+                // // sort them in alphabetical order by the 'name' field
+                // result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
                 return response
                     .status(200)
