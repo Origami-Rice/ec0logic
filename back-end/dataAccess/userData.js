@@ -9,7 +9,7 @@ const executeQuery = require('../utilities/mongoConnect').executeQuery;
 
 exports.add_user = async (username) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-        { username: username, inventory_list: [], wasted_items: [] }));
+        { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
 };
 
 //////////////////// INVENTORY QUERIES ////////////////////
@@ -86,3 +86,18 @@ exports.add_common_food = async (name, days) => {
     return await executeQuery(db, async (db) => await db.collection(food_lib_collection).insertOne(
         {name: name, days: days}));
 };
+
+////////////////// Shopping list queries /////////////////////
+
+exports.get_shopping_list = async (username) => {
+    // 
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findone(
+        {username: username}, {username: 1, shopping_list: 1}
+    ))
+}
+
+exports.add_item_to_shopping_list = async (username, item) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateone (
+        {username: username}, {$push: { shopping_list: { $each: [item], $sort: {name: 1}} }}
+    ))
+}
