@@ -101,3 +101,10 @@ exports.add_item_to_shopping_list = async (username, item) => {
         {username: username}, {$push: { shopping_list: { $each: [item], $sort: {name: 1}} }}
     ))
 }
+
+exports.remove_item_from_shopping_list = async (username, item) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username}, { $pull: { shopping_list: { name: itemName } } }
+    ));
+
+}
