@@ -34,6 +34,18 @@ const WastedItemSchema = new mongoose.Schema({
     weight: Number
 });
 
+const ShoppingListSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true
+    },
+    quantity: Number,
+    checked_off: Boolean
+    
+});
+
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -43,7 +55,8 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     inventory_list: [InventoryItemSchema],
-    wasted_items: [WastedItemSchema]
+    wasted_items: [WastedItemSchema],
+    shopping_list: [ShoppingListSchema]
 });
 
 const User = mongoose.model('User', UserSchema);
