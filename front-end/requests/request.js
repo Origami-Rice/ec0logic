@@ -21,7 +21,7 @@ export default function send(url, data = {}, extra_url = null) {
             },
         }
 
-        if (!['GET'].includes(endpoint.method)) {
+        if (endpoint.method !== 'GET') {
             options.body = JSON.stringify(data);
         }
 
