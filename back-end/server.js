@@ -9,6 +9,7 @@ const inventory = require('./routes/inventory.js');
 const users = require('./routes/users.js');
 const food_library = require('./routes/foodlib.js');
 const history = require('./routes/history');
+const shoppinglist = require('./routes/shoppinglist')
 
 // const User = require('./models/schemas');
 
@@ -22,6 +23,7 @@ app.use("/api/inventory", inventory);
 app.use('/api/user', users);
 app.use('/api/food-library', food_library);
 app.use('/api/history', history);
+app.use('/api/shoppinglist', shoppinglist);
 // // Connecting to DB - test
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
 // mongoose.connect(mongodbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
