@@ -75,11 +75,14 @@ router
         const username = request.params.username;
         const numWeeks = request.params.numWeeks;
 
-        // extract the provided current date, should be an ISO 8601 string
+        // extract the provided current date, should be an ISO 8601
+        // string or any other form that is accepted by Date.
         const endDate = new Date(request.body.date);
 
-        // get the date of numWeeks ago
-        const beginDate = calculateWeeksBefore(numWeeks, endDate);
+        // Calculate the date numWeeks before date
+        const days = numWeeks * 7;
+        const beginDate = new Date(endDate.getTime() - days * 24 * 60 * 60 * 1000);
+        console.log(beginDate);
         
         // get the user's history
         try {
@@ -94,6 +97,7 @@ router
                 // loop through all the dates
                 for (let i = 0; i < history.length; i++) {
                     let dateWasted = new Date(history[i]["date"]);
+                    console.log(dateWasted);
                     if (dateWasted < beginDate) {
                         // since items are sorted by most recent date, no other items
                         // will be within the desired range.
@@ -117,7 +121,7 @@ router
     })
 
 router
-    .route('/months/:username/:months')
+    .route('/months/:username/:numMonths')
     .get(async (request, response) => {
         console.log('GET request to path /api/history/months/:username/:numMonths');
         // Description: Return the user's history of wasted items during the
@@ -127,11 +131,14 @@ router
         const username = request.params.username;
         const numMonths = request.params.numMonths;
 
-        // extract the provided current date, should be an ISO 8601 string
+        // extract the provided current date, should be an ISO 8601
+        // string or any other form that is accepted by Date.
         const endDate = new Date(request.body.date);
 
-        // get the date of numMonths ago
-        const beginDate = calculateMonthsBefore(numMonths, endDate);
+        // Calculate the date numMonths before date
+        const days = numMonths * 30;   
+        const beginDate = new Date(endDate.getTime() - days * 24 * 60 * 60 * 1000);
+        console.log(beginDate);
         
         // get the user's history
         try {
@@ -146,6 +153,8 @@ router
                 // loop through all the dates
                 for (let i = 0; i < history.length; i++) {
                     let dateWasted = new Date(history[i]["date"]);
+                    console.log("date wasted");
+                    console.log(dateWasted);
                     if (dateWasted < beginDate) {
                         // since items are sorted by most recent date, no other items
                         // will be within the desired range
@@ -168,17 +177,4 @@ router
         }
     })
 
-function calculateWeeksBefore(numWeeks, date) {
-    // Calculate the date numWeeks before date
-    const days = numWeeks * 7;
-    const newDate = new Date(date.getTime() - days * 24 * 60 * 60 * 1000);
-    return newDate;
-}
-
-function calculateMonthsBefore(numMonths, date) {
-    // Calculate the date numMonths before date
-    const days = numMonths * 30;
-    const newDate = new Date(date.getTime() - days * 24 * 60 * 60 * 1000);
-    return newDate;
-}
 module.exports = router;
