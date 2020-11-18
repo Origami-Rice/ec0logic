@@ -48,4 +48,4 @@ const endpoints = {
     // Shopping List
 }
 
-exports.module = endpoints;
+export default endpoints;

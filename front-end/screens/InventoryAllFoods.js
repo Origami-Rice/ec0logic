@@ -14,6 +14,7 @@ import Constants from "expo-constants";
 import InventoryListItem from "../components/InventoryListItem";
 import FinshedFoodScreen from "./FinishedFoodScreen";
 import InventoryInputScreen from "./InventoryInputScreen";
+import send from "../requests/request.js";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -47,6 +48,27 @@ export default class InventoryAllFoods extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
+    // Load the list of user's inventory items from server
+    send(getInventory, {}, "test-user")
+    .then(response => response.json())
+    .then((json) => {
+      this.setState({ inventoryArray: json });
+    })
+    .catch(error => {
+      console.log("Error getting user inventory");
+      console.log(error)
+    });
+    
+    // Load the list of user's expiring items
+    send(getExpiring, {}, "test-user")
+    .then(response => response.json())
+    .then((json) => {
+      this.setState({ expiringArray: json.expiring });
+    })
+    .catch(error => {
+      console.log("Error getting user's expiring items");
+      console.log(error)
+    });
   }
 
   displayItems = () => {
