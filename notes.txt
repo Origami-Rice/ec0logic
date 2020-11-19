@@ -1,10 +1,14 @@
 RUNNING THE SERVER ---------------------------------------------------------------------------------
 
-install node,js and npm
+install node.js and npm
 install nodemon: sudo npm install -g nodemon
-run db with nodemon server.js
+run db with nodemon start.js
 
 install express: npm install express
+
+RUNNING TESTS ---------------------------------------------------------------------------------
+npm install jest --save-dev
+npm install supertest --save-dev
 
 DESCRIPTION OF THE ENDPOINTS IN INVETORY.JS --------------------------------------------------------
 1. GET request to path /api/inventory/:username
