@@ -9,6 +9,7 @@ install express: npm install express
 RUNNING TESTS ---------------------------------------------------------------------------------
 npm install jest --save-dev
 npm install supertest --save-dev
+npm run test or npm run test:watch
 
 DESCRIPTION OF THE ENDPOINTS IN INVETORY.JS --------------------------------------------------------
 1. GET request to path /api/inventory/:username

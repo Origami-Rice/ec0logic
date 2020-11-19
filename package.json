@@ -4,7 +4,8 @@
   "description": "Backend API",
   "main": "./back-end/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "start": "node server.js"
   },
   "author": "Ecoders",
@@ -19,5 +20,12 @@
     "mongoose": "^5.10.12",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.6"
+  }, 
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "supertest": "^6.0.1"
   }
 }
