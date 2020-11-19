@@ -80,7 +80,10 @@ exports.get_common_food = async () => {
     // Return all the foods in our food library
     // return await executeQuery("food-library", async (db) => await db.collection("items").findOne(
     //     {name: "Apple"}, {days: 3} ));
-    return await executeQuery("food-library", async (db) => await db.collection("items").find({days:{$gt: 0}}));
+    return await executeQuery("food-library", async (db) => await db.collection("items").find().toArray());
+    // var cursor = db.collection("items").find({}).toArray(function(err,arr)){
+    //     return arr;
+    // }
 };
 
 exports.add_common_food = async (name, days) => {

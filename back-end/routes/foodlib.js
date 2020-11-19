@@ -20,11 +20,12 @@ router
         // Include their name and approximate shelf life in days, months, or years
 
         try {
-            const commonfood = await get_common_food();
-            if(commonfood){
+            const commonfoods = await get_common_food();
+            console.log
+            if(commonfoods){
                 return response
                     .status(200)
-                    .json(commonfood);
+                    .json(commonfoods);
             }else{
                 return response.status(404).json({"error": "can't retrieve from food library."});
             }
