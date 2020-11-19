@@ -30,9 +30,10 @@ router
             if(result && result.inventory_list){
                 delete result._id; // im guessing this deletes the id field that mongodb automatically assigns to 
                 // console.log(result)
-
-                // sort them in alphabetical order by the 'name' field
-                result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                
+                // NO LONGER NEEDED ?????????????????????????????????????????
+                // // sort them in alphabetical order by the 'name' field
+                // result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
                 return response
                     .status(200)
@@ -103,8 +104,7 @@ router
                 const inventory = result.inventory_list;
 
                 // get the date a week from now
-                let nextWeek = new Date();
-                nextWeek.setDate(nextWeek.getDate() + 7);
+                let nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
                 // get the date today
                 let today = new Date();
                 // find the items that will expire before nextWeek
@@ -155,7 +155,7 @@ router
                 const inventory = result.inventory_list;
 
                 // get today's date
-                var today = new Date();
+                let today = new Date();
                 // find the items that have already expired
                 const expired = []; 
                 // Note that the expiryDate field must be an ISO 8601 string ?????????????????????????????????????????????
