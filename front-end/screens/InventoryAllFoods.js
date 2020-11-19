@@ -49,14 +49,14 @@ export default class InventoryAllFoods extends React.Component {
   componentDidMount() {
     this._loadFontsAsync();
     // Load the list of user's inventory items from server
-    send(getInventory, {}, "test-user")
+    send("getInventory", {}, "test-user")
     .then(response => response.json())
     .then((json) => {
       this.setState({ inventoryArray: json });
     })
     .catch(error => {
       console.log("Error getting user inventory");
-      console.log(error)
+      console.log(error);
     });
     
     // Load the list of user's expiring items
