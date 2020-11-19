@@ -20,7 +20,7 @@ app.use(cors());
 
 // Routes
 app.use("/api/inventory", inventory);
-app.use('/api/user', users);
+app.use('/api/users', users);
 app.use('/api/food-library', food_library);
 app.use('/api/history', history);
 app.use('/api/shoppinglist', shoppinglist);
@@ -68,5 +68,6 @@ app.use('/api/shoppinglist', shoppinglist);
 // const userRoute = require('./dataAccess/userData')
 // app.use('/users', userRoute)
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log('Started listening on port 5000!'));
+module.exports = app;
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log('Started listening on port 5000!'));
