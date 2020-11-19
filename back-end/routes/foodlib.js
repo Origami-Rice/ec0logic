@@ -23,9 +23,14 @@ router
             const commonfoods = await get_common_food();
             console.log
             if(commonfoods){
+                const data = commonfoods.map(item=> {
+                    delete item._id;
+                    return item;
+                });
+                // console.log()
                 return response
                     .status(200)
-                    .json(commonfoods);
+                    .json(data);
             }else{
                 return response.status(404).json({"error": "can't retrieve from food library."});
             }
