@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
+    backgroundColor: "#ffffff",
   },
   inputContainer: {
     padding: 8,

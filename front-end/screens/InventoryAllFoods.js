@@ -50,25 +50,25 @@ export default class InventoryAllFoods extends React.Component {
     this._loadFontsAsync();
     // Load the list of user's inventory items from server
     send("getInventory", {}, "test-user")
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({ inventoryArray: json });
-    })
-    .catch(error => {
-      console.log("Error getting user inventory");
-      console.log(error);
-    });
-    
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ inventoryArray: json });
+      })
+      .catch((error) => {
+        console.log("Error getting user inventory");
+        console.log(error);
+      });
+
     // Load the list of user's expiring items
     send(getExpiring, {}, "test-user")
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({ expiringArray: json.expiring });
-    })
-    .catch(error => {
-      console.log("Error getting user's expiring items");
-      console.log(error)
-    });
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ expiringArray: json.expiring });
+      })
+      .catch((error) => {
+        console.log("Error getting user's expiring items");
+        console.log(error);
+      });
   }
 
   displayItems = () => {
@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     marginVertical: 5,
+    backgroundColor: "#ffffff",
   },
   rowContainer: {
     //flex: 1,

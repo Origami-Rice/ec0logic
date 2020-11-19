@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     marginVertical: 5,
+    backgroundColor: "#ffffff",
   },
   rowContainer: {
     flexDirection: "row",
