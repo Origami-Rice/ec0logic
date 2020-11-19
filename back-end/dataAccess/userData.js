@@ -4,7 +4,7 @@
 // we can change these when we understand how things work i guess
 const users_collection = "test_users";
 const db = "test_wasteless";
-const food_lib = "food_library"
+const food_lib = "food-library"
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 
 exports.add_user = async (username) => {
@@ -60,11 +60,12 @@ exports.update_inventory_item = async (username, itemName, expiryDate, quantity,
 ////////////// Common Food Library Queries ////////////
 exports.get_common_food = async () => {
     // Return all the foods in our food library
-    return await executeQuery(db, async (db) => await db.collection(food_lib).find(
-        {name: 1, days: 1} ));
+    // return await executeQuery("food-library", async (db) => await db.collection("items").findOne(
+    //     {name: "Apple"}, {days: 3} ));
+    return await executeQuery("food-library", async (db) => await db.collection("items").find({days:{$gt: 0}}));
 };
 
 exports.add_common_food = async (name, days) => {
-    return await executeQuery(db, async (db) => await db.collection(food_lib).insertOne(
+    return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
         {name: name, days: days}));
 };
