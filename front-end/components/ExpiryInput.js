@@ -42,33 +42,49 @@ export default class ExpiryInput extends React.Component {
   }
 
   onChangeMonth = (text) => {
+    const newDate = new Date(
+      state.expiryDate.getFullYear(),
+      months[text],
+      state.expiryDate.getDate()
+    );
+
     this.setState((state) => ({
-      expiryDate: new Date(
-        state.expiryDate.getFullYear(),
-        months[text],
-        state.expiryDate.getDate()
-      ),
+      expiryDate: newDate,
     }));
+    // Send info back to parent
+    const { setParentExpiry } = this.props;
+    setParentExpiry(newDate);
   };
 
   onChangeDay = (text) => {
+    const newDate = new Date(
+      state.expiryDate.getFullYear(),
+      state.expiryDate.getMonth(),
+      parseInt(text));
+
     this.setState((state) => ({
-      expiryDate: new Date(
-        state.expiryDate.getFullYear(),
-        state.expiryDate.getMonth(),
-        parseInt(text)
-      ),
+      expiryDate: newDate
     }));
+    // Send info back to parent
+    const { setParentExpiry } = this.props;
+    setParentExpiry(newDate);
   };
 
   onChangeYear = (text) => {
+    const newDate = new Date(
+      parseInt(text),
+      state.expiryDate.getMonth(),
+      state.expiryDate.getDate()
+    );
+
     this.setState((state) => ({
-      expiryDate: new Date(
-        parseInt(text),
-        state.expiryDate.getMonth(),
-        state.expiryDate.getDate()
-      ),
+      expiryDate: newDate
     }));
+
+    // Send info back to parent
+    const { setParentExpiry } = this.props;
+    setParentExpiry(newDate);
+
   };
 
   render() {
@@ -102,11 +118,13 @@ export default class ExpiryInput extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Day"
+            keyboardType='number-pad'
             onChangeText={(text) => this.onChangeDay(text)}
           />
           <TextInput
             style={styles.inputFormat}
             placeholder="Year"
+            keyboardType='number-pad'
             onChangeText={(text) => this.onChangeYear(text)}
           />
         </View>

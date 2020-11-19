@@ -13,6 +13,8 @@ import { AppLoading } from "expo";
 import QualityDropdown from "../components/QualityDropdown";
 import ExpiryInput from "../components/ExpiryInput";
 
+import send from "../requests/request";
+
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
@@ -20,6 +22,17 @@ let customFonts = {
 };
 
 export default class InventoryInputScreen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      inventoryArray: this.props.inventoryArray,
+      name: "", 
+      quantity: 0,
+      unitMeasure: "", 
+      expiryDate: null,
+    }
+  }
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -28,6 +41,61 @@ export default class InventoryInputScreen extends React.Component {
   componentDidMount() {
     this._loadFontsAsync();
   }
+
+  saveItem = () => {
+    // TODO: Verify that all fields have been entered correctly
+
+    // Verify that the item entered is not already in the inventory
+    const currInventory = this.state.inventoryArray;
+
+    for (var i = 0; i < currInventory.length; i++) {
+      if (currInventory[i].name == this.state.name) {
+        alert("Item already exists"); // TODO: instead display a warning message
+        return;
+      } 
+    }
+
+
+    const data = {
+      item: {
+        name: this.state.name,
+        expiryDate: this.state.expiryDate, // TODO: convert into proper value
+        quantity: this.state.quantity,
+        unitsOfMeasure: this.state.unitMeasure
+      }
+    }
+
+    // Otherwise, we can save the item to the server
+    send("addToInventory", data, "/test-user")
+    .then(response => response.json())
+    .then((json) => {
+      console.log(json.error)
+    })
+    .catch(error => {
+      console.log("Error adding new item to inventory");
+      console.log(error)
+    })
+
+    // TODO: Navigate back to inventory screen
+
+
+  } 
+
+  setQuantity = (value) => {
+    // Quality DropDown Child will set this value
+    this.setState({ quantity: value });
+    
+  }
+  
+  setUnit = (value) => {
+    // QualityDropDown component will call this function
+    this.setState({unitMeasure: value});
+  }
+
+  setExpiryDate = (value) => {
+    this.setState({expiryDate: value});
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -37,13 +105,17 @@ export default class InventoryInputScreen extends React.Component {
         <TextInput
           style={styles.inputFormat}
           placeholder="Enter New Food Item"
+          onChangeText={this.handleNameEntered}
         />
         <Text style={styles.label}>Quantity:</Text>
-        <QualityDropdown></QualityDropdown>
+        <QualityDropdown 
+          setParentQuantity={this.setQuantity}
+          setParentUnit={this.setUnit}></QualityDropdown>
         <Text style={styles.label}>Enter Expiry Date:</Text>
-        <ExpiryInput></ExpiryInput>
+        <ExpiryInput
+          setParentExpiry={this.setExpiryDate}></ExpiryInput>
         <View style={{ zIndex: -1 }}>
-          <TouchableOpacity style={styles.confirmButton}>
+          <TouchableOpacity style={styles.confirmButton} onPress={this.saveItem}>
             <Text style={styles.confirmText}>Confirm</Text>
           </TouchableOpacity>
         </View>

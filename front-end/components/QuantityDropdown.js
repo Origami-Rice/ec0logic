@@ -12,8 +12,6 @@ export default class QualityDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: "0",
-      unit: "Units",
       fontsLoaded: false,
     };
   }
@@ -27,12 +25,14 @@ export default class QualityDropdown extends React.Component {
     this._loadFontsAsync();
   }
 
-  onChangeItem = (itemValue) => {
-    this.setState({ unit: itemValue });
+  onSelectUnit = (unit) => {
+    const { setParentUnit } = this.props;
+    setParentUnit(unit);
   };
 
-  onChangeText = (text) => {
-    this.setState({ amount: text });
+  onChangeQuantity = (amount) => {
+    const { setParentQuantity } = this.props;
+    setParentQuantity(amount);
   };
 
   render() {
@@ -42,7 +42,8 @@ export default class QualityDropdown extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Amount"
-            onChangeText={(text) => this.setState(text)}
+            keyboardType = 'decimal-pad'
+            onChangeText={(text) => this.onChangeQuantity(text)}
           />
           <View>
             <DropDownPicker
@@ -60,7 +61,7 @@ export default class QualityDropdown extends React.Component {
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
-              onChangeItem={(item) => this.onChangeItem(item.value)}
+              onChangeItem={(item) => this.onSelectUnit(item.value)}
               zIndex={5000}
             />
           </View>
