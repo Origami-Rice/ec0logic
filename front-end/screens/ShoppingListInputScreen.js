@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5,
     zIndex: 1,
+    backgroundColor: "#ffffff",
   },
   cancelText: {
     textAlign: "center",
