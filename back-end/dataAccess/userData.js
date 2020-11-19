@@ -7,29 +7,19 @@ const food_lib_collection = "food_library"
 const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 
+//////////////////// USER QUERIES ////////////////////
 exports.add_user = async (username) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
         { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
 };
 
-//////////////////// INVENTORY QUERIES ////////////////////
-exports.add_item_to_inventorylist = async (username, item) => {
-    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        {username: username},
-        // {$addToSet: {inventory_list: item}}
-        {$push: {inventory_list: {$each: [item], $sort: {name: 1}}}}
+exports.remove_user = async (username) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).deleteOne(
+        {username: username}
     ));
 };
 
-exports.check_if_item_in_inventory = async (username, itemName) => {
-    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
-        // {username: username, "inventory_list.$.name": { $exists: true, $in: [ itemName ] }}
-        { username: username,
-          $and: [{'inventory_list.0': {$exists: true}},
-                 {"inventory_list.name": itemName}]},
-        {username: 1}
-    ));
-};
+//////////////////// INVENTORY QUERIES ////////////////////
 
 exports.get_inventorylist = async (username) => {
     // Query the database for the user and inventory list
@@ -38,25 +28,12 @@ exports.get_inventorylist = async (username) => {
     ));
 };
 
-exports.remove_item_from_inventory = async (username, itemName) => {
-    // Update the document for the given user by removing the
-    // specified item from their inventory.
+exports.update_inventorylist = async (username, list) => {
+    // Update the specified user's inventory with list
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        { username: username },
-        { $pull: { inventory_list: { name: itemName } } }
+        {username: username}, {$set: {inventory_list: list}}
     ));
-};
-
-exports.update_inventory_item = async (username, itemName, expiryDate, quantity, weight) => {
-    // Update the specified item with the specified information
-    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        // update first element in array that matches the filter criteria
-        { username: username, "inventory_list.name": itemName },
-        { $set: { "inventory_list.$.expiryDate": expiryDate,
-                  "inventory_list.$.quantity": quantity,
-                  "inventory_list.$.weight": weight } }
-    ));
-};
+}
 
 //////////////////// WASTED FOOD HISTORY QUERIES ////////////////////
 exports.add_item_to_wasted_history = async (username, item) => {

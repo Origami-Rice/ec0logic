@@ -6,11 +6,8 @@ router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
 const {
-    add_item_to_inventorylist,
-    check_if_item_in_inventory,
     get_inventorylist,
-    remove_item_from_inventory,
-    update_inventory_item
+    update_inventorylist
 } = require('../dataAccess/userData');
 
 router
@@ -31,9 +28,9 @@ router
                 delete result._id; // im guessing this deletes the id field that mongodb automatically assigns to 
                 // console.log(result)
                 
-                // NO LONGER NEEDED ?????????????????????????????????????????
-                // // sort them in alphabetical order by the 'name' field
-                // result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                // NEEDED ?????????????????????????????????????????
+                // sort them in alphabetical order by the 'name' field
+                result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
                 return response
                     .status(200)
@@ -53,38 +50,23 @@ router
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
         // extract the item from the json object
-        const item = request.body.item;
-        // console.log(item);
-        const itemName = item["name"];
-        // console.log(itemName);
+        const list = request.body.list;
 
-        // Check if the item is already in the user's inventory
+        // Update the inventory
         try {
-            const exists = await check_if_item_in_inventory(username, itemName);
-            if (exists) {
-                return response
-                .status(409)
-                .json({error: "Item already exists in user's inventory."})
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
-        // The item does not exist in the user's inventory so we can add it
-        try {
-            const result = await add_item_to_inventorylist(username, item);
+            const result = await update_inventorylist(username, list);
             if (result.result.nModified === 1) { 
                 return response
                     .status(200)
-                    .json({"success": "Item was successfully added."});
+                    .json({"success": "Inventory successfully updated."});
             }else{
                 // this may not be the correct status code ???????????????????????????????????????????
-                return response.status(404).json({"error": "Item could not be added."});
+                return response.status(404).json({"error": "Inventory could not be updated."});
             }
         } catch (error) {
             console.log(error);
         }
-    })
+    });
 
 router
     .route('/:username/expiring')
@@ -119,9 +101,9 @@ router
                     }
                 }
                 
-                // Not needed if items are added properly
-                // // sort them in alphabetical order by the 'name' field
-                // expiring.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                // Needed ????????????????????????????????????????????????????????
+                // sort them in alphabetical order by the 'name' field
+                expiring.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
                 return response
                     .status(200)
@@ -135,7 +117,7 @@ router
         } catch (error) {
             console.log(error);
         }
-    })
+    });
 
 router
     .route('/:username/expired')
@@ -167,6 +149,10 @@ router
                     }
                 }
 
+                // Needed ????????????????????????????????????????????????????????
+                // sort them in alphabetical order by the 'name' field
+                expired.sort((a, b) => (a.name > b.name) ? 1 : -1);
+
                 return response
                     .status(200)
                     .json({expired});
@@ -179,86 +165,6 @@ router
         } catch (error) {
             console.log(error);
         }
-    })
-
-router
-    .route('/:username/:itemName')
-    .get(async (request, response) => {
-        console.log('GET request to path /api/inventory/:username/:itemName');
-        // Description: check if item in username's inventory specified by itemName, exists
-        const username = request.params.username;
-        const itemName = request.params.itemName;
-
-        // Check if the item is already in the user's inventory
-        try {
-            const exists = await check_if_item_in_inventory(username, itemName);
-            // console.log(exists);
-            if (exists) {
-                return response
-                .status(200) // not sure what status to return here ???????????????????
-                .json({"message": "Item already exists in user's inventory."})
-            } else {
-                return response
-                .status(404) // not sure what status to return here?/???????????????????????????
-                .json({"message": "Item doesn't exist in user's inventory."})
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    })
-    .delete(async (request, response) => {
-        console.log('DELETE request to path /api/inventory/:username/:itemName');
-        // Description: delete the item in username's inventory specified by itemName
-        const username = request.params.username;
-        const itemName = request.params.itemName;
-
-        try {
-            const result = await remove_item_from_inventory(username, itemName);
-            if (result) {
-                // console.log(result)
-                return response
-                    .status(200)
-                    .json({"success": "item " + itemName + " deleted." });
-            }else{
-                return response
-                .status(404)
-                .json({"error": "No such item found in inventory."});
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    })
-    .put(async (request, response) => {
-        console.log('PUT request to path /api/inventory/:username/:itemName');
-        // Description: update the item in username's inventory specified by item
-        // with the new data sent by client
-        
-        const username = request.params.username;
-        const itemName = request.params.itemName;
-
-        // extract the item from the json object
-        const item = request.body.item;
-        const expiryDate = item["expiryDate"];
-        const quantity = item["quantity"];
-        const weight = item["weight"];
-
-        try {
-            const result = await update_inventory_item(username, itemName, expiryDate, quantity, weight);
-            
-            // future note: check if result.result.nModified === 1 can be used
-            if (result) {
-                return response
-                    .status(200)
-                    .json({"success": "item " + itemName + " updated."});
-            }else{
-                return response
-                .status(404)
-                .json({"error": "No such item found in inventory."});
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    })
-
+    });
 
 module.exports = router;
