@@ -16,7 +16,7 @@ const ShoppingListItem = (props) => {
   const handlePress = () => {
     setChecked(!checked);
     const { updateParent } = this.props;
-    updateParent(index, !checked);
+    updateParent(index);
   }
   
   if (!fontsLoaded) {

@@ -52,7 +52,6 @@ export default class FoodSearchScreen extends React.Component {
   }
 
   populateList = (i) => {
-    if (this.state.show) {
       return this.state.itemsFiltered.map((item, i) => 
               (
                 <ListItem 
@@ -70,9 +69,6 @@ export default class FoodSearchScreen extends React.Component {
                 </ListItem>
               )
               );
-    } else {
-      return <Text>"Empty"</Text>;
-    }
   }
 
   focus = () => {
@@ -88,7 +84,7 @@ export default class FoodSearchScreen extends React.Component {
         placeholder="Search Common Foods" 
         onChangeText={text => {this.searchItem(text)}} />
           
-            {this.populateList()}
+        {this.populateList()}
           
       </View>
     );

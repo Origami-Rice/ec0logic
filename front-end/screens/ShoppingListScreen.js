@@ -69,9 +69,9 @@ export default class ShoppingListScreen extends React.Component {
     ));
   };
   
-  updateCheck = (index, checkedOff) => {
+  updateCheck = (index) => {
     var currlist = this.state.shoppingList;
-    currlist[index].checked_off = checkedOff;
+    currlist[index].checked_off = !currlist[index].checked_off;
     this.setState({shoppingList: currlist});
   }
 
