@@ -71,7 +71,7 @@ exports.add_common_food = async (name, days) => {
 ////////////////// Shopping list queries /////////////////////
 
 exports.get_shopping_list = async (username) => {
-    // 
+    // gets the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
         {username, username},
         {username: 1, shopping_list: 1}
@@ -79,12 +79,14 @@ exports.get_shopping_list = async (username) => {
 };
 
 exports.add_item_to_shopping_list = async (username, item) => {
+    // adds a new item to the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne (
         {username: username}, {$push: { shopping_list: { $each: [item], $sort: {name: 1}} }}
     ))
 }
 
 exports.remove_item_from_shopping_list = async (username, item) => {
+    // removes a existing item from the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
         {username: username},
         {$pull: { shopping_list: {name: item}} }
@@ -93,7 +95,7 @@ exports.remove_item_from_shopping_list = async (username, item) => {
 }
 
 exports.update_shopping_list = async(username, newList) => {
-    console.log(newList)
+    // updates the user's shopping list with a new and updated shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).update(
         {username: username}, {$set: {shopping_list: newList}}
     ));
