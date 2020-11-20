@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend API",
-  "main": "./back-end/server.js",
+  "main": "./back-end/start.js",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "start": "node server.js"
+    "start": "node start.js"
   },
   "author": "Ecoders",
   "license": "ISC",
