@@ -9,6 +9,7 @@ const {
     get_shopping_list,
     add_item_to_shopping_list,
     remove_item_from_shopping_list,
+    update_shopping_list,
     
 } = require('../dataAccess/userData')
 
@@ -20,6 +21,8 @@ router
         const username = request.params.username;
         try{
             const result = await get_shopping_list(username);
+            console.log("THIS IS THE SHOOPPINGLIST")
+            console.log(result.shopping_list)
             if(result && result.shopping_list){
                 
                 return response
@@ -35,8 +38,9 @@ router
     })
     .post(async (request, response) => {
         const username = request.params.username;
+        
         const item = request.body;
-         // console.log(item)
+        console.log(item)
         try{
             const result = await add_item_to_shopping_list(username, item);
             if (result){
@@ -53,6 +57,26 @@ router
             
         }catch (error) {
             console.log(error);
+        }
+    })
+    .put(async (request, response) => {
+        const username = request.params.username;
+        console.log("here")
+        const newList = request.body;
+        console.log(newList);
+        try{
+            const result = await update_shopping_list(username, newList);
+            if (result){
+                return response 
+                    .status(200)
+                    .json({"success": "Shopping list successfully updated."})
+            }else{
+                return response
+                    .status(404)
+                    .json({"error": "Shopping list could not be updated."});
+            }
+        }catch (error) {
+            console.log(error)
         }
     })
 router
@@ -77,4 +101,7 @@ router
         }
         
     })
-    module.exports = router;
+
+
+ module.exports = router;
+
