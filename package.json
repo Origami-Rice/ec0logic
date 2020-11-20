@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "node start.js",
-    "heroku-postbuild": "npm install && cd back-end && node start.js"
+    "heroku-postbuild": "npm install"
   },
   "author": "Ecoders",
   "license": "ISC",
