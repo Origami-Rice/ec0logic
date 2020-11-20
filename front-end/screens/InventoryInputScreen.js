@@ -14,6 +14,7 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
 import ExpiryInput from "../components/ExpiryInput";
+import DatePicker from './components/DatePicker'
 
 import send from "../requests/request";
 
@@ -130,7 +131,10 @@ export default class InventoryInputScreen extends React.Component {
             setParentUnit={this.setUnit}
           ></QuantityDropdown>
           <Text style={styles.label}>Enter Expiry Date:</Text>
-          <ExpiryInput setParentExpiry={this.setExpiryDate}></ExpiryInput>
+          <DatePicker 
+          setParentExpiry={this.setExpiryDate} 
+          defaultDate={this.state.expiryDate}/>
+          <Text style={styles.label}> {this.state.expiryDate.toString()} </Text>
           <View style={{ zIndex: -1 }}>
             <TouchableOpacity
               style={styles.confirmButton}

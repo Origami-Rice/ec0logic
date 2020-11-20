@@ -27,7 +27,7 @@ export default class ExpiryInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expiryDate: new Date(),
+      expiryDate: this.props.defaultDate,
       fontsLoaded: false,
     };
   }
@@ -107,6 +107,7 @@ export default class ExpiryInput extends React.Component {
               { label: "November", value: "November" },
               { label: "December", value: "December" },
             ]}
+            defaultValue={monthNames[this.state.expiryDate.getMonth()]}
             arrowStyle={styles.dropArrow}
             containerStyle={styles.dropContainer}
             itemStyle={{ justifyContent: "flex-start" }}
@@ -119,6 +120,7 @@ export default class ExpiryInput extends React.Component {
             style={styles.inputFormat}
             placeholder="Day"
             keyboardType='number-pad'
+            value={this.state.expiryDate.getDate().toString()}
             onChangeText={(text) => this.onChangeDay(text)}
           />
           <TextInput
@@ -126,6 +128,7 @@ export default class ExpiryInput extends React.Component {
             placeholder="Year"
             keyboardType='number-pad'
             onChangeText={(text) => this.onChangeYear(text)}
+            value={this.state.expiryDate.getFullYear().toString()}
           />
         </View>
       );

@@ -19,17 +19,17 @@ export default class FoodSearchScreen extends React.Component {
     }
   }
 
-//   componentDidMount() {
-//       send("getFoodLibrary")
-//       .then(response => response.json())
-//       .then((json) => {
-//           this.setState({ items: json });
-//       })
-//       .catch(error => {
-//         console.log("Error getting food library");
-//         console.log(error);
-//       })
-//   }
+  componentDidMount() {
+      send("getFoodLibrary")
+      .then(response => response.json())
+      .then((json) => {
+          this.setState({ items: json });
+      })
+      .catch(error => {
+        console.log("Error getting food library");
+        console.log(error);
+      })
+  }
 
   // Filter list items based on 
   searchItem(textToSearch) {
