@@ -27,7 +27,7 @@ export default class InventoryInputScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inventoryArray: this.props.inventoryArray,
+      inventoryArray: [],
       name: "",
       quantity: 0,
       unitMeasure: "",
@@ -46,8 +46,6 @@ export default class InventoryInputScreen extends React.Component {
   saveItem = () => {
     // TODO: Verify that all fields have been entered correctly
 
-    var currInventory = this.state.inventoryArray;
-
     const newItem = {
         name: this.state.name,
         expiryDate: this.state.expiryDate, // TODO: convert into proper value
@@ -55,24 +53,10 @@ export default class InventoryInputScreen extends React.Component {
         unitsOfMeasure: this.state.unitMeasure
     };
 
-    currInventory.push(newItem);
-
-    const data = {
-      list: currInventory
-    };
-
-    // Otherwise, we can save the item to the server
-    send("addToInventory", data, "/test-user")
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json.error);
-      })
-      .catch((error) => {
-        console.log("Error adding new item to inventory");
-        console.log(error);
-      });
-
     // TODO: Navigate back to inventory screen
+    this.props.navigation.navigate('List', 
+    {screen: "Inventory", params: {new_item: newItem} });
+
   };
 
   setQuantity = (value) => {

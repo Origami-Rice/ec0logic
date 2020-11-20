@@ -35,6 +35,7 @@ export default class ShoppingListScreen extends React.Component {
         { name: "Apples" },
       ],
       fontsLoaded: false,
+      modalVisible: 0
     };
   }
 
@@ -71,7 +72,26 @@ export default class ShoppingListScreen extends React.Component {
   updateCheck = (index, checkedOff) => {
     var currlist = this.state.shoppingList;
     currlist[index].checked_off = checkedOff;
-    this.setState({shoppingListArray: currlist});
+    this.setState({shoppingList: currlist});
+  }
+
+  addNewItem = (item) => {
+    // add item to shopping list
+    const currlist = this.state.shoppingList;
+    currlist.push(item);
+    this.setState({shoppingList: currlist});
+
+    // add item to server
+    send("addToShoppingList", item, '/test-user')
+    .then(response => response.json())
+    .catch(error => {
+      console.log(error);
+      console.log("Error adding new item to shopping list");
+    });
+
+    // close modal
+    this.setState({visibleModal : 0});
+
   }
 
   render() {
@@ -124,7 +144,9 @@ export default class ShoppingListScreen extends React.Component {
               }}
             >
               <View style={styles.modal}>
-                <ShoppingListInputScreen></ShoppingListInputScreen>
+                <ShoppingListInputScreen 
+                  addNewItem={this.addNewItem}
+                  inventory={this.state.inventoryArray}></ShoppingListInputScreen>
               </View>
             </ScrollView>
           }

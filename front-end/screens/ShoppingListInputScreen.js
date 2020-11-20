@@ -44,7 +44,8 @@ export default class ShoppingListInput extends React.Component {
 
   }
 
-  createAlert = () =>
+  // Alerts user that an item that they are attempting to add is in their inventory
+  createAlert = () => {
     Alert.alert(
       "Wait a moment!",
       "You still have this in your inventory",
@@ -54,12 +55,26 @@ export default class ShoppingListInput extends React.Component {
           onPress: () => console.log("Go Back Pressed"),
           style: "cancel"
         },
-        { text: "Continue anyways", onPress: () => console.log("Continue Pressed") }
+        { text: "Continue anyways", onPress: () => this.saveItem }
       ],
       { cancelable: false }
     );
 
+  }
+
   saveItem = () => {
+    const new_item = {
+      name: this.state.name,
+      quantity: this.state.quantity,
+      checked_off: false
+    }
+
+    // Add item to parent 
+    const { addNewItem } = this.props;
+    addNewItem(new_item);
+  }
+
+  validateItem = () => {
     // Validate name entry
     const {inventoryArray} = this.state;
     // Check if item is already in inventory, if so, alert
@@ -69,22 +84,6 @@ export default class ShoppingListInput extends React.Component {
         return;
       } 
     }
-
-    const data = {
-      name: this.state.name,
-      quantity: this.state.quantity,
-      checked_off: false
-    }
-    // add item to shopping list
-    send("addToShoppingList", data, '/test-user')
-    .then(response => response.json())
-    .catch(error => {
-      console.log(error);
-      console.log("Error adding new item to shopping list");
-    }) // could be done in parent
-
-    // TODO: add item to parent component
-
   }
   
   render() {
@@ -103,7 +102,7 @@ export default class ShoppingListInput extends React.Component {
           <Text style={styles.optional}>Optional</Text>
         </View>
         <View style={{ justifyContent: "flex-end", zIndex: -1 }}>
-          <TouchableOpacity style={styles.confirmButton} onPress={this.saveItem}>
+          <TouchableOpacity style={styles.confirmButton} onPress={this.validateItem}>
             <Text style={styles.confirmText}>Confirm</Text>
           </TouchableOpacity>
         </View>

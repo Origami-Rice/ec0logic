@@ -67,17 +67,60 @@ export default class InventoryAllFoods extends React.Component {
         console.log("Error getting user's expiring items");
         console.log(error);
       });
+
+      // For getting the new item send by the inventory input screen
+      this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    
+        if (this.props.route.params?.new_item) {
+          
+          console.log("Added:" + this.props.route.params.new_item.name);
+          this.addItem(new_item);
+          this.props.route.params = {}; // Resetting params
+        } else {
+          console.log("focus - nothing added");
+        }
+      });
+    
+  }
+
+  addItem = (item) => {
+
+    var currInventory = this.state.inventoryArray;
+    currInventory.push(item);
+    // Update displayed inventoryArray
+    this.setState({ inventoryArray: currInventory});
+
+    const data = {
+      list: currInventory
+    };
+
+    // Send updated list to server
+    send("addToInventory", data, "/test-user")
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.error);
+      })
+      .catch((error) => {
+        console.log("Error adding new item to inventory");
+        console.log(error);
+      });
+
   }
 
   displayItems = () => {
     // Dynamically
     if (this.state.allFoods) {
       return this.state.inventoryArray.map((data) => (
-        <InventoryListItem item={data.name} />
+        <InventoryListItem 
+        item={data.name}
+        expiryDate={data.expiryDate}
+        quantity={data.quantity} />
       ));
     } else {
       return this.state.expiringArray.map((data) => (
-        <InventoryListItem item={data.name} />
+        <InventoryListItem item={data.name}
+        expiryDate={data.expiryDate}
+        quantity={data.quantity} />
       ));
     }
   };
