@@ -74,7 +74,7 @@ exports.get_shopping_list = async (username) => {
     // 
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
         {username, username},
-        {username: 1, shoppping_list: 1}
+        {username: 1, shopping_list: 1}
     ));
 };
 
@@ -91,3 +91,10 @@ exports.remove_item_from_shopping_list = async (username, item) => {
     ));
 
 }
+
+exports.update_shopping_list = async(username, newList) => {
+    console.log(newList)
+    return await executeQuery(db, async (db) => await db.collection(users_collection).update(
+        {username: username}, {$set: {shopping_list: newList}}
+    ));
+};
