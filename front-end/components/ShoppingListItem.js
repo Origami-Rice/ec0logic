@@ -17,8 +17,8 @@ const ShoppingListItem = (props) => {
     setChecked(!checked);
     const { updateParent } = this.props;
     updateParent(index);
-  }
-  
+  };
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -35,7 +35,7 @@ const ShoppingListItem = (props) => {
             style={
               checked
                 ? [styles.textItem, { color: "#BDBDBD" }]
-                : styles.textItem
+                : [styles.textItem, { color: "#000000" }]
             }
           >
             {props.item}
@@ -45,7 +45,7 @@ const ShoppingListItem = (props) => {
             style={
               checked
                 ? [styles.textInfo, { color: "#BDBDBD" }]
-                : styles.textInfo
+                : [styles.textInfo, { color: "#000000" }]
             }
           >
             {test}
