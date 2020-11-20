@@ -15,14 +15,13 @@ const {
 router
     .route('/newuser')
     .post(async (request, response) => {
-        console.log('POST request to path /api/users/:username');
+        console.log('POST request to path /api/users/newuser');
         console.log(request.params);
         const username = request.body.username;
         try {
             const user = await add_user(username);
 
             if (user) {
-                // request.username = username;
                 return response
                     .status(200)
                     .json({ success: "user " + username + " added" });
@@ -33,4 +32,23 @@ router
         }
     })
 
+router
+    .route('/deleteuser')
+    .post(async (request, response) => {
+        console.log('DELETE request to path /api/users/deleteuser');
+        console.log(request.params);
+        const username = request.body.username;
+        try {
+            const user = await remove_user(username);
+
+            if (user) {
+                return response
+                    .status(200)
+                    .json({ success: "user " + username + " added" });
+            }
+            return response.status(500).json({ error: "Internal server error" });
+        } catch (error) {
+            console.log(error)
+        }
+    })
 module.exports = router ;
