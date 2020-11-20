@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, View, StyleSheet } from "react-native";
+import { TextInput, View, StyleSheet, Dimensions } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
@@ -8,12 +8,10 @@ let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
 };
 
-export default class AssetExample extends React.Component {
+export default class QualityDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      amount: "0",
-      unit: "Units",
       fontsLoaded: false,
     };
   }
@@ -27,12 +25,14 @@ export default class AssetExample extends React.Component {
     this._loadFontsAsync();
   }
 
-  onChangeItem = (itemValue) => {
-    this.setState({ unit: itemValue });
+  onSelectUnit = (unit) => {
+    const { setParentUnit } = this.props;
+    setParentUnit(unit);
   };
 
-  onChangeText = (text) => {
-    this.setState({ amount: text });
+  onChangeQuantity = (amount) => {
+    const { setParentQuantity } = this.props;
+    setParentQuantity(amount);
   };
 
   render() {
@@ -42,9 +42,10 @@ export default class AssetExample extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Amount"
-            onChangeText={(text) => this.setState(text)}
+            keyboardType = 'decimal-pad'
+            onChangeText={(text) => this.onChangeQuantity(text)}
           />
-          <View style={styles.pickerFormat}>
+          <View>
             <DropDownPicker
               label="Units"
               items={[
@@ -60,7 +61,8 @@ export default class AssetExample extends React.Component {
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
-              onChangeItem={(item) => this.onChangeItem(item.value)}
+              onChangeItem={(item) => this.onSelectUnit(item.value)}
+              zIndex={5000}
             />
           </View>
         </View>
@@ -77,23 +79,27 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    margin: 5,
+    zIndex: 5000,
   },
 
   dropContainer: {
-    width: "25%",
+    width: Dimensions.get("window").width * 0.25,
     height: 31,
     borderColor: "black",
     borderWidth: 1,
+    zIndex: 5000,
   },
 
   dropArrow: {
     height: 19,
     flexDirection: "row",
     justifyContent: "flex-start",
+    zIndex: 5000,
   },
 
   inputFormat: {
-    width: "25%",
+    width: Dimensions.get("window").width * 0.25,
     height: 31,
     backgroundColor: "#ffffff",
     borderColor: "black",
@@ -102,11 +108,13 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
+    zIndex: 5000,
   },
 
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
     color: "#000000",
+    zIndex: 5000,
   },
 });
