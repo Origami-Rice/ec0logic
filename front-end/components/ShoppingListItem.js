@@ -1,26 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
-const InventoryListItem = (props) => {
+const ShoppingListItem = (props) => {
+  // Note: if test = "" the empty string, "Bananas" will be centered
+  let test = "Quantity: 5";
   let [fontsLoaded] = useFonts({
     Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
     Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
   });
+  const [checked, setChecked] = useState(props.checkedOff || false);
+  const index = props.index;
 
+  const handlePress = () => {
+    setChecked(!checked);
+    const { updateParent } = this.props;
+    updateParent(index, !checked);
+  }
+  
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <View style={styles.listItem}>
-        <View style={styles.textGroup}>
-          <Text style={styles.textItem}>{props.item}</Text>
-          <Text style={styles.textInfo}>Expires: Nov 3, 2020 </Text>
-          <Text style={styles.textInfo}>Quantity: 5 things</Text>
-        </View>
         <View style={styles.checkFlex}>
-          <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={handlePress}
+          ></TouchableOpacity>
+        </View>
+        <View style={styles.textGroup}>
+          <Text
+            style={
+              checked
+                ? [styles.textItem, { color: "#BDBDBD" }]
+                : styles.textItem
+            }
+          >
+            {props.item}
+          </Text>
+          {/* TODO: check if props.quantity is a certain value, change to "" if no quantity */}
+          <Text
+            style={
+              checked
+                ? [styles.textInfo, { color: "#BDBDBD" }]
+                : styles.textInfo
+            }
+          >
+            {test}
+          </Text>
         </View>
       </View>
     );
@@ -31,9 +60,8 @@ const styles = StyleSheet.create({
   listItem: {
     width: "85%",
     height: 80,
-    flex: 0,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
@@ -42,17 +70,17 @@ const styles = StyleSheet.create({
   },
 
   textGroup: {
-    flex: 20,
     flexDirection: "column",
     alignItems: "flex-start",
     alignSelf: "center",
     justifyContent: "center",
+    marginHorizontal: 10,
   },
 
   checkFlex: {
-    flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    marginLeft: 10,
   },
 
   textInfo: {
@@ -73,10 +101,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 1,
     flexDirection: "column",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     alignSelf: "flex-end",
     backgroundColor: "#DDDDDD",
   },
 });
 
-export default InventoryListItem;
+export default ShoppingListItem;
