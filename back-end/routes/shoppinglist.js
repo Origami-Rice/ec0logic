@@ -17,12 +17,12 @@ router
     .route('/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/shoppinglist/:username');
-        
+        // assign the username passed to the endpoint to a variable
         const username = request.params.username;
         try{
             const result = await get_shopping_list(username);
             
-            //onsole.log(result.shopping_list)
+            //console.log(result.shopping_list)
             if(result && result.shopping_list){
                 
                 return response
@@ -37,6 +37,7 @@ router
         }
     })
     .post(async (request, response) => {
+        // assign the username passed to the endpoint to a variable
         const username = request.params.username;
         
         const item = request.body;
@@ -60,9 +61,11 @@ router
         }
     })
     .put(async (request, response) => {
+        // assign the username passed to the endpoint to a variable
         const username = request.params.username;
-        
+        // gets the newlist from input
         const newList = request.body;
+        
         //console.log(newList);
         try{
             const result = await update_shopping_list(username, newList);
@@ -82,7 +85,9 @@ router
 router
     .route('/:username/:item')
     .delete(async (request, response) => {
+        // assign the username passed to the endpoint to a variable
         const username = request.params.username;
+        // gets the item from the parameter
         const item = request.params.item
         //console.log(item)
         try{ 
