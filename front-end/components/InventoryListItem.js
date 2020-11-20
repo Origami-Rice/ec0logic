@@ -16,13 +16,7 @@ const InventoryListItem = (props) => {
       <View style={styles.listItem}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
-          <Text
-            style={
-              true ? [styles.textInfo, styles.expiringSoon] : styles.textInfo
-            }
-          >
-            Expires: Nov 3, 2020{" "}
-          </Text>
+          <Text style={styles.textInfo}>Expires: Nov 3, 2020 </Text>
           <Text style={styles.textInfo}>Quantity: 5 things</Text>
         </View>
         <View style={styles.checkFlex}>
@@ -65,10 +59,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
-  },
-
-  expiringSoon: {
-    color: "#C90000",
   },
 
   textItem: {
