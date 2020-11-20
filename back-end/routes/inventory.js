@@ -107,7 +107,7 @@ router
 
                 return response
                     .status(200)
-                    .json({expiring});
+                    .json(expiring);
             }else{
                 // This may be wrong
                 return response
@@ -155,7 +155,7 @@ router
 
                 return response
                     .status(200)
-                    .json({expired});
+                    .json(expired);
             }else{
                 // This may be wrong status code????
                 return response
