@@ -12,6 +12,7 @@ import Constants from "expo-constants";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
+import send from "../requests/request"
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -20,6 +21,19 @@ let customFonts = {
 };
 
 export default class ShoppingListInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inventoryArray: [{ name: "Butter", expiryDate: "Nov 30, 2020", quantity: 2 },
+      { name: "Cabbage" },
+      { name: "Sweet Potato" },
+      { name: "Mango" },
+      { name: "Apples" }],
+      name: "",
+      quantity: 0,
+      
+    }
+  }
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -27,7 +41,52 @@ export default class ShoppingListInput extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
+
   }
+
+  createAlert = () =>
+    Alert.alert(
+      "Wait a moment!",
+      "You still have this in your inventory",
+      [
+        {
+          text: "Go back",
+          onPress: () => console.log("Go Back Pressed"),
+          style: "cancel"
+        },
+        { text: "Continue anyways", onPress: () => console.log("Continue Pressed") }
+      ],
+      { cancelable: false }
+    );
+
+  saveItem = () => {
+    // Validate name entry
+    const {inventoryArray} = this.state;
+    // Check if item is already in inventory, if so, alert
+    for (var i=0; i < inventoryArray; i++) {
+      if (inventoryArray[i].name = this.state.name){
+        this.createAlert();
+        return;
+      } 
+    }
+
+    const data = {
+      name: this.state.name,
+      quantity: this.state.quantity,
+      checked_off: false
+    }
+    // add item to shopping list
+    send("addToShoppingList", data, '/test-user')
+    .then(response => response.json())
+    .catch(error => {
+      console.log(error);
+      console.log("Error adding new item to shopping list");
+    }) // could be done in parent
+
+    // TODO: add item to parent component
+
+  }
+  
   render() {
     return (
       <View style={styles.container}>
@@ -44,7 +103,7 @@ export default class ShoppingListInput extends React.Component {
           <Text style={styles.optional}>Optional</Text>
         </View>
         <View style={{ justifyContent: "flex-end", zIndex: -1 }}>
-          <TouchableOpacity style={styles.confirmButton}>
+          <TouchableOpacity style={styles.confirmButton} onPress={this.saveItem}>
             <Text style={styles.confirmText}>Confirm</Text>
           </TouchableOpacity>
         </View>

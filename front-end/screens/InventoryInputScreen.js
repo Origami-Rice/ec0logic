@@ -13,7 +13,6 @@ import Constants from "expo-constants";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
-import ExpiryInput from "../components/ExpiryInput";
 import DatePicker from './components/DatePicker'
 
 import send from "../requests/request";
@@ -47,23 +46,19 @@ export default class InventoryInputScreen extends React.Component {
   saveItem = () => {
     // TODO: Verify that all fields have been entered correctly
 
-    // Verify that the item entered is not already in the inventory
-    const currInventory = this.state.inventoryArray;
+    var currInventory = this.state.inventoryArray;
 
-    for (var i = 0; i < currInventory.length; i++) {
-      if (currInventory[i].name == this.state.name) {
-        alert("Item already exists"); // TODO: instead display a warning message
-        return;
-      }
-    }
-
-    const data = {
-      item: {
+    const newItem = {
         name: this.state.name,
         expiryDate: this.state.expiryDate, // TODO: convert into proper value
         quantity: this.state.quantity,
-        unitsOfMeasure: this.state.unitMeasure,
-      },
+        unitsOfMeasure: this.state.unitMeasure
+    };
+
+    currInventory.push(newItem);
+
+    const data = {
+      list: currInventory
     };
 
     // Otherwise, we can save the item to the server
@@ -130,7 +125,7 @@ export default class InventoryInputScreen extends React.Component {
             setParentQuantity={this.setQuantity}
             setParentUnit={this.setUnit}
           ></QuantityDropdown>
-          <Text style={styles.label}>Enter Expiry Date:</Text>
+          <Text style={styles.label}>Select Expiry Date:</Text>
           <DatePicker 
           setParentExpiry={this.setExpiryDate} 
           defaultDate={this.state.expiryDate}/>

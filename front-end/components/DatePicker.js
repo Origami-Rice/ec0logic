@@ -4,9 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function DatePicker(props) {
   const [date, setDate] = useState(props.default || new Date());
-  const [mode, setMode] = useState('date');
   const [show, setShow] = useState(Platform.OS === 'ios');
-  const [androidDis, setDisplay] = useState(Platform.OS === 'android');
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -23,7 +21,7 @@ export default function DatePicker(props) {
   return (
     <View>
       <View>
-        { androidDis && 
+        { Platform.OS === 'android' && 
         (<TouchableOpacity style={{
           alignItems: "center",
           backgroundColor: "#DDDDDD",
@@ -36,13 +34,15 @@ export default function DatePicker(props) {
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
-          mode={mode}
+          mode="date"
           is24Hour={true}
           display="default"
           onChange={onChange}
         />
       )}
-      <Text>{date.toString()}</Text>
+      {Platform.OS === 'ios' && (<Text>{date.toString()}</Text>)} 
+      {//TODO: Remove after styling
+      }
     </View>
   );
 };

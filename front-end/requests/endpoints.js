@@ -15,18 +15,6 @@ const endpoints = {
     getExpired: {
         endpoint: 'api/inventory/expired', 
         method: 'GET',
-    }, 
-    getInventoryItem: {
-        endpoint: 'api/inventory', 
-        method: 'GET',
-    },
-    deleteInventoryItem: {
-        endpoint: 'api/inventory',
-        method: 'DELETE',
-    },
-    updateInventoryItem: {
-        endpoint: 'api/inventory',
-        method: 'PUT',
     },
 
     // Food + Shelflife Library
@@ -41,11 +29,25 @@ const endpoints = {
 
     // History of Wasted Foods
     getWastedHistory: {
-        endpoint: '/api/history/',
+        endpoint: '/api/history',
         method: 'GET',
-    }
+    },
 
     // Shopping List
+    getShoppingList: {
+        endpoint: '/api/shoppinglist',
+        method: 'GET',
+    },
+
+    addToShoppingList: {
+        endpoint: '/api/shoppinglist',
+        method: 'POST',
+    },
+
+    updateShoppingList: {
+        endpoint: '/api/shoppinglist',
+        method: 'PUT',
+    }
 }
 
 export default endpoints;

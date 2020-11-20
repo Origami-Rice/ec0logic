@@ -10,8 +10,15 @@ const ShoppingListItem = (props) => {
     Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
     Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
   });
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(props.checkedOff || false);
+  const index = props.index;
 
+  const handlePress = () => {
+    setChecked(!checked);
+    const { updateParent } = this.props;
+    updateParent(index, !checked);
+  }
+  
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -20,7 +27,7 @@ const ShoppingListItem = (props) => {
         <View style={styles.checkFlex}>
           <TouchableOpacity
             style={styles.checkbox}
-            onPress={() => setChecked(!checked)}
+            onPress={handlePress}
           ></TouchableOpacity>
         </View>
         <View style={styles.textGroup}>

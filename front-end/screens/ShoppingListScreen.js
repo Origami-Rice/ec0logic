@@ -14,6 +14,7 @@ import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
+import send from "../requests/request";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -26,7 +27,7 @@ export default class ShoppingListScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      shoppingListArray: [
+      shoppingList: [
         { name: "Butter", quantity: 2 },
         { name: "Cabbage", quantity: "" },
         { name: "Sweet Potato" },
@@ -44,14 +45,34 @@ export default class ShoppingListScreen extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
+    
+    // get user's shopping list from server
+    send("getShoppingList", {}, "/test-user")
+    .then(response => response.json())
+    .then((json) => {
+      this.setState({ shoppingList: json });
+    })
+    .catch(error => {
+      console.log("Error getting shopping list");
+      console.log(error);
+    })
   }
 
   displayItems = () => {
     // Dynamically
-    return this.state.shoppingListArray.map((data) => (
-      <ShoppingListItem item={data.name} />
+    return this.state.shoppingList.map((data) => (
+      <ShoppingListItem 
+      item={data.name} 
+      quantity={data.quantity}
+      checkedOff={data.checked_off} />
     ));
   };
+  
+  updateCheck = (index, checkedOff) => {
+    var currlist = this.state.shoppingList;
+    currlist[index].checked_off = checkedOff;
+    this.setState({shoppingListArray: currlist});
+  }
 
   render() {
     return (
