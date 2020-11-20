@@ -21,8 +21,8 @@ router
         const username = request.params.username;
         try{
             const result = await get_shopping_list(username);
-            console.log("THIS IS THE SHOOPPINGLIST")
-            console.log(result.shopping_list)
+            
+            //onsole.log(result.shopping_list)
             if(result && result.shopping_list){
                 
                 return response
@@ -40,7 +40,7 @@ router
         const username = request.params.username;
         
         const item = request.body;
-        console.log(item)
+        //console.log(item)
         try{
             const result = await add_item_to_shopping_list(username, item);
             if (result){
@@ -61,9 +61,9 @@ router
     })
     .put(async (request, response) => {
         const username = request.params.username;
-        console.log("here")
+        
         const newList = request.body;
-        console.log(newList);
+        //console.log(newList);
         try{
             const result = await update_shopping_list(username, newList);
             if (result){
@@ -84,7 +84,7 @@ router
     .delete(async (request, response) => {
         const username = request.params.username;
         const item = request.params.item
-        console.log(item)
+        //console.log(item)
         try{ 
             const result = await remove_item_from_shopping_list(username, item)
             if (result) {
