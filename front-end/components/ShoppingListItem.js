@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
@@ -10,6 +10,7 @@ const InventoryListItem = (props) => {
     Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
     Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
   });
+  const [checked, setChecked] = useState(false);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -17,12 +18,31 @@ const InventoryListItem = (props) => {
     return (
       <View style={styles.listItem}>
         <View style={styles.checkFlex}>
-          <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={() => setChecked(!checked)}
+          ></TouchableOpacity>
         </View>
         <View style={styles.textGroup}>
-          <Text style={styles.textItem}>{props.item}</Text>
+          <Text
+            style={
+              checked
+                ? [styles.textItem, { color: "#BDBDBD" }]
+                : styles.textItem
+            }
+          >
+            {props.item}
+          </Text>
           {/* TODO: check if props.quantity is a certain value, change to "" if no quantity */}
-          <Text style={styles.textInfo}>{test}</Text>
+          <Text
+            style={
+              checked
+                ? [styles.textInfo, { color: "#BDBDBD" }]
+                : styles.textInfo
+            }
+          >
+            {test}
+          </Text>
         </View>
       </View>
     );
