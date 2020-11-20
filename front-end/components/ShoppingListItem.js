@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
-const InventoryListItem = (props) => {
+const ShoppingListItem = (props) => {
   // Note: if test = "" the empty string, "Bananas" will be centered
   let test = "Quantity: 5";
   let [fontsLoaded] = useFonts({
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InventoryListItem;
+export default ShoppingListItem;

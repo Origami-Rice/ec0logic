@@ -2,10 +2,12 @@ import * as React from "react";
 import {
   Text,
   View,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Platform,
 } from "react-native";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
@@ -28,9 +30,9 @@ export default class InventoryInputScreen extends React.Component {
       inventoryArray: this.props.inventoryArray,
       name: "",
       quantity: 0,
-      unitMeasure: "", 
+      unitMeasure: "",
       expiryDate: new Date(),
-    }
+    };
   }
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
@@ -89,8 +91,8 @@ export default class InventoryInputScreen extends React.Component {
 
   setExpiryDate = (value) => {
     // ExpiryDropDown component will call this
-    this.setState({expiryDate: value});
-  }
+    this.setState({ expiryDate: value });
+  };
 
   setSearchedItem = (item) => {
     // Food Search Screen
@@ -98,40 +100,47 @@ export default class InventoryInputScreen extends React.Component {
     expiry.setDate(expiry.getDate() + item.shelf_life);
     this.setState({
       name: item.name,
-      expiryDate: expiry
+      expiryDate: expiry,
     });
-  }
+  };
 
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.cancelButton}>
-          <Text style={styles.cancelText}>x</Text>
-        </TouchableOpacity>
-        <TextInput
-          style={styles.inputFormat}
-          placeholder="Enter New Food Item"
-          onChangeText={this.handleNameEntered}
-        />
-        <Text style={styles.label}>Quantity:</Text>
-        <QuantityDropdown
-          setParentQuantity={this.setQuantity}
-          setParentUnit={this.setUnit}
-        ></QuantityDropdown>
-        <Text style={styles.label}>Enter Expiry Date:</Text>
-        <ExpiryInput
-          setParentExpiry={this.setExpiryDate}
-          defaultDate={this.state.expiryDate}>
-        </ExpiryInput>
-        <View style={{ zIndex: -1 }}>
+      <ScrollView
+        style={{
+          height: Dimensions.get("window").height,
+          width: Dimensions.get("window").width,
+        }}
+      >
+        <View style={styles.container}>
           <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={this.saveItem}
+            style={styles.cancelButton}
+            onPress={() => this.props.navigation.goBack(null)}
           >
-            <Text style={styles.confirmText}>Confirm</Text>
+            <Text style={styles.cancelText}>x</Text>
           </TouchableOpacity>
+          <TextInput
+            style={styles.inputFormat}
+            placeholder="Enter New Food Item"
+            onChangeText={this.handleNameEntered}
+          />
+          <Text style={styles.label}>Quantity:</Text>
+          <QuantityDropdown
+            setParentQuantity={this.setQuantity}
+            setParentUnit={this.setUnit}
+          ></QuantityDropdown>
+          <Text style={styles.label}>Enter Expiry Date:</Text>
+          <ExpiryInput setParentExpiry={this.setExpiryDate}></ExpiryInput>
+          <View style={{ zIndex: -1 }}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={this.saveItem}
+            >
+              <Text style={styles.confirmText}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -211,13 +220,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#d8d8d8",
     marginVertical: Dimensions.get("window").height * 0.2,
-    // iOS shadow
-    shadowColor: "rgba(0,0,0, .5)",
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    // Android shadow
-    elevation: 4,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .5)",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
     zIndex: 1,
   },
 });

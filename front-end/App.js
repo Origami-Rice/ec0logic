@@ -1,17 +1,34 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import InventoryAllFoodsScreen from "./screens/InventoryAllFoodsScreen";
+import InventoryInputScreen from "./screens/InventoryInputScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
-
-const Tab = createBottomTabNavigator();
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
 };
+
+const InventoryStack = createStackNavigator();
+
+function InventoryStackScreen() {
+  return (
+    <InventoryStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <InventoryStack.Screen name="List" component={MyTabs} />
+      <InventoryStack.Screen name="Input" component={InventoryInputScreen} />
+    </InventoryStack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
@@ -34,7 +51,7 @@ function MyTabs() {
 export default function App() {
   return (
     <NavigationContainer>
-      <MyTabs />
+      <InventoryStackScreen />
     </NavigationContainer>
   );
 }

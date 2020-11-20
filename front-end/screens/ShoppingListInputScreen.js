@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
+  Platform,
 } from "react-native";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
@@ -18,7 +19,7 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
-export default class InventoryInputScreen extends React.Component {
+export default class ShoppingListInput extends React.Component {
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -136,13 +137,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "#d8d8d8",
     marginVertical: Dimensions.get("window").height * 0.2,
-    // iOS shadow
-    shadowColor: "rgba(0,0,0, .5)",
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    // Android shadow
-    elevation: 4,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .5)",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
     zIndex: 1,
   },
 });

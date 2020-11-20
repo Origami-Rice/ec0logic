@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from "react-native";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import ShoppingListItem from "../components/ShoppingListItem";
+import ShoppingListInputScreen from "./ShoppingListInputScreen";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -19,7 +21,7 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
-// SHOPPING LIST SCREEN
+// TODO: Close modal onpress (detect from child)
 export default class ShoppingListScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -100,7 +102,9 @@ export default class ShoppingListScreen extends React.Component {
                 width: Dimensions.get("window").width,
               }}
             >
-              <View style={styles.modal}></View>
+              <View style={styles.modal}>
+                <ShoppingListInputScreen></ShoppingListInputScreen>
+              </View>
             </ScrollView>
           }
         </Modal>
@@ -175,13 +179,17 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginBottom: 15,
     backgroundColor: "#ffffff",
-    // iOS shadow
-    shadowColor: "rgba(0,0,0, .5)",
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    // Android shadow
-    elevation: 4,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .5)",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
   addButtonLabel: {
     textAlign: "center",

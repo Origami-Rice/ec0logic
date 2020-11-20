@@ -6,14 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from "react-native";
-import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import InventoryListItem from "../components/InventoryListItem";
 import FinshedFoodScreen from "./FinishedFoodScreen";
-import InventoryInputScreen from "./InventoryInputScreen";
 import send from "../requests/request.js";
 
 let customFonts = {
@@ -21,8 +20,7 @@ let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
-// TODO: close modal on press
-// TODO: android modal height when keyboard pops up
+
 export default class InventoryAllFoods extends React.Component {
   constructor(props) {
     super(props);
@@ -152,28 +150,10 @@ export default class InventoryAllFoods extends React.Component {
         <View style={styles.divider}></View>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => this.setState({ visibleModal: 1 })}
+          onPress={() => this.props.navigation.navigate("Input")}
         >
           <Text style={styles.addText}>+</Text>
         </TouchableOpacity>
-        <Modal
-          isVisible={this.state.visibleModal === 1}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <ScrollView
-              style={{
-                height: Dimensions.get("window").height,
-                width: Dimensions.get("window").width,
-              }}
-            >
-              <View style={styles.modal}>
-                <InventoryInputScreen></InventoryInputScreen>
-              </View>
-            </ScrollView>
-          }
-        </Modal>
       </View>
     );
   }
@@ -254,22 +234,16 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginBottom: "20%",
     backgroundColor: "#ffffff",
-    // iOS shadow
-    shadowColor: "rgba(0,0,0, .5)",
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    // Android shadow
-    elevation: 4,
-  },
-  modal: {
-    backgroundColor: "white",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .5)",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
 });
