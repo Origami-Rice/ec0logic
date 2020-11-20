@@ -18,7 +18,7 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
-export default class FinishedFoodScreen extends React.Component {
+export default class WastedFoodScreen extends React.Component {
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -33,7 +33,9 @@ export default class FinishedFoodScreen extends React.Component {
       <View style={styles.container}>
         <View style={{ justifyContent: "flex-start" }}>
           <Text style={styles.header}>PITA BREAD</Text>
-          <Text style={styles.label}>Enter the amount that you finished:</Text>
+          <Text style={styles.label}>
+            Enter the amount that was thrown out:
+          </Text>
           <View style={styles.inputWithDetails}>
             <Text style={[styles.notice, { color: "#C90000", marginTop: 10 }]}>
               Please enter an amount.
