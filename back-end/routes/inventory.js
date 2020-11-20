@@ -55,12 +55,12 @@ router
         // Update the inventory
         try {
             const result = await update_inventorylist(username, list);
-            if (result.result.nModified === 1) { 
+            console.log(result);
+            if (result.result.n === 1) { // a document has been found
                 return response
                     .status(200)
                     .json({"success": "Inventory successfully updated."});
-            }else{
-                // this may not be the correct status code ???????????????????????????????????????????
+            }else{ // no matching document was found
                 return response.status(404).json({"error": "Inventory could not be updated."});
             }
         } catch (error) {
