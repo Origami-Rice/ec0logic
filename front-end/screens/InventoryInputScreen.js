@@ -30,7 +30,7 @@ export default class InventoryInputScreen extends React.Component {
       name: "", 
       quantity: 0,
       unitMeasure: "", 
-      expiryDate: null,
+      expiryDate: new Date(),
     }
   }
   async _loadFontsAsync() {
@@ -93,7 +93,18 @@ export default class InventoryInputScreen extends React.Component {
   }
 
   setExpiryDate = (value) => {
+    // ExpiryDropDown component will call this
     this.setState({expiryDate: value});
+  }
+
+  setSearchedItem = (item) => {
+    // Food Search Screen
+    var expiry = new Date();
+    expiry.setDate(expiry.getDate() + item.shelf_life);
+    this.setState({
+      name: item.name,
+      expiryDate: expiry
+    });
   }
 
   render() {
@@ -113,7 +124,9 @@ export default class InventoryInputScreen extends React.Component {
           setParentUnit={this.setUnit}></QualityDropdown>
         <Text style={styles.label}>Enter Expiry Date:</Text>
         <ExpiryInput
-          setParentExpiry={this.setExpiryDate}></ExpiryInput>
+          setParentExpiry={this.setExpiryDate}
+          defaultDate={this.state.expiryDate}>
+        </ExpiryInput>
         <View style={{ zIndex: -1 }}>
           <TouchableOpacity style={styles.confirmButton} onPress={this.saveItem}>
             <Text style={styles.confirmText}>Confirm</Text>
