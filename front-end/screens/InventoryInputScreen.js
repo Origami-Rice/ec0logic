@@ -14,9 +14,8 @@ import Constants from "expo-constants";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
-import DatePicker from "./components/DatePicker";
-
-import send from "../requests/request";
+import DatePicker from "../components/DatePicker";
+import FoodSearchScreen from "./FoodSearchScreen"; 
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -31,7 +30,7 @@ export default class InventoryInputScreen extends React.Component {
       inventoryArray: [],
       name: "",
       quantity: 0,
-      unitMeasure: "",
+      unitMeasure: "units",
       expiryDate: new Date(),
       visibleModal: 0,
     };
@@ -118,7 +117,7 @@ export default class InventoryInputScreen extends React.Component {
             <View style={styles.topButtonsContainer}>
               <TouchableOpacity
                 style={styles.cancelButton}
-                onPress={() => this.setState({ visibleModal: 2 })}
+                onPress={() => this.setState({ visibleModal: 1 })}
               >
                 <Text style={styles.cancelText}>s</Text>
               </TouchableOpacity>
@@ -133,7 +132,7 @@ export default class InventoryInputScreen extends React.Component {
               <TextInput
                 style={styles.inputFormat}
                 placeholder="Enter New Food Item"
-                onChangeText={this.handleNameEntered}
+                onChangeText={(text) => this.setState({name: text})}
               />
               <Text style={styles.label}>Quantity:</Text>
               <QuantityDropdown

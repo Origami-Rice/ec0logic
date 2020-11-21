@@ -70,7 +70,7 @@ export default class FoodSearchScreen extends React.Component {
       <LibraryListItem
         item={item.name}
         shelfLife={item.days}
-        onClick={() => this.onSelectItem(item)}
+        onPress={() => this.onSelectItem(item)}
       />
     ));
   };

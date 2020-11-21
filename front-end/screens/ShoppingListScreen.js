@@ -74,11 +74,14 @@ export default class ShoppingListScreen extends React.Component {
 
   displayItems = () => {
     // Dynamically
-    return this.state.shoppingList.map((data) => (
+    return this.state.shoppingList.map((data, i) => (
       <ShoppingListItem 
       item={data.name} 
       quantity={data.quantity}
-      checkedOff={data.checked_off} />
+      unitsOfMeasure={data.unitsOfMeasure}
+      checkedOff={data.checked_off}
+      index={i}
+      updateCheck={this.updateCheck} />
     ));
   };
   
@@ -159,8 +162,8 @@ export default class ShoppingListScreen extends React.Component {
               <View style={styles.modal}>
                 <ShoppingListInputScreen 
                   addNewItem={this.addNewItem}
-                  inventory={this.state.inventoryArray}
-                  onCancel={() => this.setState({modalVisible: 0})}>
+                  inventoryArray={this.state.inventoryArray}
+                  onCancel={() => this.setState({visibleModal: 0})}>
                 </ShoppingListInputScreen>
               </View>
             </ScrollView>

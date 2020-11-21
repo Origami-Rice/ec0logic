@@ -16,8 +16,8 @@ const InventoryListItem = (props) => {
       <View style={styles.listItem}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
-          <Text style={styles.textInfo}>{props.expiryDate.toDateString()} </Text>
-          <Text style={styles.textInfo}>{props.quantity}</Text>
+          <Text style={styles.textInfo}>Expiry Date: {props.expiryDate.toDateString()} </Text>
+          <Text style={styles.textInfo}>Quantity: {props.quantity} {props.unitsOfMeasure} </Text>
         </View>
         <View style={styles.checkFlex}>
           <TouchableOpacity 

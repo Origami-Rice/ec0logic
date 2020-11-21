@@ -26,16 +26,9 @@ export default class InventoryAllFoods extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inventoryArray: [
-        { name: "Butter", expiryDate: "Nov 30, 2020", quantity: 2 },
-        { name: "Cabbage" },
-        { name: "Sweet Potato" },
-        { name: "Mango" },
-        { name: "Apples" },
-      ],
-      expiringArray: [{ name: "Banana" }],
+      inventoryArray: [],
+      expiringArray: [],
       allFoods: true,
-      visibleModal: null,
       fontsLoaded: false,
     };
   }
@@ -59,7 +52,7 @@ export default class InventoryAllFoods extends React.Component {
       });
 
     // Load the list of user's expiring items
-    send(getExpiring, {}, "/test-user")
+    send("getExpiring", {}, "/test-user")
       .then((response) => response.json())
       .then((json) => {
         this.setState({ expiringArray: json.expiring });
@@ -75,7 +68,7 @@ export default class InventoryAllFoods extends React.Component {
         if (this.props.route.params?.new_item) {
           
           console.log("Added:" + this.props.route.params.new_item.name);
-          this.addItem(new_item);
+          this.addItem(this.props.route.params.new_item);
           this.props.route.params = {}; // Resetting params
         } else if (this.props.route.params?.update) {
           this.updateInventory(this.state.inventoryArray);
@@ -119,8 +112,8 @@ export default class InventoryAllFoods extends React.Component {
 
   createSelectionWindow = (item, i) => {
     Alert.alert(
-      "Wait a moment!",
-      "You still have this in your inventory",
+      "Update Item Quantity",
+      "Select an option.",
       [
         {
           text: "Mark as thrown out",
@@ -158,6 +151,7 @@ export default class InventoryAllFoods extends React.Component {
         item={data.name}
         expiryDate={data.expiryDate}
         quantity={data.quantity} 
+        unitsOfMeasure={data.unitsOfMeasure}
         onPress={() => this.createSelectionWindow(data, i)}/>
       ));
     } else {

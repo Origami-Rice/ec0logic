@@ -7,6 +7,7 @@ import {
   TextInput,
   Dimensions,
   Platform,
+  Alert
 } from "react-native";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
@@ -27,7 +28,7 @@ export default class ShoppingListInput extends React.Component {
       inventoryArray: this.props.inventoryArray,
       name: "",
       quantity: 0,
-      unitsOfMeasure: "",  
+      unitsOfMeasure: "units",  
     }
   }
   async _loadFontsAsync() {
@@ -51,7 +52,7 @@ export default class ShoppingListInput extends React.Component {
           onPress: () => console.log("Go Back Pressed"),
           style: "cancel"
         },
-        { text: "Continue anyways", onPress: () => this.saveItem }
+        { text: "Continue anyways", onPress: () => this.saveItem() }
       ],
       { cancelable: false }
     );
@@ -75,8 +76,8 @@ export default class ShoppingListInput extends React.Component {
     if (this.state.name) {
       const {inventoryArray} = this.state;
       // Check if item is already in inventory, if so, alert
-      for (var i=0; i < inventoryArray; i++) {
-        if (inventoryArray[i].name = this.state.name){
+      for (var i=0; i < inventoryArray.length; i++) {
+        if (inventoryArray[i].name === this.state.name){
           this.createAlert();
           return;
         } 
