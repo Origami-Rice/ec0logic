@@ -20,7 +20,9 @@ const InventoryListItem = (props) => {
           <Text style={styles.textInfo}>{props.quantity}</Text>
         </View>
         <View style={styles.checkFlex}>
-          <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.checkbox} 
+            onPress={props.onPress}></TouchableOpacity>
         </View>
       </View>
     );

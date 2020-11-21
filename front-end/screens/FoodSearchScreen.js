@@ -15,7 +15,6 @@ export default class FoodSearchScreen extends React.Component {
       search: "",
       items: [], 
       itemsFiltered: [],
-      show: true
     }
   }
 
@@ -23,7 +22,9 @@ export default class FoodSearchScreen extends React.Component {
       send("getFoodLibrary")
       .then(response => response.json())
       .then((json) => {
-          this.setState({ items: json });
+          this.setState({ 
+            items: json,
+            itemsFiltered: json });
       })
       .catch(error => {
         console.log("Error getting food library");
@@ -46,35 +47,20 @@ export default class FoodSearchScreen extends React.Component {
 
   onSelectItem = (item) => {
       // TODO: Needs to be implemented in Parent
+      alert("Item selected " + item.name);
       const { setSelectedItem } = this.props;
       setSearchItem(item);
 
   }
 
   populateList = (i) => {
-      return this.state.itemsFiltered.map((item, i) => 
-              (
-                <ListItem 
-                key={i} 
-                pad={20} 
-                bottomDivider 
-                Component={TouchableHighlight}
-                disabledStyle={{ opacity: 0.5 }}
-                onPress={() => this.onSelectItem(item)}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>{item.name}</ListItem.Title>
-                    <ListItem.Subtitle>{item.shelf_life}</ListItem.Subtitle>
-                  </ListItem.Content>
-                </ListItem>
-              )
-              );
-  }
-
-  focus = () => {
-    this.setState(
-      { show: true}
-    );
+      return this.state.itemsFiltered.map((item) => 
+        (
+          <LibraryListItem item={item.name}       
+          shelfLife={item.days} 
+          onClick={() => this.onSelectItem(item)} />
+        )
+        );
   }
 
   render() {

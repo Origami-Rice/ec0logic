@@ -48,12 +48,11 @@ export default class InventoryInputScreen extends React.Component {
 
     const newItem = {
         name: this.state.name,
-        expiryDate: this.state.expiryDate, // TODO: convert into proper value
+        expiryDate: this.state.expiryDate,
         quantity: this.state.quantity,
         unitsOfMeasure: this.state.unitMeasure
     };
 
-    // TODO: Navigate back to inventory screen
     this.props.navigation.navigate('List', 
     {screen: "Inventory", params: {new_item: newItem} });
 

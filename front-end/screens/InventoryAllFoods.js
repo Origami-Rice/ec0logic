@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  Alert
 } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
@@ -76,6 +77,9 @@ export default class InventoryAllFoods extends React.Component {
           console.log("Added:" + this.props.route.params.new_item.name);
           this.addItem(new_item);
           this.props.route.params = {}; // Resetting params
+        } else if (this.props.route.params?.update) {
+          this.updateInventory(this.state.inventoryArray);
+          this.props.route.params = {};
         } else {
           console.log("focus - nothing added");
         }
@@ -90,8 +94,14 @@ export default class InventoryAllFoods extends React.Component {
     // Update displayed inventoryArray
     this.setState({ inventoryArray: currInventory});
 
+    this.updateInventory(currInventory);
+
+  }
+
+  updateInventory = (updatedInventory) => {
+
     const data = {
-      list: currInventory
+      list: updatedInventory
     };
 
     // Send updated list to server
@@ -107,20 +117,55 @@ export default class InventoryAllFoods extends React.Component {
 
   }
 
+  createSelectionWindow = (item, i) => {
+    Alert.alert(
+      "Wait a moment!",
+      "You still have this in your inventory",
+      [
+        {
+          text: "Mark as thrown out",
+          onPress: () => this.navigateTo(item, i, "ThrownOut"),
+        },
+        { text: "Mark as used", onPress: () => this.navigateTo(item, i, "Used") },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+      ],
+      { cancelable: false }
+    );
+
+  }
+
+  navigateTo = (item, i, screen) => {
+    // We remove the item to be updated from our inventory
+    var currInventory = this.state.inventoryArray;
+    currInventory.splice(i, 1);
+    this.setState({inventoryArray: currInventory});
+
+    // Navigate to wasted food screen, pass in the item
+    this.props.navigation.navigate(screen, {
+      item: item
+    });
+  }
+
   displayItems = () => {
     // Dynamically
     if (this.state.allFoods) {
-      return this.state.inventoryArray.map((data) => (
+      return this.state.inventoryArray.map((data, i) => (
         <InventoryListItem 
         item={data.name}
         expiryDate={data.expiryDate}
-        quantity={data.quantity} />
+        quantity={data.quantity} 
+        onPress={() => this.createSelectionWindow(data, i)}/>
       ));
     } else {
-      return this.state.expiringArray.map((data) => (
+      return this.state.expiringArray.map((data, i) => (
         <InventoryListItem item={data.name}
         expiryDate={data.expiryDate}
-        quantity={data.quantity} />
+        quantity={data.quantity}
+        onPress={() => this.createSelectionWindow(data, i)} />
       ));
     }
   };
