@@ -9,12 +9,13 @@ const InventoryItemSchema = new mongoose.Schema({
         minlength: 1,
         trim: true
     },
-    expiryDate: { 
-        type: Date,
-        default: Date.now 
-    },
+    expiryDate: Date,
     quantity: Number,
-    weight: Number
+    weight: Number,
+    unitsOfMeasure: {
+        type: String,
+        default: "units"
+    }
 });
 
 const CommonFoodSchema = new mongoose.Schema({
@@ -29,7 +30,10 @@ const WastedItemSchema = new mongoose.Schema({
         minlength: 1,
         trim: true
     },
-    date: Date,
+    date: {
+        type: Date,
+        default: Date.now
+    },
     quantity: Number,
     weight: Number
 });

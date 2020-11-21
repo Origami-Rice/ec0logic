@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "start": "node start.js"
+    "start": "node ./back-end/start.js",
+    "heroku-postbuild": "npm install"
   },
   "author": "Ecoders",
   "license": "ISC",
