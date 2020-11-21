@@ -19,6 +19,20 @@ let customFonts = {
 };
 
 export default class WastedFoodScreen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    const item = this.props.route.param.item;
+
+    this.state = {
+      name: item.name,
+      quantity: item.quantity,
+      unitsOfMeasure: item.unitsOfMeasure,
+      expiryDate: item.expiryDate,
+      quantityToRemove: "0",
+    }
+  }
+
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
@@ -28,11 +42,49 @@ export default class WastedFoodScreen extends React.Component {
     this._loadFontsAsync();
   }
 
+  updateQuantity = () => {
+    var quantityToRemove = parseFloat(this.state.quantityToRemove);
+    const newQuantity = this.state.quantity - quantityToRemove;
+
+    if (quantityToRemove < 0 || newQuantity < 0) {
+      // Alert that this is invalid
+      alert("Quantity Invalid. Please try again")
+
+    } else if (newQuantity === 0) {
+
+      // Navigate back only
+      // Note that item was already removed from the inventory
+      this.props.navigation.navigate('List', {screen: "Inventory", params: {update: true}});
+
+    } else {
+      // TODO: send to server the record of wasted food
+
+      // Create an updated item with the new quantity
+      const newItem = {
+        name: this.state.name,
+        quantity: newQuantity,
+        unitsOfMeasure: this.state.unitsOfMeasure,
+        expiryDate: this.state.expiryDate
+      }
+
+      this.props.navigation.navigate('List', {screen: "Inventory", params: {new_item: newItem} }); // TODO: screen name
+    }
+
+  }
+
+  handleCancel = () => {
+    // Return to page, sending the old item back
+    this.props.navigation.navigate('List', 
+      {screen: "Inventory", 
+       params: {new_item: this.props.route.params.item} });
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: "flex-start" }}>
-          <Text style={styles.header}>PITA BREAD</Text>
+          <Text style={styles.header}>{this.state.name}</Text>
           <Text style={styles.label}>
             Enter the amount that was thrown out:
           </Text>
@@ -41,23 +93,26 @@ export default class WastedFoodScreen extends React.Component {
               Please enter an amount.
             </Text>
             <View style={styles.inputContainer}>
-              <TextInput style={styles.inputFormat} placeholder="Amount" />
+              <TextInput style={styles.inputFormat} 
+                placeholder="Amount"
+                keyboardType="decimal-pad"
+                onChangeText={(text) => this.setState({quantityToRemove: text})} />
               <View
                 style={{
                   width: Dimensions.get("window").width * 0.4,
                   justifyContent: "center",
                 }}
               >
-                <Text style={styles.unitText}>Package(s)</Text>
+                <Text style={styles.unitText}>{this.state.unitsOfMeasure}</Text>
               </View>
             </View>
             <Text style={[styles.notice, { color: "#BDBDBD" }]}>
-              You had 2 packages remaining.
+              You had {this.state.quantity} {this.state.unitsOfMeasure} remaining.
             </Text>
           </View>
         </View>
         <View style={{ justifyContent: "flex-end", flex: 1 }}>
-          <TouchableOpacity style={styles.confirmButton}>
+          <TouchableOpacity style={styles.confirmButton} onPress={this.updateQuantity}>
             <Text style={styles.confirmText}>Confirm Update</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -65,6 +120,7 @@ export default class WastedFoodScreen extends React.Component {
               styles.confirmButton,
               { marginBottom: Dimensions.get("window").height * 0.1 },
             ]}
+            onPress={this.handleCancel}
           >
             <Text style={styles.confirmText}>Cancel</Text>
           </TouchableOpacity>
