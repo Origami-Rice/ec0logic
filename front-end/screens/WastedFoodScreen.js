@@ -107,6 +107,7 @@ export default class WastedFoodScreen extends React.Component {
                   style={styles.inputFormat}
                   placeholder="Amount"
                   keyboardType="decimal-pad"
+                  returnKeyType='done'
                   onChangeText={(text) =>
                     this.setState({ quantityToRemove: text })
                   }

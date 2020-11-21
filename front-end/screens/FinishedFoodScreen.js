@@ -68,7 +68,7 @@ export default class FinishedFoodScreen extends React.Component {
       this.props.navigation.navigate("List", {
         screen: "Inventory",
         params: { new_item: newItem },
-      }); // TODO: screen name
+      }); 
     }
   };
 
@@ -105,6 +105,7 @@ export default class FinishedFoodScreen extends React.Component {
                   style={styles.inputFormat}
                   placeholder="Amount"
                   keyboardType="decimal-pad"
+                  returnKeyType='done'
                   onChangeText={(text) =>
                     this.setState({ quantityToRemove: text })
                   }
