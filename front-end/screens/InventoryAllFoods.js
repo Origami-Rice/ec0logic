@@ -38,24 +38,43 @@ export default class InventoryAllFoods extends React.Component {
     this.setState({ fontsLoaded: true });
   }
 
+  deserializeItems = (json) => {
+    var items = [];
+      // Convert to useful info:
+      for (let i = 0; i < json.length; i++) {
+        const { name, quantity, unitsOfMeasure, expiryDate } = json[i];
+        const item = {
+          name: name,
+          quantity: quantity,
+          unitsOfMeasure: unitsOfMeasure,
+          expiryDate: new Date(expiryDate),
+        }
+        
+        items.push(item);
+      }
+    return items;
+  }
+
   componentDidMount() {
     this._loadFontsAsync();
     // Load the list of user's inventory items from server
     send("getInventory", {}, "/test-user")
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ inventoryArray: json });
+        const inventory = this.deserializeItems(json);
+        this.setState({ inventoryArray: inventory });
       })
       .catch((error) => {
         console.log("Error getting user inventory");
         console.log(error);
       });
 
-    // Load the list of user's expiring items
+    // TODO: Load the list of user's expiring items not working
     send("getExpiring", {}, "/test-user")
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ expiringArray: json.expiring });
+        const expiring = this.deserializeItems(json);
+        this.setState({ expiringArray: expiring });
       })
       .catch((error) => {
         console.log("Error getting user's expiring items");

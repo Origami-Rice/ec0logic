@@ -22,7 +22,7 @@ let customFonts = {
 export default class FinishedFoodScreen extends React.Component {
   constructor(props) {
     super(props);
-    const item = this.props.route.param.item;
+    const item = this.props.route.params.item;
 
     this.state = {
       name: item.name,

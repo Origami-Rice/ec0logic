@@ -39,7 +39,7 @@ export default function DatePicker(props) {
           testID="dateTimePicker"
           value={date}
           mode="date"
-          is24Hour={true}
+          minimumDate={new Date()}
           display="default"
           onChange={onChange}
           style={{ width: Dimensions.get("window").width }}

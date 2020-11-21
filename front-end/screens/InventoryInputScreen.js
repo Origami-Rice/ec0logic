@@ -162,6 +162,7 @@ export default class InventoryInputScreen extends React.Component {
               <TextInput
                 style={styles.inputFormat}
                 placeholder="Enter New Food Item"
+                value={this.state.name}
                 onChangeText={(text) => this.setItemName(text)}
               />
               <Text style={styles.label}>Quantity:</Text>
