@@ -86,14 +86,16 @@ export default class InventoryInputScreen extends React.Component {
   setUnit = (value) => {
     // QuantityDropdown component will call this function
     this.setState({
-      unitMeasure: value });
+      unitMeasure: value,
+    });
   };
 
   setExpiryDate = (value) => {
     // ExpiryDropDown component will call this
-    this.setState({ 
+    this.setState({
       expiryDate: value,
-      estimateGiven: false, });
+      estimateGiven: false,
+    });
   };
 
   setSearchedItem = (item) => {
@@ -198,19 +200,12 @@ export default class InventoryInputScreen extends React.Component {
             avoidKeyboard={false}
           >
             {
-              <ScrollView
-                style={{
-                  height: Dimensions.get("window").height,
-                  width: Dimensions.get("window").width,
-                }}
-              >
-                <View style={styles.modal}>
-                  <FoodSearchScreen
-                    setSearchItem={this.setSearchedItem}
-                    onCancel={() => this.setState({ visibleModal: 0 })}
-                  ></FoodSearchScreen>
-                </View>
-              </ScrollView>
+              <View style={styles.modal}>
+                <FoodSearchScreen
+                  setSearchItem={this.setSearchedItem}
+                  onCancel={() => this.setState({ visibleModal: 0 })}
+                ></FoodSearchScreen>
+              </View>
             }
           </Modal>
         </View>
@@ -332,10 +327,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     margin: 0,
     height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
   },
   modal: {
     backgroundColor: "white",
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });

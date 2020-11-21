@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   TouchableHighlight,
   TextInput,
   TouchableOpacity,
@@ -93,7 +94,9 @@ export default class FoodSearchScreen extends React.Component {
             this.searchItem(text);
           }}
         />
-        <View style={styles.listContainer}>{this.populateList()}</View>
+        <ScrollView style={styles.listContainer}>
+          {this.populateList()}
+        </ScrollView>
       </View>
     );
   }
@@ -106,6 +109,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#ffffff",
     padding: 8,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
   listContainer: {
     paddingVertical: 5,
