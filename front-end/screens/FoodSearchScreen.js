@@ -60,13 +60,12 @@ export default class FoodSearchScreen extends React.Component {
   };
 
   onSelectItem = (item) => {
-    // TODO: Needs to be implemented in Parent
     alert("Item selected " + item.name);
-    const { setSelectedItem } = this.props;
+    const { setSearchItem } = this.props; // Callback function in parent
     setSearchItem(item);
   };
 
-  populateList = (i) => {
+  populateList = () => {
     return this.state.itemsFiltered.map((item) => (
       <LibraryListItem
         item={item.name}
@@ -80,7 +79,7 @@ export default class FoodSearchScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.topButtonsContainer}>
-          <TouchableOpacity style={styles.cancelButton}>
+          <TouchableOpacity style={styles.cancelButton} onPress={this.props.onCancel}>
             <Text style={styles.cancelText}>x</Text>
           </TouchableOpacity>
         </View>

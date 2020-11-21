@@ -46,7 +46,7 @@ export default class InventoryInputScreen extends React.Component {
   }
 
   saveItem = () => {
-    // TODO: Verify that all fields have been entered correctly
+    // Verify that all fields have been entered correctly
     if (this.state.name === "") {
       alert("Please enter item name.");
       return;
@@ -87,12 +87,16 @@ export default class InventoryInputScreen extends React.Component {
   };
 
   setSearchedItem = (item) => {
-    // Food Search Screen
+    // Called by Food Search Screen
     var expiry = new Date();
-    expiry.setDate(expiry.getDate() + item.shelf_life);
+    expiry.setDate(expiry.getDate() + item.days);
     this.setState({
       name: item.name,
       expiryDate: expiry,
+    });
+
+    this.setState({
+      visibleModal: 0,
     });
   };
 
@@ -162,7 +166,7 @@ export default class InventoryInputScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <Modal
-            isVisible={this.state.visibleModal === 2}
+            isVisible={this.state.visibleModal === 1}
             style={styles.bottomModal}
             avoidKeyboard={false}
           >
@@ -174,7 +178,10 @@ export default class InventoryInputScreen extends React.Component {
                 }}
               >
                 <View style={styles.modal}>
-                  <FoodSearchScreen></FoodSearchScreen>
+                  <FoodSearchScreen
+                    setSearchItem={this.setSearchedItem}
+                    onCancel={() => this.setState({visibleModal: 0})}>
+                  </FoodSearchScreen>
                 </View>
               </ScrollView>
             }
