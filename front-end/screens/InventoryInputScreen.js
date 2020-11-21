@@ -33,6 +33,7 @@ export default class InventoryInputScreen extends React.Component {
       unitMeasure: "units",
       expiryDate: new Date(),
       visibleModal: 0,
+      estimateGiven: false,
     };
   }
   async _loadFontsAsync() {
@@ -69,6 +70,13 @@ export default class InventoryInputScreen extends React.Component {
     });
   };
 
+  setItemName = (value) => {
+    this.setState({
+      name: value,
+      estimateGiven: false
+    });
+  }
+
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
     const val = parseFloat(value);
@@ -77,7 +85,9 @@ export default class InventoryInputScreen extends React.Component {
 
   setUnit = (value) => {
     // QuantityDropdown component will call this function
-    this.setState({ unitMeasure: value });
+    this.setState({ 
+      unitMeasure: value,
+      estimateGiven: false  });
   };
 
   setExpiryDate = (value) => {
@@ -92,12 +102,24 @@ export default class InventoryInputScreen extends React.Component {
     this.setState({
       name: item.name,
       expiryDate: expiry,
+      estimateGiven: true,
     });
 
     this.setState({
       visibleModal: 0,
     });
   };
+
+  displayEstimate = () => {
+    if (this.state.estimateGiven) {
+      return (<Text style={styles.label}>
+                {" "}
+                Estimated Expiry Date: {this.state.expiryDate.toDateString()}{" \n"}
+                This is only an estimate, select a different expiry date by clicking above.
+              </Text>);
+    }
+    return null;
+  }
 
   render() {
     return (
@@ -132,7 +154,7 @@ export default class InventoryInputScreen extends React.Component {
               <TextInput
                 style={styles.inputFormat}
                 placeholder="Enter New Food Item"
-                onChangeText={(text) => this.setState({name: text})}
+                onChangeText={(text) => this.setItemName(text)}
               />
               <Text style={styles.label}>Quantity:</Text>
               <QuantityDropdown
@@ -144,10 +166,7 @@ export default class InventoryInputScreen extends React.Component {
                 setParentExpiry={this.setExpiryDate}
                 defaultDate={this.state.expiryDate}
               />
-              <Text style={styles.label}>
-                {" "}
-                {this.state.expiryDate.toString()}{" "}
-              </Text>
+             { this.displayEstimate() }
             </View>
           </View>
           <View
