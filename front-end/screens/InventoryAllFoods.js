@@ -86,9 +86,24 @@ export default class InventoryAllFoods extends React.Component {
     currInventory.push(item);
     // Update displayed inventoryArray
     this.setState({ inventoryArray: currInventory});
+    // This will add the item to the expiring array if applicable
+    alert(this.addToExpiring(item));
 
     this.updateInventory(currInventory);
 
+  }
+
+  addToExpiring = (item) => {
+    var currExpiring = this.state.expiringArray;
+    let now = new Date();
+    let expires = (item.expiryDate.getTime() - now.getTime()) / (1000 * 3600 * 24);
+    // check if expiring soon
+    if (expires < 7) {
+      currExpiring.push(item);
+      this.setState({ expiringArray: currExpiring});
+      return true;
+    }
+    return false;
   }
 
   updateInventory = (updatedInventory) => {
@@ -110,16 +125,16 @@ export default class InventoryAllFoods extends React.Component {
 
   }
 
-  createSelectionWindow = (item, i) => {
+  createSelectionWindow = (item, i, expiring=false) => {
     Alert.alert(
       "Update Item Quantity",
       "Select an option.",
       [
         {
           text: "Mark as thrown out",
-          onPress: () => this.navigateTo(item, i, "ThrownOut"),
+          onPress: () => this.navigateTo(item, i, "ThrownOut", expiring),
         },
-        { text: "Mark as used", onPress: () => this.navigateTo(item, i, "Used") },
+        { text: "Mark as used", onPress: () => this.navigateTo(item, i, "Used", expiring) },
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
@@ -131,11 +146,58 @@ export default class InventoryAllFoods extends React.Component {
 
   }
 
-  navigateTo = (item, i, screen) => {
+  compareItems = (item1, item2) => {
+    return (item1.name == item2.name 
+    && item1.quantity == item2.quantity 
+    && item1.expiryDate.getTime() == item2.expiryDate.getTime()
+    && item1.unitsOfMeasure == item2.unitsOfMeasure );
+  }
+
+  removeFromExpiring = (item, index) => {
+    // We remove the item from the expiring list
+    // Find the index of the 
+    var currExpiring = this.state.expiringArray;
+    currExpiring.splice(index, 1);
+    this.setState({expiringArray: currExpiring});
+
+    var inventoryArray = this.state.inventoryArray;
+    // find the item in the inventory array -> should always return true
+    for (let i = 0; i < inventoryArray.length; i++) {
+      if (this.compareItems(inventoryArray[i], item)) {
+        inventoryArray.splice(i, 1);
+        this.setState({inventoryArray: inventoryArray});
+        return true;
+      }
+    }
+    return false;
+
+  }
+
+  removeFromInventory = (item, index) => {
     // We remove the item to be updated from our inventory
     var currInventory = this.state.inventoryArray;
-    currInventory.splice(i, 1);
+    currInventory.splice(index, 1);
     this.setState({inventoryArray: currInventory});
+
+    // check if item is in expiring list -> return true if so
+    var expiringArray = this.state.expiringArray;
+    for (let i = 0; i < expiringArray.length; i++) {
+      if (this.compareItems(expiringArray[i], item)) {
+        expiringArray.splice(i, 1);
+        this.setState({expiringArray: expiringArray});
+        return true;
+      }
+    }
+    return false;
+
+  }
+
+  navigateTo = (item, i, screen, expiring) => {
+    if (expiring) {
+      this.removeFromExpiring(item, i);
+    } else {
+      this.removeFromInventory(item, i);
+    }
 
     // Navigate to wasted food screen, pass in the item
     this.props.navigation.navigate(screen, {
@@ -159,7 +221,7 @@ export default class InventoryAllFoods extends React.Component {
         <InventoryListItem item={data.name}
         expiryDate={data.expiryDate}
         quantity={data.quantity}
-        onPress={() => this.createSelectionWindow(data, i)} />
+        onPress={() => this.createSelectionWindow(data, i, true)} />
       ));
     }
   };
