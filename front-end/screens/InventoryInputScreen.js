@@ -86,14 +86,14 @@ export default class InventoryInputScreen extends React.Component {
   setUnit = (value) => {
     // QuantityDropdown component will call this function
     this.setState({
-      unitMeasure: value,
-      estimateGiven: false,
-    });
+      unitMeasure: value });
   };
 
   setExpiryDate = (value) => {
     // ExpiryDropDown component will call this
-    this.setState({ expiryDate: value });
+    this.setState({ 
+      expiryDate: value,
+      estimateGiven: false, });
   };
 
   setSearchedItem = (item) => {

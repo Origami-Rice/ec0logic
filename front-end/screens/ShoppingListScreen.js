@@ -90,7 +90,8 @@ export default class ShoppingListScreen extends React.Component {
     currlist[index].checked_off = !currlist[index].checked_off;
     this.setState({shoppingList: currlist});
 
-    // send back to server TODO: do this in ComponentWillUnmount() instead
+    // send back to server 
+    // TODO: do this in ComponentWillUnmount() instead
     this.updateList(currlist);
   }
 
