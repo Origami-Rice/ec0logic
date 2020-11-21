@@ -15,7 +15,6 @@ import Constants from "expo-constants";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import send from "../requests/request";
-import { response } from "express";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -160,7 +159,9 @@ export default class ShoppingListScreen extends React.Component {
               <View style={styles.modal}>
                 <ShoppingListInputScreen 
                   addNewItem={this.addNewItem}
-                  inventory={this.state.inventoryArray}></ShoppingListInputScreen>
+                  inventory={this.state.inventoryArray}
+                  onCancel={() => this.setState({modalVisible: 0})}>
+                </ShoppingListInputScreen>
               </View>
             </ScrollView>
           }

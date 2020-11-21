@@ -45,7 +45,16 @@ export default class InventoryInputScreen extends React.Component {
 
   saveItem = () => {
     // TODO: Verify that all fields have been entered correctly
-
+    if (this.state.name === "") {
+      alert("Please enter item name.");
+      return;
+    }
+    
+    if (this.state.quantity === 0 || this.state.unitMeasure === "") {
+      alert("Some fields have not been filled correctly. Please review.");
+      return;
+    }
+    
     const newItem = {
         name: this.state.name,
         expiryDate: this.state.expiryDate,
@@ -60,7 +69,8 @@ export default class InventoryInputScreen extends React.Component {
 
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
-    this.setState({ quantity: value });
+    const val = parseFloat(value);
+    this.setState({ quantity: val });
   };
 
   setUnit = (value) => {

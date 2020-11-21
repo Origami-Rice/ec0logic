@@ -72,20 +72,25 @@ export default class ShoppingListInput extends React.Component {
   }
 
   validateItem = () => {
-    // Validate name entry
-    const {inventoryArray} = this.state;
-    // Check if item is already in inventory, if so, alert
-    for (var i=0; i < inventoryArray; i++) {
-      if (inventoryArray[i].name = this.state.name){
-        this.createAlert();
-        return;
-      } 
+    if (this.state.name) {
+      const {inventoryArray} = this.state;
+      // Check if item is already in inventory, if so, alert
+      for (var i=0; i < inventoryArray; i++) {
+        if (inventoryArray[i].name = this.state.name){
+          this.createAlert();
+          return;
+        } 
+      }
+      this.saveItem();
+    } else {
+      alert("Please enter item name.");
     }
   }
 
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
-    this.setState({ quantity: value });
+    const val = parseFloat(value);
+    this.setState({ quantity: val });
   };
 
   setUnit = (value) => {
@@ -96,7 +101,7 @@ export default class ShoppingListInput extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.cancelButton}>
+        <TouchableOpacity style={styles.cancelButton} onPress={this.props.onCancel}>
           <Text style={styles.cancelText}>x</Text>
         </TouchableOpacity>
         <View style={{ justifyContent: "flex-start" }}>
