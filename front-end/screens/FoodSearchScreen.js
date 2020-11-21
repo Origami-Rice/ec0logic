@@ -79,12 +79,16 @@ export default class FoodSearchScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.topButtonsContainer}>
-          <TouchableOpacity style={styles.cancelButton} onPress={this.props.onCancel}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={this.props.onCancel}
+          >
             <Text style={styles.cancelText}>x</Text>
           </TouchableOpacity>
         </View>
         <TextInput
           placeholder="Search Common Foods"
+          style={styles.inputFormat}
           onChangeText={(text) => {
             this.searchItem(text);
           }}

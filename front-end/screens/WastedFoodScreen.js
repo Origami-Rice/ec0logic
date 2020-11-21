@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Text,
   View,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -19,7 +20,6 @@ let customFonts = {
 };
 
 export default class WastedFoodScreen extends React.Component {
-
   constructor(props) {
     super(props);
     const item = this.props.route.param.item;
@@ -30,7 +30,7 @@ export default class WastedFoodScreen extends React.Component {
       unitsOfMeasure: item.unitsOfMeasure,
       expiryDate: item.expiryDate,
       quantityToRemove: "0",
-    }
+    };
   }
 
   async _loadFontsAsync() {
@@ -48,14 +48,14 @@ export default class WastedFoodScreen extends React.Component {
 
     if (quantityToRemove < 0 || newQuantity < 0) {
       // Alert that this is invalid
-      alert("Quantity Invalid. Please try again")
-
+      alert("Quantity Invalid. Please try again");
     } else if (newQuantity === 0) {
-
       // Navigate back only
       // Note that item was already removed from the inventory
-      this.props.navigation.navigate('List', {screen: "Inventory", params: {update: true}});
-
+      this.props.navigation.navigate("List", {
+        screen: "Inventory",
+        params: { update: true },
+      });
     } else {
       // TODO: send to server the record of wasted food
 
@@ -64,68 +64,89 @@ export default class WastedFoodScreen extends React.Component {
         name: this.state.name,
         quantity: newQuantity,
         unitsOfMeasure: this.state.unitsOfMeasure,
-        expiryDate: this.state.expiryDate
-      }
+        expiryDate: this.state.expiryDate,
+      };
 
-      this.props.navigation.navigate('List', {screen: "Inventory", params: {new_item: newItem} }); // TODO: screen name
+      this.props.navigation.navigate("List", {
+        screen: "Inventory",
+        params: { new_item: newItem },
+      }); // TODO: screen name
     }
-
-  }
+  };
 
   handleCancel = () => {
     // Return to page, sending the old item back
-    this.props.navigation.navigate('List', 
-      {screen: "Inventory", 
-       params: {new_item: this.props.route.params.item} });
-
-  }
+    this.props.navigation.navigate("List", {
+      screen: "Inventory",
+      params: { new_item: this.props.route.params.item },
+    });
+  };
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{ justifyContent: "flex-start" }}>
-          <Text style={styles.header}>{this.state.name}</Text>
-          <Text style={styles.label}>
-            Enter the amount that was thrown out:
-          </Text>
-          <View style={styles.inputWithDetails}>
-            <Text style={[styles.notice, { color: "#C90000", marginTop: 10 }]}>
-              Please enter an amount.
+      <ScrollView
+        style={{
+          height: Dimensions.get("window").height,
+          width: Dimensions.get("window").width,
+        }}
+      >
+        <View style={styles.container}>
+          <View style={{ justifyContent: "flex-start" }}>
+            <Text style={styles.header}>{this.state.name}</Text>
+            <Text style={styles.label}>
+              Enter the amount that was thrown out:
             </Text>
-            <View style={styles.inputContainer}>
-              <TextInput style={styles.inputFormat} 
-                placeholder="Amount"
-                keyboardType="decimal-pad"
-                onChangeText={(text) => this.setState({quantityToRemove: text})} />
-              <View
-                style={{
-                  width: Dimensions.get("window").width * 0.4,
-                  justifyContent: "center",
-                }}
+            <View style={styles.inputWithDetails}>
+              <Text
+                style={[styles.notice, { color: "#C90000", marginTop: 10 }]}
               >
-                <Text style={styles.unitText}>{this.state.unitsOfMeasure}</Text>
+                Please enter an amount.
+              </Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.inputFormat}
+                  placeholder="Amount"
+                  keyboardType="decimal-pad"
+                  onChangeText={(text) =>
+                    this.setState({ quantityToRemove: text })
+                  }
+                />
+                <View
+                  style={{
+                    width: Dimensions.get("window").width * 0.4,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={styles.unitText}>
+                    {this.state.unitsOfMeasure}
+                  </Text>
+                </View>
               </View>
+              <Text style={[styles.notice, { color: "#BDBDBD" }]}>
+                You had {this.state.quantity} {this.state.unitsOfMeasure}{" "}
+                remaining.
+              </Text>
             </View>
-            <Text style={[styles.notice, { color: "#BDBDBD" }]}>
-              You had {this.state.quantity} {this.state.unitsOfMeasure} remaining.
-            </Text>
+          </View>
+          <View style={{ justifyContent: "flex-end", flex: 1 }}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={this.updateQuantity}
+            >
+              <Text style={styles.confirmText}>Confirm Update</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.confirmButton,
+                { marginBottom: Dimensions.get("window").height * 0.1 },
+              ]}
+              onPress={this.handleCancel}
+            >
+              <Text style={styles.confirmText}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={{ justifyContent: "flex-end", flex: 1 }}>
-          <TouchableOpacity style={styles.confirmButton} onPress={this.updateQuantity}>
-            <Text style={styles.confirmText}>Confirm Update</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.confirmButton,
-              { marginBottom: Dimensions.get("window").height * 0.1 },
-            ]}
-            onPress={this.handleCancel}
-          >
-            <Text style={styles.confirmText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -139,6 +160,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5,
     backgroundColor: "#ffffff",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
   inputContainer: {
     padding: 8,

@@ -15,7 +15,7 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
-import FoodSearchScreen from "./FoodSearchScreen"; 
+import FoodSearchScreen from "./FoodSearchScreen";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -73,9 +73,9 @@ export default class InventoryInputScreen extends React.Component {
   setItemName = (value) => {
     this.setState({
       name: value,
-      estimateGiven: false
+      estimateGiven: false,
     });
-  }
+  };
 
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
@@ -85,9 +85,10 @@ export default class InventoryInputScreen extends React.Component {
 
   setUnit = (value) => {
     // QuantityDropdown component will call this function
-    this.setState({ 
+    this.setState({
       unitMeasure: value,
-      estimateGiven: false  });
+      estimateGiven: false,
+    });
   };
 
   setExpiryDate = (value) => {
@@ -112,14 +113,18 @@ export default class InventoryInputScreen extends React.Component {
 
   displayEstimate = () => {
     if (this.state.estimateGiven) {
-      return (<Text style={styles.label}>
-                {" "}
-                Estimated Expiry Date: {this.state.expiryDate.toDateString()}{" \n"}
-                This is only an estimate, select a different expiry date by clicking above.
-              </Text>);
+      return (
+        <Text style={styles.label}>
+          {" "}
+          Estimated Expiry Date: {this.state.expiryDate.toDateString()}
+          {" \n"}
+          This is only an estimate, select a different expiry date by clicking
+          above.
+        </Text>
+      );
     }
     return null;
-  }
+  };
 
   render() {
     return (
@@ -166,7 +171,7 @@ export default class InventoryInputScreen extends React.Component {
                 setParentExpiry={this.setExpiryDate}
                 defaultDate={this.state.expiryDate}
               />
-             { this.displayEstimate() }
+              {this.displayEstimate()}
             </View>
           </View>
           <View
@@ -198,8 +203,8 @@ export default class InventoryInputScreen extends React.Component {
                 <View style={styles.modal}>
                   <FoodSearchScreen
                     setSearchItem={this.setSearchedItem}
-                    onCancel={() => this.setState({visibleModal: 0})}>
-                  </FoodSearchScreen>
+                    onCancel={() => this.setState({ visibleModal: 0 })}
+                  ></FoodSearchScreen>
                 </View>
               </ScrollView>
             }
@@ -219,6 +224,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: "#ffffff",
     zIndex: 1,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
   inputContainer: {
     flexDirection: "column",

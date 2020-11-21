@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     }),
   },
   inputFormat: {
-    width: "80%",
+    width: Dimensions.get("window").width * 0.8,
     height: 31,
     backgroundColor: "#ffffff",
     borderColor: "black",
