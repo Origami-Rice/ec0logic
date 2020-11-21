@@ -89,6 +89,18 @@ export default class ShoppingListScreen extends React.Component {
     var currlist = this.state.shoppingList;
     currlist[index].checked_off = !currlist[index].checked_off;
     this.setState({shoppingList: currlist});
+
+    // send back to server TODO: do this in ComponentWillUnmount() instead
+    this.updateList(currlist);
+  }
+
+  updateList = (updatedList) => {
+    send("updateShoppingList", updatedList, '/test-user')
+    .then(response => response.json())
+    .catch(error => {
+      console.log(error);
+      console.log("Error updating shopping list");
+    });
   }
 
   addNewItem = (item) => {
