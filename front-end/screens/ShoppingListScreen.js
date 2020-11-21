@@ -15,6 +15,7 @@ import Constants from "expo-constants";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import send from "../requests/request";
+import { response } from "express";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -34,6 +35,7 @@ export default class ShoppingListScreen extends React.Component {
         { name: "Mango" },
         { name: "Apples" },
       ],
+      inventoryArray: [],
       fontsLoaded: false,
       modalVisible: 0
     };
@@ -57,6 +59,18 @@ export default class ShoppingListScreen extends React.Component {
       console.log("Error getting shopping list");
       console.log(error);
     })
+
+    // get the user's inventory list
+    send("getInventory", {}, "/test-user")
+    .then(response => response.json())
+    .then((json) => {
+      this.setState({ inventoryArray: json });
+    })
+    .catch((error) => {
+      console.log("Error getting user inventory");
+      console.log(error);
+    });
+
   }
 
   displayItems = () => {

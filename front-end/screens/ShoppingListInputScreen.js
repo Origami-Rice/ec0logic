@@ -24,14 +24,10 @@ export default class ShoppingListInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inventoryArray: [{ name: "Butter", expiryDate: "Nov 30, 2020", quantity: 2 },
-      { name: "Cabbage" },
-      { name: "Sweet Potato" },
-      { name: "Mango" },
-      { name: "Apples" }],
+      inventoryArray: this.props.inventoryArray,
       name: "",
       quantity: 0,
-      
+      unitsOfMeasure: "",  
     }
   }
   async _loadFontsAsync() {
@@ -66,6 +62,7 @@ export default class ShoppingListInput extends React.Component {
     const new_item = {
       name: this.state.name,
       quantity: this.state.quantity,
+      unitsOfMeasure: this.state.unitsOfMeasure,
       checked_off: false
     }
 
@@ -85,6 +82,16 @@ export default class ShoppingListInput extends React.Component {
       } 
     }
   }
+
+  setQuantity = (value) => {
+    // Quality DropDown Child will set this value
+    this.setState({ quantity: value });
+  };
+
+  setUnit = (value) => {
+    // QuantityDropdown component will call this function
+    this.setState({ unitsOfMeasure: value });
+  };
   
   render() {
     return (
@@ -96,9 +103,13 @@ export default class ShoppingListInput extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Enter New Food Item"
+            onChangeText={(text) => this.setState({name: text})}
           />
           <Text style={styles.label}>Quantity:</Text>
-          <QuantityDropdown></QuantityDropdown>
+          <QuantityDropdown 
+          setParentQuantity={this.setQuantity}
+          setParentUnit={this.setUnit}
+          ></QuantityDropdown>
           <Text style={styles.optional}>Optional</Text>
         </View>
         <View style={{ justifyContent: "flex-end", zIndex: -1 }}>
