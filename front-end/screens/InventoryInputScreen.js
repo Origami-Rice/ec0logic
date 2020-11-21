@@ -114,13 +114,16 @@ export default class InventoryInputScreen extends React.Component {
   displayEstimate = () => {
     if (this.state.estimateGiven) {
       return (
-        <Text style={styles.label}>
-          {" "}
-          Estimated Expiry Date: {this.state.expiryDate.toDateString()}
-          {" \n"}
-          This is only an estimate, select a different expiry date by clicking
-          above.
-        </Text>
+        <View>
+          <Text style={styles.label}>
+            {" "}
+            Estimated Expiry Date: {this.state.expiryDate.toDateString()}
+          </Text>
+          <Text style={styles.note}>
+            This is only an estimate, select a different expiry date by clicking
+            above.
+          </Text>
+        </View>
       );
     }
     return null;
@@ -285,6 +288,15 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     marginVertical: 5,
+    zIndex: 1,
+  },
+  note: {
+    textAlign: "center",
+    alignSelf: "center",
+    fontFamily: "Montserrat_400Regular",
+    fontSize: 11,
+    marginVertical: 5,
+    color: "#828282",
     zIndex: 1,
   },
   confirmText: {
