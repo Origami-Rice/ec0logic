@@ -70,7 +70,7 @@ export default class WastedFoodScreen extends React.Component {
       this.props.navigation.navigate("List", {
         screen: "Inventory",
         params: { new_item: newItem },
-      }); // TODO: screen name
+      });
     }
   };
 
@@ -97,11 +97,6 @@ export default class WastedFoodScreen extends React.Component {
               Enter the amount that was thrown out:
             </Text>
             <View style={styles.inputWithDetails}>
-              <Text
-                style={[styles.notice, { color: "#C90000", marginTop: 10 }]}
-              >
-                Please enter an amount.
-              </Text>
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.inputFormat}

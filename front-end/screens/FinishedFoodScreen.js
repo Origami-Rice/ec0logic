@@ -95,11 +95,6 @@ export default class FinishedFoodScreen extends React.Component {
               Enter the amount that you finished:
             </Text>
             <View style={styles.inputWithDetails}>
-              <Text
-                style={[styles.notice, { color: "#C90000", marginTop: 10 }]}
-              >
-                Please enter an amount.
-              </Text>
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.inputFormat}
