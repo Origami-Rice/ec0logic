@@ -7,13 +7,13 @@ import {
   TextInput,
   Dimensions,
   Platform,
-  Alert
+  Alert,
 } from "react-native";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
-import send from "../requests/request"
+import send from "../requests/request";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -28,8 +28,8 @@ export default class ShoppingListInput extends React.Component {
       inventoryArray: this.props.inventoryArray,
       name: "",
       quantity: 0,
-      unitsOfMeasure: "units",  
-    }
+      unitsOfMeasure: "units",
+    };
   }
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
@@ -38,7 +38,6 @@ export default class ShoppingListInput extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
-
   }
 
   // Alerts user that an item that they are attempting to add is in their inventory
@@ -50,43 +49,42 @@ export default class ShoppingListInput extends React.Component {
         {
           text: "Go back",
           onPress: () => console.log("Go Back Pressed"),
-          style: "cancel"
+          style: "cancel",
         },
-        { text: "Continue anyways", onPress: () => this.saveItem() }
+        { text: "Continue anyways", onPress: () => this.saveItem() },
       ],
       { cancelable: false }
     );
-
-  }
+  };
 
   saveItem = () => {
     const new_item = {
       name: this.state.name,
       quantity: this.state.quantity,
       unitsOfMeasure: this.state.unitsOfMeasure,
-      checked_off: false
-    }
+      checked_off: false,
+    };
 
-    // Add item to parent 
+    // Add item to parent
     const { addNewItem } = this.props;
     addNewItem(new_item);
-  }
+  };
 
   validateItem = () => {
     if (this.state.name) {
-      const {inventoryArray} = this.state;
+      const { inventoryArray } = this.state;
       // Check if item is already in inventory, if so, alert
-      for (var i=0; i < inventoryArray.length; i++) {
-        if (inventoryArray[i].name === this.state.name){
+      for (var i = 0; i < inventoryArray.length; i++) {
+        if (inventoryArray[i].name === this.state.name) {
           this.createAlert();
           return;
-        } 
+        }
       }
       this.saveItem();
     } else {
       alert("Please enter item name.");
     }
-  }
+  };
 
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
@@ -98,28 +96,34 @@ export default class ShoppingListInput extends React.Component {
     // QuantityDropdown component will call this function
     this.setState({ unitsOfMeasure: value });
   };
-  
+
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.cancelButton} onPress={this.props.onCancel}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={this.props.onCancel}
+        >
           <Text style={styles.cancelText}>x</Text>
         </TouchableOpacity>
         <View style={{ justifyContent: "flex-start" }}>
           <TextInput
             style={styles.inputFormat}
             placeholder="Enter New Food Item"
-            onChangeText={(text) => this.setState({name: text})}
+            onChangeText={(text) => this.setState({ name: text })}
           />
           <Text style={styles.label}>Quantity:</Text>
-          <QuantityDropdown 
-          setParentQuantity={this.setQuantity}
-          setParentUnit={this.setUnit}
+          <QuantityDropdown
+            setParentQuantity={this.setQuantity}
+            setParentUnit={this.setUnit}
           ></QuantityDropdown>
           <Text style={styles.optional}>Optional</Text>
         </View>
         <View style={{ justifyContent: "flex-end", zIndex: -1 }}>
-          <TouchableOpacity style={styles.confirmButton} onPress={this.validateItem}>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={this.validateItem}
+          >
             <Text style={styles.confirmText}>Confirm</Text>
           </TouchableOpacity>
         </View>
@@ -157,13 +161,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     margin: 25,
     zIndex: 1,
-    // iOS shadow
-    shadowColor: "rgba(0,0,0, .5)",
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    // Android shadow
-    elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .5)",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   inputFormat: {
     width: "80%",
