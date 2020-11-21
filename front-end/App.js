@@ -8,6 +8,8 @@ import Constants from "expo-constants";
 import InventoryAllFoodsScreen from "./screens/InventoryAllFoodsScreen";
 import InventoryInputScreen from "./screens/InventoryInputScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
+import FinishedFoodScreen from "./screens/FinishedFoodScreen";
+import WastedFoodScreen from "./screens/WastedFoodScreen";
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
@@ -24,6 +26,8 @@ function InventoryStackScreen() {
     >
       <InventoryStack.Screen name="List" component={MyTabs} />
       <InventoryStack.Screen name="Input" component={InventoryInputScreen} />
+      <InventoryStack.Screen name="ThrownOut" component={WastedFoodScreen} />
+      <InventoryStack.Screen name="Used" component={FinishedFoodScreen} />
     </InventoryStack.Navigator>
   );
 }

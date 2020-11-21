@@ -104,7 +104,7 @@ export default class FinishedFoodScreen extends React.Component {
               </View>
             </View>
             <Text style={[styles.notice, { color: "#BDBDBD" }]}>
-              You had {this.state.quantity} packages remaining.
+              You had {this.state.quantity} {this.state.unitsOfMeasure} remaining.
             </Text>
           </View>
         </View>
