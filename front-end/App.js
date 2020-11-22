@@ -48,7 +48,7 @@ function MyTabs() {
     >
       <Tab.Screen
         name="Inventory"
-        component={InventoryAllFoodsScreen}
+        component={InventoryAllFoods}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="kitchen" color={color} size={size} style={{marginTop: 5}}/>
