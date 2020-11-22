@@ -7,21 +7,21 @@ const food_lib_collection = "food_library"
 const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 //
-const {UserSchema} = require('../models/schemas'); 
+const {User} = require('../models/schemas'); 
+const {CommonFood} = require('../models/schemas');
 
 //////////////////// USER QUERIES ////////////////////
 exports.add_user = async (username) => {
-    return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-        { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
-    /*const newUser = new UserSchema({
+    //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
+    //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+    const newUser = new User({
         username: username, 
         inventory_list: [], 
         wasted_items: [], 
         shopping_list: []
     });
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-        newUser));*/
-
+        newUser));
 };
 
 exports.remove_user = async (username) => {
@@ -75,8 +75,14 @@ exports.get_common_food = async () => {
 };
 
 exports.add_common_food = async (name, days) => {
+    //return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
+    //    {name: name, days: days}));
+    const newCommonFood = new CommonFood({
+        name: name,
+        days: days
+    });
     return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
-        {name: name, days: days}));
+        newCommonFood));
 };
 
 ////////////////// Shopping list queries /////////////////////
