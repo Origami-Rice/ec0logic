@@ -2,7 +2,7 @@ const app = require('../server'); // Link to your server file
 const supertest = require('supertest');
 const request = supertest(app);
 
-const name = "test";
+const name = "shopping_test";
 
 const {
     add_user, 
@@ -25,8 +25,16 @@ const shoppingItem2 = {
     }
 }
 
-const shoppingList = {
-    "shoppingList": [
+const shoppingItem3 = {
+    "item1": {
+        "name": "",
+        "quantity": 1,
+        "checked_off": false 
+    }
+}
+
+const shoppingList = 
+    [
         {
             "name": "Fish",
             "quantity": 2,
@@ -37,11 +45,9 @@ const shoppingList = {
             "quantity": 1,
             "checked_off": true 
         }
-    ]
-}
+    ];
 
 // Setup and Teardown 
-
 beforeAll(async () => {
     return await add_user(name);
 });
@@ -82,21 +88,32 @@ describe("access and update shopping list", () => {
     });
 
     test("user's shopping list properly updates", async () => {
-        url = "/api/inventory/" + name;
+        url = "/api/shoppingList/" + name;
         const response = await request
             .put(url)
-            .send([shoppingItem2]);
+            .send(shoppingList);
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "Shopping list successfully updated."});
     }); 
 
-    /*test("user's shopping list properly deletes", async () => {
-        url = "/api/inventory/" + name; 
+    test("user's shopping list properly deletes", async () => {
+        url = "/api/shoppingList/" + name + "/Pizza"; 
         const response = await request 
             .delete(url)
 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual({"success": "item " + shoppingList + " deleted." });
+        expect(response.body).toEqual({"success": "item Pizza deleted." });
+    });
+    
+    /*test("rejects items with no name", async() => {
+        url = "/api/shoppingList/" + name;
+        const response = await request
+            .post(url)
+            .set("Accept", "application/json")
+            .send(shoppingItem3);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toEqual({"error": "Item could not be added to history."});
     })*/
 });
