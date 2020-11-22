@@ -104,6 +104,10 @@ export default class InventoryAllFoods extends React.Component {
     
   }
 
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
   addItem = (item) => {
 
     var currInventory = this.state.inventoryArray;
@@ -230,10 +234,12 @@ export default class InventoryAllFoods extends React.Component {
   }
 
   displayItems = () => {
+    const now = new Date().toISOString();
     // Dynamically
     if (this.state.allFoods) {
       return this.state.inventoryArray.map((data, i) => (
-        <InventoryListItem 
+        <InventoryListItem
+        key={data.name + now} 
         item={data.name}
         expiryDate={data.expiryDate}
         quantity={data.quantity} 
@@ -243,6 +249,7 @@ export default class InventoryAllFoods extends React.Component {
     } else {
       return this.state.expiringArray.map((data, i) => (
         <InventoryListItem item={data.name}
+        key={data.name + now} 
         expiryDate={data.expiryDate}
         quantity={data.quantity}
         unitsOfMeasure={data.unitsOfMeasure}
