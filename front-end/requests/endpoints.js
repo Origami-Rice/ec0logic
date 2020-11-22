@@ -5,25 +5,25 @@ const endpoints = {
         method: 'GET',
     },
     addToInventory: {
-        endpoint: 'api/inventory',
+        endpoint: '/api/inventory',
         method: 'POST',
     }, 
     getExpiring: {
-        endpoint: 'api/inventory/expiring', 
+        endpoint: '/api/inventory/expiring', 
         method: 'GET',
     }, 
     getExpired: {
-        endpoint: 'api/inventory/expired', 
+        endpoint: '/api/inventory/expired', 
         method: 'GET',
     },
 
     // Food + Shelflife Library
     getFoodLibrary: {
-        endpoint: 'api/food-library',
+        endpoint: '/api/food-library',
         method: 'GET',
     },
     addToFoodLibrary: {
-        endpoint: 'api/food-library',
+        endpoint: '/api/food-library',
         method: 'POST',
     },
 

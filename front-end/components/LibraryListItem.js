@@ -13,12 +13,10 @@ const LibraryListItem = (props) => {
     return <AppLoading />;
   } else {
     return (
-      <TouchableOpacity style={styles.listItem}>
+      <TouchableOpacity style={styles.listItem} onPress={props.onPress}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
-          <Text style={styles.textInfo}>
-            Expires in {props.daysExpire} days
-          </Text>
+          <Text style={styles.textInfo}>Expires in {props.shelfLife} days</Text>
         </View>
       </TouchableOpacity>
     );
@@ -36,6 +34,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     alignSelf: "center",
+    backgroundColor: "#ffffff",
+    marginVertical: 5,
   },
 
   textGroup: {

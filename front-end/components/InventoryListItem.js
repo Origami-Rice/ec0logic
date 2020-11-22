@@ -16,11 +16,13 @@ const InventoryListItem = (props) => {
       <View style={styles.listItem}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
-          <Text style={styles.textInfo}>Expires: Nov 3, 2020 </Text>
-          <Text style={styles.textInfo}>Quantity: 5 things</Text>
+          <Text style={styles.textInfo}>Expiry Date: {props.expiryDate.toDateString()} </Text>
+          <Text style={styles.textInfo}>Quantity: {props.quantity} {props.unitsOfMeasure} </Text>
         </View>
         <View style={styles.checkFlex}>
-          <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.checkbox} 
+            onPress={props.onPress}></TouchableOpacity>
         </View>
       </View>
     );

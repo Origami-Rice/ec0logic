@@ -12,13 +12,23 @@ const ShoppingListItem = (props) => {
   });
   const [checked, setChecked] = useState(props.checkedOff || false);
   const index = props.index;
+  const quantity = props.quantity;
+  const units = props.unitsOfMeasure;
 
   const handlePress = () => {
     setChecked(!checked);
-    const { updateParent } = this.props;
-    updateParent(index, !checked);
+    const { updateCheck } = props;
+    updateCheck(index);
+  };
+
+  const displayQuantity = () => {
+    if (quantity !== 0) {
+      return ("Quantity: " + quantity + " " + units);
+    } else {
+      return "";
+    }
   }
-  
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -35,7 +45,7 @@ const ShoppingListItem = (props) => {
             style={
               checked
                 ? [styles.textItem, { color: "#BDBDBD" }]
-                : styles.textItem
+                : [styles.textItem, { color: "#000000" }]
             }
           >
             {props.item}
@@ -45,10 +55,10 @@ const ShoppingListItem = (props) => {
             style={
               checked
                 ? [styles.textInfo, { color: "#BDBDBD" }]
-                : styles.textInfo
+                : [styles.textInfo, { color: "#000000" }]
             }
           >
-            {test}
+            {displayQuantity()}
           </Text>
         </View>
       </View>

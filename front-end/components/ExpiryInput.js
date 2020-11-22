@@ -9,19 +9,21 @@ let customFonts = {
 };
 
 let months = {
-  January: 0,
-  February: 1,
-  March: 2,
-  April: 3,
-  May: 4,
-  June: 5,
-  July: 6,
-  August: 7,
-  September: 8,
-  October: 9,
+  'January': 0,
+  'February': 1,
+  'March': 2,
+  'April': 3,
+  'May': 4,
+  'June': 5,
+  'July': 6,
+  'August': 7,
+  'September': 8,
+  'October': 9,
   November: 10,
   December: 11,
 };
+
+const monthNames = Object.keys(months);
 
 export default class ExpiryInput extends React.Component {
   constructor(props) {
@@ -43,14 +45,14 @@ export default class ExpiryInput extends React.Component {
 
   onChangeMonth = (text) => {
     const newDate = new Date(
-      state.expiryDate.getFullYear(),
+      this.state.expiryDate.getFullYear(),
       months[text],
-      state.expiryDate.getDate()
+      this.state.expiryDate.getDate()
     );
 
-    this.setState((state) => ({
+    this.setState({
       expiryDate: newDate,
-    }));
+    });
     // Send info back to parent
     const { setParentExpiry } = this.props;
     setParentExpiry(newDate);
@@ -58,13 +60,13 @@ export default class ExpiryInput extends React.Component {
 
   onChangeDay = (text) => {
     const newDate = new Date(
-      state.expiryDate.getFullYear(),
-      state.expiryDate.getMonth(),
+      this.state.expiryDate.getFullYear(),
+      this.state.expiryDate.getMonth(),
       parseInt(text));
 
-    this.setState((state) => ({
+    this.setState({
       expiryDate: newDate
-    }));
+    });
     // Send info back to parent
     const { setParentExpiry } = this.props;
     setParentExpiry(newDate);
@@ -73,13 +75,13 @@ export default class ExpiryInput extends React.Component {
   onChangeYear = (text) => {
     const newDate = new Date(
       parseInt(text),
-      state.expiryDate.getMonth(),
-      state.expiryDate.getDate()
+      this.state.expiryDate.getMonth(),
+      this.state.expiryDate.getDate()
     );
 
-    this.setState((state) => ({
+    this.setState({
       expiryDate: newDate
-    }));
+    });
 
     // Send info back to parent
     const { setParentExpiry } = this.props;
@@ -94,7 +96,7 @@ export default class ExpiryInput extends React.Component {
           <DropDownPicker
             label="Month"
             items={[
-              { label: "January", value: "January", selected: true },
+              { label: "January", value: "January" },
               { label: "February", value: "February" },
               { label: "March", value: "March" },
               { label: "April", value: "April" },

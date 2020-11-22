@@ -43,6 +43,7 @@ export default class QualityDropdown extends React.Component {
             style={styles.inputFormat}
             placeholder="Amount"
             keyboardType = 'decimal-pad'
+            returnKeyType='done'
             onChangeText={(text) => this.onChangeQuantity(text)}
           />
           <View>

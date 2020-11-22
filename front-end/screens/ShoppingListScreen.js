@@ -34,7 +34,9 @@ export default class ShoppingListScreen extends React.Component {
         { name: "Mango" },
         { name: "Apples" },
       ],
+      inventoryArray: [],
       fontsLoaded: false,
+      modalVisible: 0
     };
   }
 
@@ -43,9 +45,7 @@ export default class ShoppingListScreen extends React.Component {
     this.setState({ fontsLoaded: true });
   }
 
-  componentDidMount() {
-    this._loadFontsAsync();
-    
+  _loadData = () => {
     // get user's shopping list from server
     send("getShoppingList", {}, "/test-user")
     .then(response => response.json())
@@ -56,22 +56,132 @@ export default class ShoppingListScreen extends React.Component {
       console.log("Error getting shopping list");
       console.log(error);
     })
+
+    // get the user's inventory list
+    send("getInventory", {}, "/test-user")
+    .then(response => response.json())
+    .then((json) => {
+      this.setState({ inventoryArray: json });
+    })
+    .catch((error) => {
+      console.log("Error getting user inventory");
+      console.log(error);
+    });
+  }
+
+  componentDidMount() {
+    // this._loadFontsAsync();
+    this._loadData();
+
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      this._loadData();
+    });
+
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   displayItems = () => {
+    const now = new Date().toISOString();
     // Dynamically
-    return this.state.shoppingList.map((data) => (
-      <ShoppingListItem 
+    return this.state.shoppingList.map((data, i) => (
+      <ShoppingListItem
+      key={data.name + now}
       item={data.name} 
       quantity={data.quantity}
-      checkedOff={data.checked_off} />
+      unitsOfMeasure={data.unitsOfMeasure}
+      checkedOff={data.checked_off}
+      index={i}
+      updateCheck={this.updateCheck} />
     ));
   };
   
-  updateCheck = (index, checkedOff) => {
+  updateCheck = (index) => {
     var currlist = this.state.shoppingList;
-    currlist[index].checked_off = checkedOff;
-    this.setState({shoppingListArray: currlist});
+    currlist[index].checked_off = !currlist[index].checked_off;
+    this.setState({shoppingList: currlist});
+
+    // send back to server 
+    this.updateList(currlist);
+  }
+
+  updateList = (updatedList) => {
+    send("updateShoppingList", updatedList, '/test-user')
+    .then(response => response.json())
+    .catch(error => {
+      console.log(error);
+      console.log("Error updating shopping list");
+    });
+  }
+
+  addNewItem = (item) => {
+    // add item to shopping list
+    const currlist = this.state.shoppingList;
+    currlist.push(item);
+    this.setState({shoppingList: currlist});
+
+    // add item to server
+    send("addToShoppingList", item, '/test-user')
+    .then(response => response.json())
+    .catch(error => {
+      console.log(error);
+      console.log("Error adding new item to shopping list");
+    });
+
+    // close modal
+    this.setState({visibleModal : 0});
+
+  }
+
+  updateInventory = (updatedInventory) => {
+
+    const data = {
+      list: updatedInventory
+    };
+
+    // Send updated list to server
+    send("addToInventory", data, "/test-user")
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.error);
+      })
+      .catch((error) => {
+        console.log("Error adding new item to inventory");
+        console.log(error);
+      });
+
+  }
+
+  addCheckedOffToInventory = () => {
+    const { shoppingList } = this.state;
+    var currInventory = this.state.inventoryArray;
+
+    var unchecked = [];
+    // create a list of unchecked items to be new shopping list
+    for (let i = 0; i < shoppingList.length; i++) {
+      let item = shoppingList[i];
+      if (item.checked_off) {
+        currInventory.push({
+          name: item.name,
+          quantity: item.quantity,
+          unitsOfMeasure: item.unitsOfMeasure,
+          expiryDate: new Date() // TODO: default expirydate is today
+        });
+      } else {
+        unchecked.push(item);
+      }
+    }
+
+    this.setState({
+      inventoryArray: currInventory,
+      shoppingList: unchecked
+    });
+
+    this.updateList(unchecked);
+    this.updateInventory(currInventory);
+    
   }
 
   render() {
@@ -103,7 +213,7 @@ export default class ShoppingListScreen extends React.Component {
             </Text>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={this.addCheckedOffToInventory}>
               <Text style={styles.addText}>↑</Text>
             </TouchableOpacity>
             <Text style={styles.addButtonLabel}>
@@ -124,7 +234,11 @@ export default class ShoppingListScreen extends React.Component {
               }}
             >
               <View style={styles.modal}>
-                <ShoppingListInputScreen></ShoppingListInputScreen>
+                <ShoppingListInputScreen 
+                  addNewItem={this.addNewItem}
+                  inventoryArray={this.state.inventoryArray}
+                  onCancel={() => this.setState({visibleModal: 0})}>
+                </ShoppingListInputScreen>
               </View>
             </ScrollView>
           }

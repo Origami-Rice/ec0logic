@@ -9,13 +9,13 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
+import Modal from "react-native-modal";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
-import DatePicker from './components/DatePicker'
-
-import send from "../requests/request";
+import DatePicker from "../components/DatePicker";
+import FoodSearchScreen from "./FoodSearchScreen";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -27,11 +27,13 @@ export default class InventoryInputScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inventoryArray: this.props.inventoryArray,
+      inventoryArray: [],
       name: "",
       quantity: 0,
-      unitMeasure: "",
+      unitMeasure: "units",
       expiryDate: new Date(),
+      visibleModal: 0,
+      estimateGiven: false,
     };
   }
   async _loadFontsAsync() {
@@ -44,60 +46,89 @@ export default class InventoryInputScreen extends React.Component {
   }
 
   saveItem = () => {
-    // TODO: Verify that all fields have been entered correctly
+    // Verify that all fields have been entered correctly
+    if (this.state.name === "") {
+      alert("Please enter item name.");
+      return;
+    }
 
-    var currInventory = this.state.inventoryArray;
+    if (this.state.quantity === 0 || this.state.unitMeasure === "") {
+      alert("Some fields have not been filled correctly. Please review.");
+      return;
+    }
 
     const newItem = {
-        name: this.state.name,
-        expiryDate: this.state.expiryDate, // TODO: convert into proper value
-        quantity: this.state.quantity,
-        unitsOfMeasure: this.state.unitMeasure
+      name: this.state.name,
+      expiryDate: this.state.expiryDate,
+      quantity: this.state.quantity,
+      unitsOfMeasure: this.state.unitMeasure,
     };
 
-    currInventory.push(newItem);
+    this.props.navigation.navigate("List", {
+      screen: "Inventory",
+      params: { new_item: newItem },
+    });
+  };
 
-    const data = {
-      list: currInventory
-    };
-
-    // Otherwise, we can save the item to the server
-    send("addToInventory", data, "/test-user")
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json.error);
-      })
-      .catch((error) => {
-        console.log("Error adding new item to inventory");
-        console.log(error);
-      });
-
-    // TODO: Navigate back to inventory screen
+  setItemName = (value) => {
+    this.setState({
+      name: value,
+      estimateGiven: false,
+    });
   };
 
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
-    this.setState({ quantity: value });
+    const val = parseFloat(value);
+    this.setState({ quantity: val });
   };
 
   setUnit = (value) => {
     // QuantityDropdown component will call this function
-    this.setState({ unitMeasure: value });
+    this.setState({
+      unitMeasure: value,
+    });
   };
 
   setExpiryDate = (value) => {
     // ExpiryDropDown component will call this
-    this.setState({ expiryDate: value });
+    this.setState({
+      expiryDate: value,
+      estimateGiven: false,
+    });
   };
 
   setSearchedItem = (item) => {
-    // Food Search Screen
+    // Called by Food Search Screen
     var expiry = new Date();
-    expiry.setDate(expiry.getDate() + item.shelf_life);
+    expiry.setDate(expiry.getDate() + item.days);
     this.setState({
       name: item.name,
       expiryDate: expiry,
+      estimateGiven: true,
     });
+
+    this.setState({
+      visibleModal: 0,
+    });
+  };
+
+  displayEstimate = () => {
+    if (this.state.estimateGiven) {
+      return (
+        <View>
+          <Text style={styles.label}>
+            {" "}
+            Estimated Expiry Date: {this.state.expiryDate.toDateString()}
+          </Text>
+          <Text style={styles.note}>
+            This is only an estimate, select a different expiry date by clicking
+            above.
+          </Text>
+        </View>
+      );
+    }
+    return null;
   };
 
   render() {
@@ -109,28 +140,53 @@ export default class InventoryInputScreen extends React.Component {
         }}
       >
         <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={() => this.props.navigation.goBack(null)}
+          <View
+            style={{
+              justifyContent: "flex-start",
+              width: Dimensions.get("window").width,
+            }}
           >
-            <Text style={styles.cancelText}>x</Text>
-          </TouchableOpacity>
-          <TextInput
-            style={styles.inputFormat}
-            placeholder="Enter New Food Item"
-            onChangeText={this.handleNameEntered}
-          />
-          <Text style={styles.label}>Quantity:</Text>
-          <QuantityDropdown
-            setParentQuantity={this.setQuantity}
-            setParentUnit={this.setUnit}
-          ></QuantityDropdown>
-          <Text style={styles.label}>Select Expiry Date:</Text>
-          <DatePicker 
-          setParentExpiry={this.setExpiryDate} 
-          defaultDate={this.state.expiryDate}/>
-          <Text style={styles.label}> {this.state.expiryDate.toString()} </Text>
-          <View style={{ zIndex: -1 }}>
+            <View style={styles.topButtonsContainer}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => this.setState({ visibleModal: 1 })}
+              >
+                <Text style={styles.cancelText}>s</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => this.props.navigation.goBack(null)}
+              >
+                <Text style={styles.cancelText}>x</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholder="Enter New Food Item"
+                value={this.state.name}
+                onChangeText={(text) => this.setItemName(text)}
+              />
+              <Text style={styles.label}>Quantity:</Text>
+              <QuantityDropdown
+                setParentQuantity={this.setQuantity}
+                setParentUnit={this.setUnit}
+              ></QuantityDropdown>
+              <Text style={styles.label}>Select Expiry Date:</Text>
+              <DatePicker
+                setParentExpiry={this.setExpiryDate}
+                defaultDate={this.state.expiryDate}
+              />
+              {this.displayEstimate()}
+            </View>
+          </View>
+          <View
+            style={{
+              justifyContent: "flex-end",
+              flex: 1,
+              zIndex: -1,
+            }}
+          >
             <TouchableOpacity
               style={styles.confirmButton}
               onPress={this.saveItem}
@@ -138,6 +194,20 @@ export default class InventoryInputScreen extends React.Component {
               <Text style={styles.confirmText}>Confirm</Text>
             </TouchableOpacity>
           </View>
+          <Modal
+            isVisible={this.state.visibleModal === 1}
+            style={styles.bottomModal}
+            avoidKeyboard={false}
+          >
+            {
+              <View style={styles.modal}>
+                <FoodSearchScreen
+                  setSearchItem={this.setSearchedItem}
+                  onCancel={() => this.setState({ visibleModal: 0 })}
+                ></FoodSearchScreen>
+              </View>
+            }
+          </Modal>
         </View>
       </ScrollView>
     );
@@ -146,15 +216,24 @@ export default class InventoryInputScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get("window").height,
-    padding: 8,
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    zIndex: 1,
     backgroundColor: "#ffffff",
+    zIndex: 1,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+  },
+  inputContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  topButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   cancelText: {
     textAlign: "center",
@@ -173,13 +252,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     margin: 25,
     zIndex: 1,
-    // iOS shadow
-    shadowColor: "rgba(0,0,0, .5)",
-    shadowOffset: { height: 4, width: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    // Android shadow
-    elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgba(0,0,0, .5)",
+        shadowOffset: { height: 4, width: 0 },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   inputFormat: {
     width: "80%",
@@ -200,8 +283,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "Montserrat_500Medium",
     fontSize: 14,
-    marginBottom: 5,
-    marginTop: 50,
+    marginVertical: 5,
+    zIndex: 1,
+  },
+  note: {
+    textAlign: "center",
+    alignSelf: "center",
+    fontFamily: "Montserrat_400Regular",
+    fontSize: 11,
+    marginVertical: 5,
+    color: "#828282",
     zIndex: 1,
   },
   confirmText: {
@@ -218,7 +309,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: "#d8d8d8",
-    marginVertical: Dimensions.get("window").height * 0.2,
+    margin: 40,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -231,5 +322,19 @@ const styles = StyleSheet.create({
       },
     }),
     zIndex: 1,
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+  },
+  modal: {
+    backgroundColor: "white",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });
