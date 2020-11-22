@@ -8,6 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  Dimensions
 } from "react-native";
 import { ListItem } from "react-native-elements";
 import LibraryListItem from "../components/LibraryListItem";

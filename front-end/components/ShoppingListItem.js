@@ -23,7 +23,7 @@ const ShoppingListItem = (props) => {
 
   const displayQuantity = () => {
     if (quantity !== 0) {
-      return ("Quantity: " + quantity.toString() + " " + units);
+      return ("Quantity: " + quantity + " " + units);
     } else {
       return "";
     }
