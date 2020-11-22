@@ -46,7 +46,8 @@ const ShoppingListSchema = new mongoose.Schema({
         trim: true
     },
     quantity: Number,
-    checked_off: Boolean
+    checked_off: Boolean,
+    unitsOfMeasure: String
     
 });
 

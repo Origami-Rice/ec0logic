@@ -10,6 +10,7 @@ const {
     add_item_to_shopping_list,
     remove_item_from_shopping_list,
     update_shopping_list,
+    add_user
     
 } = require('../dataAccess/userData')
 
@@ -29,7 +30,20 @@ router
                     .status(200)
                     .json(result.shopping_list);
             }else{
-                return response.status(404).json({"error": "No shopping list detected."});
+                // if user does not exist, create new user
+                try {
+                    const user = await add_user(username);
+                    const result2 = await get_shopping_list(username)
+                    if (user) {
+                        return response
+                            .status(200)
+                            .json(result2.shopping_list);
+                    }
+                    return response.status(500).json({ error: "Internal server error" });
+                } catch (error) {
+                    console.log(error)
+                }
+                // return response.status(404).json({"error": "No shopping list detected."});
             }
         }catch (error) {
             console.log(error);

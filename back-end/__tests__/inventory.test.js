@@ -102,7 +102,7 @@ describe("access and update user's inventory", () => {
 
 describe("filter expired and expiring items", () => {
     test("retrieve single item that expires within the week", async () => {
-        url = "/api/inventory/" + name + "/expiring";
+        url = "/api/inventory/expiring/" + name;
         // send a get request
         const response = await request.get(url);
         
@@ -114,7 +114,7 @@ describe("filter expired and expiring items", () => {
     });
 
     test("retrieve single item that already expired", async () => {
-        url = "/api/inventory/" + name + "/expired";
+        url = "/api/inventory/expired/" + name;
         // send a get request
         const response = await request.get(url);
 
