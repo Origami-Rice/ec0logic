@@ -14,6 +14,9 @@ const {CommonFood} = require('../models/schemas');
 exports.add_user = async (username) => {
     //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
     //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+    if (!(typeof username === 'string' && username != '')){
+        return false; 
+    }
     const newUser = new User({
         username: username, 
         inventory_list: [], 

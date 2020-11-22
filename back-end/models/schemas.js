@@ -65,6 +65,5 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 const CommonFood = mongoose.model("CommonFood", CommonFoodSchema);
-const ShoppingListItem = mongoose.model('ShoppingListItem', ShoppingListSchema);
 //module.exports = {UserSchema: UserSchema, CommonFoodSchema: CommonFoodSchema};
-module.exports = {User: User, CommonFood: CommonFood, ShoppingListItem: ShoppingListItem};
+module.exports = {User: User, CommonFood: CommonFood};
