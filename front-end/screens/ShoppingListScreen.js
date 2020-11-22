@@ -70,7 +70,7 @@ export default class ShoppingListScreen extends React.Component {
   }
 
   componentDidMount() {
-    this._loadFontsAsync();
+    // this._loadFontsAsync();
     this._loadData();
 
     this._unsubscribe = this.props.navigation.addListener('focus', () => {

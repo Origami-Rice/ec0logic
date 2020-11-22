@@ -68,11 +68,10 @@ export default class FoodSearchScreen extends React.Component {
   };
 
   populateList = () => {
-    const now = new Date().toISOString();
-    
+
     return this.state.itemsFiltered.map((item) => (
       <LibraryListItem
-        key={data.name + now} 
+        key={item.name + item.days} 
         item={item.name}
         shelfLife={item.days}
         onPress={() => this.onSelectItem(item)}

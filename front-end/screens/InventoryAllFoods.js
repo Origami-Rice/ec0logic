@@ -82,7 +82,7 @@ export default class InventoryAllFoods extends React.Component {
   }
 
   componentDidMount() {
-    this._loadFontsAsync();
+    // this._loadFontsAsync();
     this._loadData();
 
       // For getting the new item send by the inventory input screen
@@ -92,10 +92,11 @@ export default class InventoryAllFoods extends React.Component {
           
           console.log("Added:" + this.props.route.params.new_item.name);
           this.addItem(this.props.route.params.new_item);
-          this.props.route.params = {}; // Resetting params
+          this.props.navigation.setParams({new_item: null}); // Resetting params
         } else if (this.props.route.params?.update) {
+          console.log("Update since item was deleted"); 
           this.updateInventory(this.state.inventoryArray);
-          this.props.route.params = {};
+          this.props.navigation.setParams({});
         } else {
           console.log("focus - nothing added");
           this._loadData();
@@ -234,12 +235,11 @@ export default class InventoryAllFoods extends React.Component {
   }
 
   displayItems = () => {
-    const now = new Date().toISOString();
     // Dynamically
     if (this.state.allFoods) {
       return this.state.inventoryArray.map((data, i) => (
         <InventoryListItem
-        key={data.name + now} 
+        key={data.name + data.expiryDate.toISOString() + Math.random()} 
         item={data.name}
         expiryDate={data.expiryDate}
         quantity={data.quantity} 
@@ -249,7 +249,7 @@ export default class InventoryAllFoods extends React.Component {
     } else {
       return this.state.expiringArray.map((data, i) => (
         <InventoryListItem item={data.name}
-        key={data.name + now} 
+        key={data.name + data.expiryDate.toISOString() + Math.random()} 
         expiryDate={data.expiryDate}
         quantity={data.quantity}
         unitsOfMeasure={data.unitsOfMeasure}
