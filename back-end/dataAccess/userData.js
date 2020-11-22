@@ -3,7 +3,6 @@
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
 // we can change these when we understand how things work i guess
 const db = "test_wasteless";
-const food_lib_collection = "food_library"
 const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 
@@ -55,15 +54,11 @@ exports.get_entire_history = async (username) => {
 //////////////////// Common Food Library Queries ////////////////////
 exports.get_common_food = async () => {
     // Return all the foods in our food library
-    // return await executeQuery("food-library", async (db) => await db.collection("items").findOne(
-    //     {name: "Apple"}, {days: 3} ));
-    return await executeQuery("food-library", async (db) => await db.collection("items").find().toArray());
-    // var cursor = db.collection("items").find({}).toArray(function(err,arr)){
-    //     return arr;
-    // }
+    return await executeQuery("food-library", async (db) => await db.collection("items").find().sort({name: 1}).toArray());
 };
 
 exports.add_common_food = async (name, days) => {
+    // Add a common food to food library.
     return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
         {name: name, days: days}));
 };
