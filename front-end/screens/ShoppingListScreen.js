@@ -45,9 +45,7 @@ export default class ShoppingListScreen extends React.Component {
     this.setState({ fontsLoaded: true });
   }
 
-  componentDidMount() {
-    this._loadFontsAsync();
-    
+  _loadData = () => {
     // get user's shopping list from server
     send("getShoppingList", {}, "/test-user")
     .then(response => response.json())
@@ -55,7 +53,7 @@ export default class ShoppingListScreen extends React.Component {
       this.setState({ shoppingList: json });
     })
     .catch(error => {
-      console.log("Error getting shopping list");
+      alert("Error getting shopping list");
       console.log(error);
     })
 
@@ -69,13 +67,20 @@ export default class ShoppingListScreen extends React.Component {
       console.log("Error getting user inventory");
       console.log(error);
     });
+  }
+
+  componentDidMount() {
+    this._loadFontsAsync();
+    this._loadData();
 
   }
 
   displayItems = () => {
+    const now = new Date().toISOString();
     // Dynamically
     return this.state.shoppingList.map((data, i) => (
-      <ShoppingListItem 
+      <ShoppingListItem
+      key={data.name + now}
       item={data.name} 
       quantity={data.quantity}
       unitsOfMeasure={data.unitsOfMeasure}
@@ -91,7 +96,6 @@ export default class ShoppingListScreen extends React.Component {
     this.setState({shoppingList: currlist});
 
     // send back to server 
-    // TODO: do this in ComponentWillUnmount() instead
     this.updateList(currlist);
   }
 
@@ -123,6 +127,55 @@ export default class ShoppingListScreen extends React.Component {
 
   }
 
+  updateInventory = (updatedInventory) => {
+
+    const data = {
+      list: updatedInventory
+    };
+
+    // Send updated list to server
+    send("addToInventory", data, "/test-user")
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.error);
+      })
+      .catch((error) => {
+        console.log("Error adding new item to inventory");
+        console.log(error);
+      });
+
+  }
+
+  addCheckedOffToInventory = () => {
+    const { shoppingList } = this.state;
+    var currInventory = this.state.inventoryArray;
+
+    var unchecked = [];
+    // create a list of unchecked items to be new shopping list
+    for (let i = 0; i < shoppingList.length; i++) {
+      let item = shoppingList[i];
+      if (item.checked_off) {
+        currInventory.push({
+          name: item.name,
+          quantity: item.quantity,
+          unitsOfMeasure: item.unitsOfMeasure,
+          expiryDate: new Date() // TODO: default expirydate is today
+        });
+      } else {
+        unchecked.push(item);
+      }
+    }
+
+    this.setState({
+      inventoryArray: currInventory,
+      shoppingList: unchecked
+    });
+
+    this.updateList(unchecked);
+    this.updateInventory(currInventory);
+    
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -152,7 +205,7 @@ export default class ShoppingListScreen extends React.Component {
             </Text>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={this.addCheckedOffToInventory}>
               <Text style={styles.addText}>↑</Text>
             </TouchableOpacity>
             <Text style={styles.addButtonLabel}>

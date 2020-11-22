@@ -38,6 +38,32 @@ export default class InventoryAllFoods extends React.Component {
     this.setState({ fontsLoaded: true });
   }
 
+  _loadData = () => {
+    // Load the list of user's inventory items from server
+    send("getInventory", {}, "/test-user")
+      .then((response) => response.json())
+      .then((json) => {
+        const inventory = this.deserializeItems(json);
+        this.setState({ inventoryArray: inventory });
+      })
+      .catch((error) => {
+        alert("Error getting user inventory");
+        console.log(error);
+      });
+
+    // Load the list of user's expiring items
+    send("getExpiring", {}, "/test-user")
+      .then((response) => response.json())
+      .then((json) => {
+        const expiring = this.deserializeItems(json);
+        this.setState({ expiringArray: expiring });
+      })
+      .catch((error) => {
+        alert("Error getting user's expiring items");
+        console.log(error);
+      });
+  }
+
   deserializeItems = (json) => {
     var items = [];
       // Convert to useful info:
@@ -57,29 +83,7 @@ export default class InventoryAllFoods extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
-    // Load the list of user's inventory items from server
-    send("getInventory", {}, "/test-user")
-      .then((response) => response.json())
-      .then((json) => {
-        const inventory = this.deserializeItems(json);
-        this.setState({ inventoryArray: inventory });
-      })
-      .catch((error) => {
-        console.log("Error getting user inventory");
-        console.log(error);
-      });
-
-    // TODO: Load the list of user's expiring items not working
-    send("getExpiring", {}, "/test-user")
-      .then((response) => response.json())
-      .then((json) => {
-        const expiring = this.deserializeItems(json);
-        this.setState({ expiringArray: expiring });
-      })
-      .catch((error) => {
-        console.log("Error getting user's expiring items");
-        console.log(error);
-      });
+    this._loadData();
 
       // For getting the new item send by the inventory input screen
       this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -94,6 +98,7 @@ export default class InventoryAllFoods extends React.Component {
           this.props.route.params = {};
         } else {
           console.log("focus - nothing added");
+          this._loadData();
         }
       });
     
@@ -240,6 +245,7 @@ export default class InventoryAllFoods extends React.Component {
         <InventoryListItem item={data.name}
         expiryDate={data.expiryDate}
         quantity={data.quantity}
+        unitsOfMeasure={data.unitsOfMeasure}
         onPress={() => this.createSelectionWindow(data, i, true)} />
       ));
     }
