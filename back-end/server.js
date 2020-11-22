@@ -24,6 +24,10 @@ app.use('/api/users', users);
 app.use('/api/food-library', food_library);
 app.use('/api/history', history);
 app.use('/api/shoppinglist', shoppinglist);
+
+app.get("/", function (req, res) {
+    res.send("<h1>Test statement</h1>")
+  })
 // // Connecting to DB - test
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
 // mongoose.connect(mongodbUrl, { useNewUrlParser: true, useUnifiedTopology: true})
