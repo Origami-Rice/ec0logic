@@ -53,7 +53,7 @@ export default class ShoppingListScreen extends React.Component {
       this.setState({ shoppingList: json });
     })
     .catch(error => {
-      alert("Error getting shopping list");
+      console.log("Error getting shopping list");
       console.log(error);
     })
 

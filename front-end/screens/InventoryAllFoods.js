@@ -47,7 +47,7 @@ export default class InventoryAllFoods extends React.Component {
         this.setState({ inventoryArray: inventory });
       })
       .catch((error) => {
-        alert("Error getting user inventory");
+        console.log("Error getting user inventory");
         console.log(error);
       });
 
@@ -59,7 +59,7 @@ export default class InventoryAllFoods extends React.Component {
         this.setState({ expiringArray: expiring });
       })
       .catch((error) => {
-        alert("Error getting user's expiring items");
+        console.log("Error getting user's expiring items");
         console.log(error);
       });
   }
@@ -116,7 +116,7 @@ export default class InventoryAllFoods extends React.Component {
     // Update displayed inventoryArray
     this.setState({ inventoryArray: currInventory});
     // This will add the item to the expiring array if applicable
-    alert(this.addToExpiring(item));
+    console.log(this.addToExpiring(item));
 
     this.updateInventory(currInventory);
 

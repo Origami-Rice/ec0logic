@@ -57,12 +57,8 @@ export default class FoodSearchScreen extends React.Component {
     });
   }
 
-  getSearch = () => {
-    alert(this.state.search);
-  };
-
   onSelectItem = (item) => {
-    alert("Item selected " + item.name);
+    console.log("Food Search -- Item selected " + item.name);
     const { setSearchItem } = this.props; // Callback function in parent
     setSearchItem(item);
   };
