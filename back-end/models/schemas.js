@@ -65,5 +65,5 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 const CommonFood = mongoose.model("CommonFood", CommonFoodSchema);
-module.exports = { User, CommonFood };
+module.exports = { User: User, CommonFood: CommonFood };
 

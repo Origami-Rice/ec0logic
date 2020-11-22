@@ -154,6 +154,6 @@ describe("filter wasted items", () => {
         // an item was added twice in previous tests.
         expect(response.body).toEqual([item1.item, item2.item, item2.item]);
     });
-});
+}); 
 
 

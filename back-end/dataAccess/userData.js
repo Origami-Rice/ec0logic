@@ -6,11 +6,22 @@ const db = "test_wasteless";
 const food_lib_collection = "food_library"
 const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
+//
+const {User} = require('../models/schemas'); 
 
 //////////////////// USER QUERIES ////////////////////
 exports.add_user = async (username) => {
+    //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
+    //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+    const newUser = new User({
+        username: username, 
+        inventory_list: [], 
+        wasted_items: [], 
+        shopping_list: [1]
+    });
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-        { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+        newUser));
+
 };
 
 exports.remove_user = async (username) => {
