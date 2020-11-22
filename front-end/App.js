@@ -2,6 +2,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
@@ -22,8 +23,7 @@ function InventoryStackScreen() {
     <InventoryStack.Navigator
       screenOptions={{
         headerShown: false,
-      }}
-    >
+      }}>
       <InventoryStack.Screen name="List" component={MyTabs} />
       <InventoryStack.Screen name="Input" component={InventoryInputScreen} />
       <InventoryStack.Screen name="ThrownOut" component={WastedFoodScreen} />
@@ -46,8 +46,24 @@ function MyTabs() {
         labelStyle: { fontSize: 10, fontFamily: "Montserrat_600SemiBold" },
       }}
     >
-      <Tab.Screen name="Inventory" component={InventoryAllFoods} />
-      <Tab.Screen name="Shopping" component={ShoppingListScreen} />
+      <Tab.Screen
+        name="Inventory"
+        component={InventoryAllFoodsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="kitchen" color={color} size={size} style={{marginTop: 5}}/>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Shopping"
+        component={ShoppingListScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="shopping-cart" color={color} size={size} style={{marginTop: 5}}/>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
