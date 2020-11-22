@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
-import InventoryAllFoodsScreen from "./screens/InventoryAllFoodsScreen";
+import InventoryAllFoods from "./screens/InventoryAllFoods";
 import InventoryInputScreen from "./screens/InventoryInputScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
 import FinishedFoodScreen from "./screens/FinishedFoodScreen";
@@ -46,7 +46,7 @@ function MyTabs() {
         labelStyle: { fontSize: 10, fontFamily: "Montserrat_600SemiBold" },
       }}
     >
-      <Tab.Screen name="Inventory" component={InventoryAllFoodsScreen} />
+      <Tab.Screen name="Inventory" component={InventoryAllFoods} />
       <Tab.Screen name="Shopping" component={ShoppingListScreen} />
     </Tab.Navigator>
   );
