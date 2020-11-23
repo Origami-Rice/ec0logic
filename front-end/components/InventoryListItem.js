@@ -16,23 +16,13 @@ const InventoryListItem = (props) => {
       <View style={styles.listItem}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
-          <Text
-            style={
-              (props.expiryDate.getTime() - new Date().getTime()) /
-                (1000 * 60 * 60 * 24) <=
-              7
-                ? [styles.textInfo, styles.expiringSoon]
-                : styles.textInfo
-            }
-          >
-            Expires: {props.expiryDate.toDateString()}{" "}
-          </Text>
-          <Text style={styles.textInfo}>
-            Quantity: {props.quantity} {props.unit}
-          </Text>
+          <Text style={styles.textInfo}>Expiry Date: {props.expiryDate.toDateString()} </Text>
+          <Text style={styles.textInfo}>Quantity: {props.quantity} {props.unitsOfMeasure} </Text>
         </View>
         <View style={styles.checkFlex}>
-          <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.checkbox} 
+            onPress={props.onPress}></TouchableOpacity>
         </View>
       </View>
     );
@@ -50,6 +40,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     alignSelf: "center",
+    marginVertical: 8.5,
   },
 
   textGroup: {
@@ -70,10 +61,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
-  },
-
-  expiringSoon: {
-    color: "#C90000",
   },
 
   textItem: {

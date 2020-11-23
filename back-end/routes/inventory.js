@@ -69,9 +69,9 @@ router
     });
 
 router
-    .route('/:username/expiring')
+    .route('/expiring/:username')
     .get(async (request, response) => {
-        console.log('GET request to path /api/inventory/:username/expiring');
+        console.log('GET request to path /api/inventory/expiring/:username');
         // Decription: return all items in <username>'s inventory that
         // expiring soon
 
@@ -120,9 +120,9 @@ router
     });
 
 router
-    .route('/:username/expired')
+    .route('/expired/:username')
     .get(async (request, response) => {
-        console.log('GET request to path /api/inventory/:username/expired');
+        console.log('GET request to path /api/inventory/expired/:username');
         // Decription: return all items in <username>'s inventory that
         // already expired
 

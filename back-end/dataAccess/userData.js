@@ -3,7 +3,6 @@
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
 // we can change these when we understand how things work i guess
 const db = "test_wasteless";
-const food_lib_collection = "food_library"
 const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 //
@@ -69,12 +68,7 @@ exports.get_entire_history = async (username) => {
 //////////////////// Common Food Library Queries ////////////////////
 exports.get_common_food = async () => {
     // Return all the foods in our food library
-    // return await executeQuery("food-library", async (db) => await db.collection("items").findOne(
-    //     {name: "Apple"}, {days: 3} ));
-    return await executeQuery("food-library", async (db) => await db.collection("items").find().toArray());
-    // var cursor = db.collection("items").find({}).toArray(function(err,arr)){
-    //     return arr;
-    // }
+    return await executeQuery("food-library", async (db) => await db.collection("items").find().sort({name: 1}).toArray());
 };
 
 exports.add_common_food = async (name, days) => {
@@ -91,23 +85,32 @@ exports.add_common_food = async (name, days) => {
 ////////////////// Shopping list queries /////////////////////
 
 exports.get_shopping_list = async (username) => {
-    // 
+    // gets the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
         {username, username},
-        {username: 1, shoppping_list: 1}
+        {username: 1, shopping_list: 1}
     ));
 };
 
 exports.add_item_to_shopping_list = async (username, item) => {
+    // adds a new item to the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne (
         {username: username}, {$push: { shopping_list: { $each: [item], $sort: {name: 1}} }}
     ))
 }
 
 exports.remove_item_from_shopping_list = async (username, item) => {
+    // removes a existing item from the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
         {username: username},
         {$pull: { shopping_list: {name: item}} }
     ));
 
 }
+
+exports.update_shopping_list = async(username, newList) => {
+    // updates the user's shopping list with a new and updated shopping list
+    return await executeQuery(db, async (db) => await db.collection(users_collection).update(
+        {username: username}, {$set: {shopping_list: newList}}
+    ));
+};
