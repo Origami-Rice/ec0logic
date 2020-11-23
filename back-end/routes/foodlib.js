@@ -15,19 +15,17 @@ router
     .route('/')
     .get(async (request, response) => {
         console.log('GET request to path /api/food-library');
-        // console.log(request.params)
         // TODO: Return all the foods in our library of "common food" items
         // Include their name and approximate shelf life in days, months, or years
 
         try {
             const commonfoods = await get_common_food();
-            console.log
             if(commonfoods){
                 const data = commonfoods.map(item=> {
                     delete item._id;
                     return item;
                 });
-                // console.log()
+
                 return response
                     .status(200)
                     .json(data);
@@ -40,7 +38,6 @@ router
     })
     .post(async (request, response) => {
         console.log('POST request to path /api/food-library');
-        console.log(request.params);
         // TODO: Add a new item to the library
         // This item will have a name and shelf life passed in
 

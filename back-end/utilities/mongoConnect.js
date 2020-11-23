@@ -26,7 +26,6 @@ exports.executeQuery = async (dbName, callbackPromise) => {
             console.error(err);
         }
         client.close();
-        console.log(result);
         return result;
     } catch (err) {
         console.error(err);

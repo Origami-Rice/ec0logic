@@ -14,7 +14,6 @@ router
     .route('/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/inventory/:username');
-        console.log(request.params);
         // Decription: return all items in <username>'s inventory
         // TODO: implement
         
@@ -25,10 +24,7 @@ router
         try {
             const result = await get_inventorylist(username);
             if(result && result.inventory_list){
-                delete result._id; // im guessing this deletes the id field that mongodb automatically assigns to 
-                // console.log(result)
-                
-                // NEEDED ?????????????????????????????????????????
+                delete result._id; 
                 // sort them in alphabetical order by the 'name' field
                 result.inventory_list.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
@@ -55,7 +51,6 @@ router
         // Update the inventory
         try {
             const result = await update_inventorylist(username, list);
-            console.log(result);
             if (result.result.n === 1) { // a document has been found
                 return response
                     .status(200)
@@ -91,7 +86,7 @@ router
                 let today = new Date();
                 // find the items that will expire before nextWeek
                 const expiring = []; 
-                // Note that the expiryDate field must be an ISO 8601 string ?????????????????????????????????????????????
+                // Note that the expiryDate field must be an ISO 8601 string 
                 for (let i = 0; i < inventory.length; i++) {
                     let itemDate = new Date(inventory[i]["expiryDate"]);
                     if(today < itemDate && itemDate < nextWeek) {
@@ -100,8 +95,6 @@ router
                         expiring.push(inventory[i]);
                     }
                 }
-                
-                // Needed ????????????????????????????????????????????????????????
                 // sort them in alphabetical order by the 'name' field
                 expiring.sort((a, b) => (a.name > b.name) ? 1 : -1);
 
@@ -140,7 +133,7 @@ router
                 let today = new Date();
                 // find the items that have already expired
                 const expired = []; 
-                // Note that the expiryDate field must be an ISO 8601 string ?????????????????????????????????????????????
+                // Note that the expiryDate field must be an ISO 8601 string
                 for (let i = 0; i < inventory.length; i++) {
                     if(new Date(inventory[i]["expiryDate"]) < today) {
                         // add the item of format InventoryItemSchema in the inventory
@@ -149,7 +142,6 @@ router
                     }
                 }
 
-                // Needed ????????????????????????????????????????????????????????
                 // sort them in alphabetical order by the 'name' field
                 expired.sort((a, b) => (a.name > b.name) ? 1 : -1);
 

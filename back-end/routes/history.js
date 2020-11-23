@@ -44,7 +44,6 @@ router
         const username = request.params.username;
         // extract the item from the request
         const item = request.body.item;
-        // console.log(item);
 
         // try to add the item to the wasted items list
         try {
@@ -82,7 +81,6 @@ router
         // Calculate the date numWeeks before date
         const days = numWeeks * 7;
         const beginDate = new Date(endDate.getTime() - days * 24 * 60 * 60 * 1000);
-        console.log(beginDate);
         
         // get the user's history
         try {
@@ -97,7 +95,6 @@ router
                 // loop through all the dates
                 for (let i = 0; i < history.length; i++) {
                     let dateWasted = new Date(history[i]["date"]);
-                    console.log(dateWasted);
                     if (dateWasted < beginDate) {
                         // since items are sorted by most recent date, no other items
                         // will be within the desired range.
@@ -138,7 +135,6 @@ router
         // Calculate the date numMonths before date
         const days = numMonths * 30;   
         const beginDate = new Date(endDate.getTime() - days * 24 * 60 * 60 * 1000);
-        console.log(beginDate);
         
         // get the user's history
         try {
@@ -153,8 +149,6 @@ router
                 // loop through all the dates
                 for (let i = 0; i < history.length; i++) {
                     let dateWasted = new Date(history[i]["date"]);
-                    console.log("date wasted");
-                    console.log(dateWasted);
                     if (dateWasted < beginDate) {
                         // since items are sorted by most recent date, no other items
                         // will be within the desired range

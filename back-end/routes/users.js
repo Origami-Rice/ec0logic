@@ -16,7 +16,6 @@ router
     .route('/newuser')
     .post(async (request, response) => {
         console.log('POST request to path /api/users/newuser');
-        console.log(request.params);
         const username = request.body.username;
         try {
             const user = await add_user(username);
@@ -28,7 +27,7 @@ router
             }
             return response.status(500).json({ error: "Internal server error" });
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     })
 
@@ -36,7 +35,6 @@ router
     .route('/deleteuser')
     .post(async (request, response) => {
         console.log('DELETE request to path /api/users/deleteuser');
-        console.log(request.params);
         const username = request.body.username;
         try {
             const user = await remove_user(username);
@@ -48,7 +46,7 @@ router
             }
             return response.status(500).json({ error: "Internal server error" });
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     })
 module.exports = router ;

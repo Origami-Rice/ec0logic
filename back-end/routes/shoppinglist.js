@@ -23,7 +23,6 @@ router
         try{
             const result = await get_shopping_list(username);
             
-            //console.log(result.shopping_list)
             if(result && result.shopping_list){
                 
                 return response
@@ -55,7 +54,6 @@ router
         const username = request.params.username;
         
         const item = request.body;
-        //console.log(item)
         try{
             const result = await add_item_to_shopping_list(username, item);
             if (result){
@@ -80,7 +78,6 @@ router
         // gets the newlist from input
         const newList = request.body;
         
-        //console.log(newList);
         try{
             const result = await update_shopping_list(username, newList);
             if (result){
@@ -102,8 +99,8 @@ router
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
         // gets the item from the parameter
-        const item = request.params.item
-        //console.log(item)
+        const item = request.params.item;
+        
         try{ 
             const result = await remove_item_from_shopping_list(username, item)
             if (result) {
