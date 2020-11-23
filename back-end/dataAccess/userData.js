@@ -5,11 +5,25 @@
 const db = "test_wasteless";
 const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
+//
+const {User} = require('../models/schemas'); 
+const {CommonFood} = require('../models/schemas');
 
 //////////////////// USER QUERIES ////////////////////
 exports.add_user = async (username) => {
+    //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
+    //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+    if (!(typeof username === 'string' && username != '')){
+        return false; 
+    }
+    const newUser = new User({
+        username: username, 
+        inventory_list: [], 
+        wasted_items: [], 
+        shopping_list: []
+    });
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-        { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+        newUser));
 };
 
 exports.remove_user = async (username) => {
@@ -58,9 +72,14 @@ exports.get_common_food = async () => {
 };
 
 exports.add_common_food = async (name, days) => {
-    // Add a common food to food library.
+    //return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
+    //    {name: name, days: days}));
+    const newCommonFood = new CommonFood({
+        name: name,
+        days: days
+    });
     return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
-        {name: name, days: days}));
+        newCommonFood));
 };
 
 ////////////////// Shopping list queries /////////////////////

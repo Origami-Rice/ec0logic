@@ -44,7 +44,7 @@ router
             if (user) {
                 return response
                     .status(200)
-                    .json({ success: "user " + username + " added" });
+                    .json({ success: "user " + username + " deleted" });
             }
             return response.status(500).json({ error: "Internal server error" });
         } catch (error) {
