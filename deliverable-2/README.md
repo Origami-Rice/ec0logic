@@ -57,22 +57,22 @@ Navigate to the shopping list using the navigation bar at the bottom of the scre
 3. If you would like to add the checked off items in your shopping list to your inventory, tap on the round button with the up arrow icon near the bottom right of the screen. You can see the changes made in your inventory by returning to the inventory tab.
 
 ## Development requirements
-1. The following defines the requirements and steps to follow for running the app locally.
-2. Install Node.js which can be found [here](https://nodejs.org/en/download/) (the latest version is recommended and it comes with Node Package Manager).
-3. Ensure that Git is installed. Instructions can be found [here](https://git-scm.com/downloads).
-4. Install Expo CLI with the command `npm install -g expo-cli`
-5. Open a terminal window.
-6. Clone this git repository via HTTPS in your chosen directory with the command `git clone https://github.com/csc301-fall-2020/team-project-5-ec0logic.git`
+The following defines the requirements and steps to follow for running the app locally.
+1. Install Node.js which can be found [here](https://nodejs.org/en/download/) (the latest version is recommended and it comes with Node Package Manager).
+2. Ensure that Git is installed. Instructions can be found [here](https://git-scm.com/downloads).
+3. Install Expo CLI with the command `npm install -g expo-cli`
+4. Open a terminal window.
+5. Clone this git repository via HTTPS in your chosen directory with the command `git clone https://github.com/csc301-fall-2020/team-project-5-ec0logic.git`
  
 ### Running the server
-7. Navigate to directory team-project-5-ec0logic/back-end and enter the command `npm install` in order to install all the dependencies.
-8. Install nodemon with the command `npm install -g nodemon` (should you encounter permission restrictions on linux or macOS then try installing nodemon as an administrator with `sudo npm install -g nodemon`).
-9. In order to run and listen to the express server during development, enter the command `nodemon start.js` in the terminal.
+6. Navigate to directory team-project-5-ec0logic/back-end and enter the command `npm install` in order to install all the dependencies.
+7. Install nodemon with the command `npm install -g nodemon` (should you encounter permission restrictions on linux or macOS then try installing nodemon as an administrator with `sudo npm install -g nodemon`).
+8. In order to run and listen to the express server during development, enter the command `nodemon start.js` in the terminal.
 
 ### Running the frontend application
 Note that since the server has already been deployed on Heroku, steps 6-8 are not required to start up the frontend react native app.
-10. Next, navigate to directory team-project-5-ec0logic/front-end and once again install any dependencies using command `npm install`
-11. Enter the command `npm start`. A new window/tab will open in your browser. (Note: If you run into any issues, run `expo start -c` instead).
+9. Next, navigate to directory team-project-5-ec0logic/front-end and once again install any dependencies using command `npm install`
+10. Enter the command `npm start`. A new window/tab will open in your browser. (Note: If you run into any issues, run `expo start -c` instead).
 
 #### Running the application on your device
 To run on a physical phone, you need to download the Expo client app. This can be downloaded from the Play Store for Android or from the App Store for iOS.
