@@ -23,7 +23,8 @@ function InventoryStackScreen() {
     <InventoryStack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       <InventoryStack.Screen name="List" component={MyTabs} />
       <InventoryStack.Screen name="Input" component={InventoryInputScreen} />
       <InventoryStack.Screen name="ThrownOut" component={WastedFoodScreen} />
@@ -42,8 +43,12 @@ function MyTabs() {
         inactiveTintColor: "#BDBDBD",
         activeBackgroundColor: "#E5E5E5",
         inactiveBackgroundColor: "#ffffff",
-        style: { marginBottom: 10, fontSize: 20 },
-        labelStyle: { fontSize: 10, fontFamily: "Montserrat_600SemiBold" },
+        style: { borderTopWidth: 0, height: 60 },
+        labelStyle: {
+          marginBottom: 10,
+          fontSize: 10,
+          fontFamily: "Montserrat_600SemiBold",
+        },
       }}
     >
       <Tab.Screen
@@ -51,7 +56,12 @@ function MyTabs() {
         component={InventoryAllFoods}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="kitchen" color={color} size={size} style={{marginTop: 5}}/>
+            <MaterialIcons
+              name="kitchen"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
           ),
         }}
       />
@@ -60,7 +70,12 @@ function MyTabs() {
         component={ShoppingListScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="shopping-cart" color={color} size={size} style={{marginTop: 5}}/>
+            <MaterialIcons
+              name="shopping-cart"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
           ),
         }}
       />
