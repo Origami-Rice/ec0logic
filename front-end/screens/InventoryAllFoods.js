@@ -7,7 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Platform,
-  Alert
+  Alert,
 } from "react-native";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
@@ -62,47 +62,44 @@ export default class InventoryAllFoods extends React.Component {
         console.log("Error getting user's expiring items");
         console.log(error);
       });
-  }
+  };
 
   deserializeItems = (json) => {
     var items = [];
-      // Convert to useful info:
-      for (let i = 0; i < json.length; i++) {
-        const { name, quantity, unitsOfMeasure, expiryDate } = json[i];
-        const item = {
-          name: name,
-          quantity: quantity,
-          unitsOfMeasure: unitsOfMeasure,
-          expiryDate: new Date(expiryDate),
-        }
-        
-        items.push(item);
-      }
+    // Convert to useful info:
+    for (let i = 0; i < json.length; i++) {
+      const { name, quantity, unitsOfMeasure, expiryDate } = json[i];
+      const item = {
+        name: name,
+        quantity: quantity,
+        unitsOfMeasure: unitsOfMeasure,
+        expiryDate: new Date(expiryDate),
+      };
+
+      items.push(item);
+    }
     return items;
-  }
+  };
 
   componentDidMount() {
     // this._loadFontsAsync();
     this._loadData();
 
-      // For getting the new item send by the inventory input screen
-      this._unsubscribe = this.props.navigation.addListener('focus', () => {
-    
-        if (this.props.route.params?.new_item) {
-          
-          console.log("Added:" + this.props.route.params.new_item.name);
-          this.addItem(this.props.route.params.new_item);
-          this.props.navigation.setParams({new_item: null}); // Resetting params
-        } else if (this.props.route.params?.update) {
-          console.log("Update since item was deleted"); 
-          this.updateInventory(this.state.inventoryArray);
-          this.props.navigation.setParams({});
-        } else {
-          console.log("focus - nothing added");
-          this._loadData();
-        }
-      });
-    
+    // For getting the new item send by the inventory input screen
+    this._unsubscribe = this.props.navigation.addListener("focus", () => {
+      if (this.props.route.params?.new_item) {
+        console.log("Added:" + this.props.route.params.new_item.name);
+        this.addItem(this.props.route.params.new_item);
+        this.props.navigation.setParams({ new_item: null }); // Resetting params
+      } else if (this.props.route.params?.update) {
+        console.log("Update since item was deleted");
+        this.updateInventory(this.state.inventoryArray);
+        this.props.navigation.setParams({});
+      } else {
+        console.log("focus - nothing added");
+        this._loadData();
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -110,35 +107,33 @@ export default class InventoryAllFoods extends React.Component {
   }
 
   addItem = (item) => {
-
     var currInventory = this.state.inventoryArray;
     currInventory.push(item);
     // Update displayed inventoryArray
-    this.setState({ inventoryArray: currInventory});
+    this.setState({ inventoryArray: currInventory });
     // This will add the item to the expiring array if applicable
     console.log(this.addToExpiring(item));
 
     this.updateInventory(currInventory);
-
-  }
+  };
 
   addToExpiring = (item) => {
     var currExpiring = this.state.expiringArray;
     let now = new Date();
-    let expires = (item.expiryDate.getTime() - now.getTime()) / (1000 * 3600 * 24);
+    let expires =
+      (item.expiryDate.getTime() - now.getTime()) / (1000 * 3600 * 24);
     // check if expiring soon
     if (expires < 7) {
       currExpiring.push(item);
-      this.setState({ expiringArray: currExpiring});
+      this.setState({ expiringArray: currExpiring });
       return true;
     }
     return false;
-  }
+  };
 
   updateInventory = (updatedInventory) => {
-
     const data = {
-      list: updatedInventory
+      list: updatedInventory,
     };
 
     // Send updated list to server
@@ -151,10 +146,9 @@ export default class InventoryAllFoods extends React.Component {
         console.log("Error adding new item to inventory");
         console.log(error);
       });
+  };
 
-  }
-
-  createSelectionWindow = (item, i, expiring=false) => {
+  createSelectionWindow = (item, i, expiring = false) => {
     Alert.alert(
       "Update Item Quantity",
       "Select an option.",
@@ -163,63 +157,65 @@ export default class InventoryAllFoods extends React.Component {
           text: "Mark as thrown out",
           onPress: () => this.navigateTo(item, i, "ThrownOut", expiring),
         },
-        { text: "Mark as used", onPress: () => this.navigateTo(item, i, "Used", expiring) },
+        {
+          text: "Mark as used",
+          onPress: () => this.navigateTo(item, i, "Used", expiring),
+        },
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
+          style: "cancel",
         },
       ],
       { cancelable: false }
     );
-
-  }
+  };
 
   compareItems = (item1, item2) => {
-    return (item1.name == item2.name 
-    && item1.quantity == item2.quantity 
-    && item1.expiryDate.getTime() == item2.expiryDate.getTime()
-    && item1.unitsOfMeasure == item2.unitsOfMeasure );
-  }
+    return (
+      item1.name == item2.name &&
+      item1.quantity == item2.quantity &&
+      item1.expiryDate.getTime() == item2.expiryDate.getTime() &&
+      item1.unitsOfMeasure == item2.unitsOfMeasure
+    );
+  };
 
   removeFromExpiring = (item, index) => {
     // We remove the item from the expiring list
-    // Find the index of the 
+    // Find the index of the
     var currExpiring = this.state.expiringArray;
     currExpiring.splice(index, 1);
-    this.setState({expiringArray: currExpiring});
+    this.setState({ expiringArray: currExpiring });
 
     var inventoryArray = this.state.inventoryArray;
     // find the item in the inventory array -> should always return true
     for (let i = 0; i < inventoryArray.length; i++) {
       if (this.compareItems(inventoryArray[i], item)) {
         inventoryArray.splice(i, 1);
-        this.setState({inventoryArray: inventoryArray});
+        this.setState({ inventoryArray: inventoryArray });
         return true;
       }
     }
     return false;
-
-  }
+  };
 
   removeFromInventory = (item, index) => {
     // We remove the item to be updated from our inventory
     var currInventory = this.state.inventoryArray;
     currInventory.splice(index, 1);
-    this.setState({inventoryArray: currInventory});
+    this.setState({ inventoryArray: currInventory });
 
     // check if item is in expiring list -> return true if so
     var expiringArray = this.state.expiringArray;
     for (let i = 0; i < expiringArray.length; i++) {
       if (this.compareItems(expiringArray[i], item)) {
         expiringArray.splice(i, 1);
-        this.setState({expiringArray: expiringArray});
+        this.setState({ expiringArray: expiringArray });
         return true;
       }
     }
     return false;
-
-  }
+  };
 
   navigateTo = (item, i, screen, expiring) => {
     if (expiring) {
@@ -230,30 +226,33 @@ export default class InventoryAllFoods extends React.Component {
 
     // Navigate to wasted food screen, pass in the item
     this.props.navigation.navigate(screen, {
-      item: item
+      item: item,
     });
-  }
+  };
 
   displayItems = () => {
     // Dynamically
     if (this.state.allFoods) {
       return this.state.inventoryArray.map((data, i) => (
         <InventoryListItem
-        key={data.name + data.expiryDate.toISOString() + Math.random()} 
-        item={data.name}
-        expiryDate={data.expiryDate}
-        quantity={data.quantity} 
-        unitsOfMeasure={data.unitsOfMeasure}
-        onPress={() => this.createSelectionWindow(data, i)}/>
+          key={data.name + data.expiryDate.toISOString() + Math.random()}
+          item={data.name}
+          expiryDate={data.expiryDate}
+          quantity={data.quantity}
+          unitsOfMeasure={data.unitsOfMeasure}
+          onPress={() => this.createSelectionWindow(data, i)}
+        />
       ));
     } else {
       return this.state.expiringArray.map((data, i) => (
-        <InventoryListItem item={data.name}
-        key={data.name + data.expiryDate.toISOString() + Math.random()} 
-        expiryDate={data.expiryDate}
-        quantity={data.quantity}
-        unitsOfMeasure={data.unitsOfMeasure}
-        onPress={() => this.createSelectionWindow(data, i, true)} />
+        <InventoryListItem
+          item={data.name}
+          key={data.name + data.expiryDate.toISOString() + Math.random()}
+          expiryDate={data.expiryDate}
+          quantity={data.quantity}
+          unitsOfMeasure={data.unitsOfMeasure}
+          onPress={() => this.createSelectionWindow(data, i, true)}
+        />
       ));
     }
   };
@@ -267,69 +266,78 @@ export default class InventoryAllFoods extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View
-          style={[styles.rowContainer, { justifyContent: "space-between" }]}
-        >
-          <Text style={styles.title}>My Inventory</Text>
-          <TouchableOpacity style={styles.infoButton}>
-            <Text style={styles.infoText}>i</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.divider}></View>
-        <View
-          style={[
-            styles.rowContainer,
-            { justifyContent: "center", backgroundColor: "#ffffff" },
-          ]}
-        >
-          <TouchableOpacity
-            style={
-              this.state.allFoods
-                ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                : [styles.navButton, { backgroundColor: "#ffffff" }]
-            }
-            onPress={this.switchItems}
+        <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
+          <View
+            style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text
+            <Text style={styles.title}>My Inventory</Text>
+            <TouchableOpacity style={styles.infoButton}>
+              <Text style={styles.infoText}>i</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider}></View>
+          <View
+            style={[
+              styles.rowContainer,
+              { justifyContent: "center", backgroundColor: "#ffffff" },
+            ]}
+          >
+            <TouchableOpacity
               style={
                 this.state.allFoods
-                  ? [styles.navText, { color: "#ffffff" }]
-                  : [styles.navText, { color: "#000000" }]
+                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
+                  : [styles.navButton, { backgroundColor: "#ffffff" }]
               }
+              onPress={this.switchItems}
             >
-              All Foods
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              !this.state.allFoods
-                ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                : [styles.navButton, { backgroundColor: "#ffffff" }]
-            }
-            onPress={this.switchItems}
-          >
-            <Text
+              <Text
+                style={
+                  this.state.allFoods
+                    ? [styles.navText, { color: "#ffffff" }]
+                    : [styles.navText, { color: "#000000" }]
+                }
+              >
+                All Foods
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={
                 !this.state.allFoods
-                  ? [styles.navText, { color: "#ffffff" }]
-                  : [styles.navText, { color: "#000000" }]
+                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
+                  : [styles.navButton, { backgroundColor: "#ffffff" }]
               }
+              onPress={this.switchItems}
             >
-              Expiring Soon
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={
+                  !this.state.allFoods
+                    ? [styles.navText, { color: "#ffffff" }]
+                    : [styles.navText, { color: "#000000" }]
+                }
+              >
+                Expiring Soon
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider}></View>
         </View>
-        <View style={styles.divider}></View>
         <ScrollView style={styles.listContainer}>
           {this.displayItems()}
         </ScrollView>
-        <View style={styles.divider}></View>
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => this.props.navigation.navigate("Input")}
+        <View
+          style={{
+            justifyContent: "flex-start",
+            flex: 0,
+          }}
         >
-          <Text style={styles.addText}>+</Text>
-        </TouchableOpacity>
+          <View style={styles.divider}></View>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => this.props.navigation.navigate("Input")}
+          >
+            <Text style={styles.addText}>+</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -343,21 +351,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCC5C5",
   },
   container: {
+    flex: 1,
     padding: 8,
-    //flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    marginVertical: 5,
     backgroundColor: "#ffffff",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
   rowContainer: {
-    //flex: 1,
     flexDirection: "row",
     padding: 8,
     marginVertical: 5,
   },
   listContainer: {
-    height: Dimensions.get("window").height * 0.55,
+    flex: 1,
+    flexGrow: 1,
     paddingVertical: 5,
   },
   title: {
@@ -407,8 +416,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: "5%",
-    marginBottom: "20%",
+    marginVertical: 20,
     backgroundColor: "#ffffff",
     ...Platform.select({
       ios: {

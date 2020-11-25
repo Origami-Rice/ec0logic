@@ -70,7 +70,7 @@ export default class ShoppingListScreen extends React.Component {
   };
 
   componentDidMount() {
-    // this._loadFontsAsync();
+    this._loadFontsAsync();
     this._loadData();
 
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
@@ -181,22 +181,32 @@ export default class ShoppingListScreen extends React.Component {
   };
 
   render() {
+    // if (!this.state.fontsLoaded) {
+    //   return <AppLoading />;
+    // }
     return (
       <View style={styles.container}>
-        <View
-          style={[styles.rowContainer, { justifyContent: "space-between" }]}
-        >
-          <Text style={styles.title}>Shopping List</Text>
-          <TouchableOpacity style={styles.infoButton}>
-            <Text style={styles.infoText}>i</Text>
-          </TouchableOpacity>
+        <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
+          <View
+            style={[styles.rowContainer, { justifyContent: "space-between" }]}
+          >
+            <Text style={styles.title}>Shopping List</Text>
+            <TouchableOpacity style={styles.infoButton}>
+              <Text style={styles.infoText}>i</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider}></View>
         </View>
-        <View style={styles.divider}></View>
         <ScrollView style={styles.listContainer}>
           {this.displayItems()}
         </ScrollView>
         <View style={styles.divider}></View>
-        <View style={[styles.rowContainer, { justifyContent: "space-around" }]}>
+        <View
+          style={[
+            styles.rowContainer,
+            { justifyContent: "flex-start", flex: 0 },
+          ]}
+        >
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.addButton}
@@ -248,11 +258,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#CCC5C5",
   },
   container: {
+    flex: 1,
     padding: 8,
     flexDirection: "column",
-    justifyContent: "flex-start",
-    marginVertical: 5,
+    justifyContent: "space-between",
     backgroundColor: "#ffffff",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
   rowContainer: {
     flexDirection: "row",
@@ -260,14 +272,14 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   listContainer: {
-    height: Dimensions.get("window").height * 0.6,
+    flex: 1,
+    flexGrow: 1,
     paddingVertical: 5,
   },
   buttonContainer: {
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginVertical: 5,
     flex: 1,
   },
   title: {
@@ -324,7 +336,6 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_500Medium",
     fontSize: 8,
     color: "#BDBDBD",
-    marginBottom: "20%",
   },
   modal: {
     backgroundColor: "white",
