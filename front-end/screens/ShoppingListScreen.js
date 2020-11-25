@@ -36,7 +36,7 @@ export default class ShoppingListScreen extends React.Component {
       ],
       inventoryArray: [],
       fontsLoaded: false,
-      modalVisible: 0
+      modalVisible: 0,
     };
   }
 
@@ -48,35 +48,34 @@ export default class ShoppingListScreen extends React.Component {
   _loadData = () => {
     // get user's shopping list from server
     send("getShoppingList", {}, "/test-user")
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({ shoppingList: json });
-    })
-    .catch(error => {
-      console.log("Error getting shopping list");
-      console.log(error);
-    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ shoppingList: json });
+      })
+      .catch((error) => {
+        console.log("Error getting shopping list");
+        console.log(error);
+      });
 
     // get the user's inventory list
     send("getInventory", {}, "/test-user")
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({ inventoryArray: json });
-    })
-    .catch((error) => {
-      console.log("Error getting user inventory");
-      console.log(error);
-    });
-  }
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ inventoryArray: json });
+      })
+      .catch((error) => {
+        console.log("Error getting user inventory");
+        console.log(error);
+      });
+  };
 
   componentDidMount() {
     // this._loadFontsAsync();
     this._loadData();
 
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
     });
-
   }
 
   componentWillUnmount() {
@@ -88,57 +87,56 @@ export default class ShoppingListScreen extends React.Component {
     // Dynamically
     return this.state.shoppingList.map((data, i) => (
       <ShoppingListItem
-      key={data.name + now}
-      item={data.name} 
-      quantity={data.quantity}
-      unitsOfMeasure={data.unitsOfMeasure}
-      checkedOff={data.checked_off}
-      index={i}
-      updateCheck={this.updateCheck} />
+        key={data.name + now}
+        item={data.name}
+        quantity={data.quantity}
+        unitsOfMeasure={data.unitsOfMeasure}
+        checkedOff={data.checked_off}
+        index={i}
+        updateCheck={this.updateCheck}
+      />
     ));
   };
-  
+
   updateCheck = (index) => {
     var currlist = this.state.shoppingList;
     currlist[index].checked_off = !currlist[index].checked_off;
-    this.setState({shoppingList: currlist});
+    this.setState({ shoppingList: currlist });
 
-    // send back to server 
+    // send back to server
     this.updateList(currlist);
-  }
+  };
 
   updateList = (updatedList) => {
-    send("updateShoppingList", updatedList, '/test-user')
-    .then(response => response.json())
-    .catch(error => {
-      console.log(error);
-      console.log("Error updating shopping list");
-    });
-  }
+    send("updateShoppingList", updatedList, "/test-user")
+      .then((response) => response.json())
+      .catch((error) => {
+        console.log(error);
+        console.log("Error updating shopping list");
+      });
+  };
 
   addNewItem = (item) => {
     // add item to shopping list
     const currlist = this.state.shoppingList;
     currlist.push(item);
-    this.setState({shoppingList: currlist});
+    this.setState({ shoppingList: currlist });
 
     // add item to server
-    send("addToShoppingList", item, '/test-user')
-    .then(response => response.json())
-    .catch(error => {
-      console.log(error);
-      console.log("Error adding new item to shopping list");
-    });
+    send("addToShoppingList", item, "/test-user")
+      .then((response) => response.json())
+      .catch((error) => {
+        console.log(error);
+        console.log("Error adding new item to shopping list");
+      });
 
     // close modal
-    this.setState({visibleModal : 0});
-
-  }
+    this.setState({ visibleModal: 0 });
+  };
 
   updateInventory = (updatedInventory) => {
-
     const data = {
-      list: updatedInventory
+      list: updatedInventory,
     };
 
     // Send updated list to server
@@ -151,8 +149,7 @@ export default class ShoppingListScreen extends React.Component {
         console.log("Error adding new item to inventory");
         console.log(error);
       });
-
-  }
+  };
 
   addCheckedOffToInventory = () => {
     const { shoppingList } = this.state;
@@ -167,7 +164,7 @@ export default class ShoppingListScreen extends React.Component {
           name: item.name,
           quantity: item.quantity,
           unitsOfMeasure: item.unitsOfMeasure,
-          expiryDate: new Date() // TODO: default expirydate is today
+          expiryDate: new Date(), // TODO: default expirydate is today
         });
       } else {
         unchecked.push(item);
@@ -176,13 +173,12 @@ export default class ShoppingListScreen extends React.Component {
 
     this.setState({
       inventoryArray: currInventory,
-      shoppingList: unchecked
+      shoppingList: unchecked,
     });
 
     this.updateList(unchecked);
     this.updateInventory(currInventory);
-    
-  }
+  };
 
   render() {
     return (
@@ -213,7 +209,10 @@ export default class ShoppingListScreen extends React.Component {
             </Text>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.addButton} onPress={this.addCheckedOffToInventory}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={this.addCheckedOffToInventory}
+            >
               <Text style={styles.addText}>↑</Text>
             </TouchableOpacity>
             <Text style={styles.addButtonLabel}>
@@ -227,20 +226,13 @@ export default class ShoppingListScreen extends React.Component {
           avoidKeyboard={false}
         >
           {
-            <ScrollView
-              style={{
-                height: Dimensions.get("window").height,
-                width: Dimensions.get("window").width,
-              }}
-            >
-              <View style={styles.modal}>
-                <ShoppingListInputScreen 
-                  addNewItem={this.addNewItem}
-                  inventoryArray={this.state.inventoryArray}
-                  onCancel={() => this.setState({visibleModal: 0})}>
-                </ShoppingListInputScreen>
-              </View>
-            </ScrollView>
+            <View style={styles.modal}>
+              <ShoppingListInputScreen
+                addNewItem={this.addNewItem}
+                inventoryArray={this.state.inventoryArray}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></ShoppingListInputScreen>
+            </View>
           }
         </Modal>
       </View>
@@ -338,10 +330,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
   bottomModal: {
-    justifyContent: "flex-end",
     margin: 0,
     height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
   },
 });

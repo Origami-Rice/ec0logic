@@ -42,8 +42,8 @@ export default class QualityDropdown extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Amount"
-            keyboardType = 'decimal-pad'
-            returnKeyType='done'
+            keyboardType="decimal-pad"
+            returnKeyType="done"
             onChangeText={(text) => this.onChangeQuantity(text)}
           />
           <View>
@@ -59,10 +59,12 @@ export default class QualityDropdown extends React.Component {
               ]}
               arrowStyle={styles.dropArrow}
               containerStyle={styles.dropContainer}
+              dropDownStyle={{ elevation: 5000 }}
+              style={{ borderColor: "black", borderWidth: 1 }}
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
-              onChangeItem={(item) => this.onSelectUnit(item.value)}
+              onChangeItem={(item) => this.onChangeItem(item.value)}
               zIndex={5000}
             />
           </View>
@@ -81,15 +83,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 5,
-    zIndex: 5000,
   },
 
   dropContainer: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    borderColor: "black",
-    borderWidth: 1,
-    zIndex: 5000,
   },
 
   dropArrow: {

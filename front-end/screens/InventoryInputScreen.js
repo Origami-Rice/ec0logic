@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   Text,
   View,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -133,83 +132,78 @@ export default class InventoryInputScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={{
-          height: Dimensions.get("window").height,
-          width: Dimensions.get("window").width,
-        }}
-      >
-        <View style={styles.container}>
-          <View
-            style={{
-              justifyContent: "flex-start",
-              width: Dimensions.get("window").width,
-            }}
-          >
-            <View style={styles.topButtonsContainer}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => this.setState({ visibleModal: 1 })}
-              >
-                <Text style={styles.cancelText}>s</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => this.props.navigation.goBack(null)}
-              >
-                <Text style={styles.cancelText}>x</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.inputFormat}
-                placeholder="Enter New Food Item"
-                value={this.state.name}
-                onChangeText={(text) => this.setItemName(text)}
-              />
-              <Text style={styles.label}>Quantity:</Text>
-              <QuantityDropdown
-                setParentQuantity={this.setQuantity}
-                setParentUnit={this.setUnit}
-              ></QuantityDropdown>
-              <Text style={styles.label}>Select Expiry Date:</Text>
-              <DatePicker
-                setParentExpiry={this.setExpiryDate}
-                defaultDate={this.state.expiryDate}
-              />
-              {this.displayEstimate()}
-            </View>
-          </View>
-          <View
-            style={{
-              justifyContent: "flex-end",
-              flex: 1,
-              zIndex: -1,
-            }}
-          >
+      <View style={styles.container}>
+        <View
+          style={{
+            justifyContent: "flex-start",
+            width: Dimensions.get("window").width,
+            ...(Platform.OS !== "android" && {
+              zIndex: 1,
+            }),
+          }}
+        >
+          <View style={styles.topButtonsContainer}>
             <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={this.saveItem}
+              style={styles.cancelButton}
+              onPress={() => this.setState({ visibleModal: 1 })}
             >
-              <Text style={styles.confirmText}>Confirm</Text>
+              <Text style={styles.cancelText}>s</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => this.props.navigation.goBack(null)}
+            >
+              <Text style={styles.cancelText}>x</Text>
             </TouchableOpacity>
           </View>
-          <Modal
-            isVisible={this.state.visibleModal === 1}
-            style={styles.bottomModal}
-            avoidKeyboard={false}
-          >
-            {
-              <View style={styles.modal}>
-                <FoodSearchScreen
-                  setSearchItem={this.setSearchedItem}
-                  onCancel={() => this.setState({ visibleModal: 0 })}
-                ></FoodSearchScreen>
-              </View>
-            }
-          </Modal>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.inputFormat}
+              placeholder="Enter New Food Item"
+              value={this.state.name}
+              onChangeText={(text) => this.setItemName(text)}
+            />
+            <Text style={styles.label}>Quantity:</Text>
+            <QuantityDropdown
+              setParentQuantity={this.setQuantity}
+              setParentUnit={this.setUnit}
+            ></QuantityDropdown>
+            <Text style={styles.label}>Select Expiry Date:</Text>
+            <DatePicker
+              setParentExpiry={this.setExpiryDate}
+              defaultDate={this.state.expiryDate}
+            />
+            {this.displayEstimate()}
+          </View>
         </View>
-      </ScrollView>
+        <View
+          style={{
+            justifyContent: "flex-end",
+            flex: 1,
+          }}
+        >
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={this.saveItem}
+          >
+            <Text style={styles.confirmText}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <FoodSearchScreen
+                setSearchItem={this.setSearchedItem}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></FoodSearchScreen>
+            </View>
+          }
+        </Modal>
+      </View>
     );
   }
 }
@@ -222,14 +216,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5,
     backgroundColor: "#ffffff",
-    zIndex: 1,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+    ...Platform.select({
+      ios: {
+        zIndex: 1,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   inputContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    ...(Platform.OS !== "android" && {
+      zIndex: 1,
+    }),
   },
   topButtonsContainer: {
     flexDirection: "row",
@@ -240,7 +246,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "Montserrat_400Regular",
     fontSize: 14,
-    zIndex: 1,
   },
   cancelButton: {
     width: 37,
@@ -251,7 +256,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     backgroundColor: "#ffffff",
     margin: 25,
-    zIndex: 1,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -276,7 +280,6 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign: "center",
     fontFamily: "Montserrat_500Medium",
-    zIndex: 1,
   },
   label: {
     textAlign: "center",
@@ -284,7 +287,6 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     marginVertical: 5,
-    zIndex: 1,
   },
   note: {
     textAlign: "center",
@@ -293,14 +295,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginVertical: 5,
     color: "#828282",
-    zIndex: 1,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
     fontFamily: "Montserrat_500Medium",
     fontSize: 14,
-    zIndex: 1,
   },
   confirmButton: {
     width: 148,
@@ -321,7 +321,6 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
-    zIndex: 1,
   },
   bottomModal: {
     justifyContent: "flex-end",
