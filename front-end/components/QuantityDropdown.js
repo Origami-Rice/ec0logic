@@ -77,7 +77,7 @@ export default class QualityDropdown extends React.Component {
               customArrowUp={() => (
                 <MaterialIcons name="expand-more" size={24} color="black" />
               )}
-              onChangeItem={(item) => this.onChangeItem(item.value)}
+              onChangeItem={(item) => this.onSelectUnit(item.value)}
               zIndex={5000}
             />
           </View>

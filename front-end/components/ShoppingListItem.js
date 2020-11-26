@@ -5,8 +5,6 @@ import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
 const ShoppingListItem = (props) => {
-  // Note: if test = "" the empty string, "Bananas" will be centered
-  let test = "Quantity: 5";
   let [fontsLoaded] = useFonts({
     Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
     Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
@@ -24,9 +22,17 @@ const ShoppingListItem = (props) => {
 
   const displayQuantity = () => {
     if (quantity !== 0) {
-      return "Quantity: " + quantity + " " + units;
-    } else {
-      return "";
+      return (
+        <Text
+          style={
+            checked
+              ? [styles.textInfo, { color: "#BDBDBD" }]
+              : [styles.textInfo, { color: "#000000" }]
+          }
+        >
+          Quantity: {quantity} {units}
+        </Text>
+      );
     }
   };
 
@@ -54,16 +60,7 @@ const ShoppingListItem = (props) => {
           >
             {props.item}
           </Text>
-          {/* TODO: check if props.quantity is a certain value, change to "" if no quantity */}
-          <Text
-            style={
-              checked
-                ? [styles.textInfo, { color: "#BDBDBD" }]
-                : [styles.textInfo, { color: "#000000" }]
-            }
-          >
-            {displayQuantity()}
-          </Text>
+          {displayQuantity()}
         </View>
       </View>
     );
