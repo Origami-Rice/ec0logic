@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
@@ -23,11 +24,11 @@ const ShoppingListItem = (props) => {
 
   const displayQuantity = () => {
     if (quantity !== 0) {
-      return ("Quantity: " + quantity + " " + units);
+      return "Quantity: " + quantity + " " + units;
     } else {
       return "";
     }
-  }
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -35,10 +36,13 @@ const ShoppingListItem = (props) => {
     return (
       <View style={styles.listItem}>
         <View style={styles.checkFlex}>
-          <TouchableOpacity
-            style={styles.checkbox}
-            onPress={handlePress}
-          ></TouchableOpacity>
+          <TouchableOpacity style={styles.checkbox} onPress={handlePress}>
+            <MaterialIcons
+              name="check"
+              size={24}
+              color={checked ? "black" : "#DDDDDD"}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.textGroup}>
           <Text
