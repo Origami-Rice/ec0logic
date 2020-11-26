@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import Modal from "react-native-modal";
+import { MaterialIcons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
@@ -147,7 +148,12 @@ export default class InventoryInputScreen extends React.Component {
               style={styles.cancelButton}
               onPress={() => this.setState({ visibleModal: 1 })}
             >
-              <Text style={styles.cancelText}>s</Text>
+              <MaterialIcons
+                name="search"
+                size={18}
+                color="black"
+                style={{ alignSelf: "center" }}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}
