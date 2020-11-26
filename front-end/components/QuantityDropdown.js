@@ -1,6 +1,13 @@
 import React from "react";
-import { TextInput, View, StyleSheet, Dimensions } from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { MaterialIcons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
@@ -64,6 +71,12 @@ export default class QualityDropdown extends React.Component {
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
+              customArrowDown={() => (
+                <MaterialIcons name="expand-less" size={24} color="black" />
+              )}
+              customArrowUp={() => (
+                <MaterialIcons name="expand-more" size={24} color="black" />
+              )}
               onChangeItem={(item) => this.onChangeItem(item.value)}
               zIndex={5000}
             />
@@ -83,6 +96,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 5,
+    ...(Platform.OS !== "android" && {
+      zIndex: 5000,
+    }),
   },
 
   dropContainer: {
@@ -91,10 +107,17 @@ const styles = StyleSheet.create({
   },
 
   dropArrow: {
-    height: 19,
+    height: 24,
     flexDirection: "row",
     justifyContent: "flex-start",
-    zIndex: 5000,
+    ...Platform.select({
+      ios: {
+        zIndex: 5000,
+      },
+      android: {
+        elevation: 5000,
+      },
+    }),
   },
 
   inputFormat: {
@@ -107,13 +130,27 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
-    zIndex: 5000,
+    ...Platform.select({
+      ios: {
+        zIndex: 5000,
+      },
+      android: {
+        elevation: 5000,
+      },
+    }),
   },
 
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
     color: "#000000",
-    zIndex: 5000,
+    ...Platform.select({
+      ios: {
+        zIndex: 5000,
+      },
+      android: {
+        elevation: 5000,
+      },
+    }),
   },
 });
