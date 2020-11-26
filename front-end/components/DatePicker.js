@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Platform, Text, TouchableOpacity, Dimensions } from "react-native";
+import {
+  View,
+  Platform,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function DatePicker(props) {

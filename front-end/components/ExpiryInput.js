@@ -9,16 +9,16 @@ let customFonts = {
 };
 
 let months = {
-  'January': 0,
-  'February': 1,
-  'March': 2,
-  'April': 3,
-  'May': 4,
-  'June': 5,
-  'July': 6,
-  'August': 7,
-  'September': 8,
-  'October': 9,
+  January: 0,
+  February: 1,
+  March: 2,
+  April: 3,
+  May: 4,
+  June: 5,
+  July: 6,
+  August: 7,
+  September: 8,
+  October: 9,
   November: 10,
   December: 11,
 };
@@ -62,10 +62,11 @@ export default class ExpiryInput extends React.Component {
     const newDate = new Date(
       this.state.expiryDate.getFullYear(),
       this.state.expiryDate.getMonth(),
-      parseInt(text));
+      parseInt(text)
+    );
 
     this.setState({
-      expiryDate: newDate
+      expiryDate: newDate,
     });
     // Send info back to parent
     const { setParentExpiry } = this.props;
@@ -80,13 +81,12 @@ export default class ExpiryInput extends React.Component {
     );
 
     this.setState({
-      expiryDate: newDate
+      expiryDate: newDate,
     });
 
     // Send info back to parent
     const { setParentExpiry } = this.props;
     setParentExpiry(newDate);
-
   };
 
   render() {
@@ -121,14 +121,14 @@ export default class ExpiryInput extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Day"
-            keyboardType='number-pad'
+            keyboardType="number-pad"
             value={this.state.expiryDate.getDate().toString()}
             onChangeText={(text) => this.onChangeDay(text)}
           />
           <TextInput
             style={styles.inputFormat}
             placeholder="Year"
-            keyboardType='number-pad'
+            keyboardType="number-pad"
             onChangeText={(text) => this.onChangeYear(text)}
             value={this.state.expiryDate.getFullYear().toString()}
           />
