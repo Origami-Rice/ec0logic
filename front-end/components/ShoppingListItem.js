@@ -39,8 +39,9 @@ const ShoppingListItem = (props) => {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
+    // TODO: onPress
     return (
-      <View style={styles.listItem}>
+      <TouchableOpacity style={styles.listItem}>
         <View style={styles.checkFlex}>
           <TouchableOpacity style={styles.checkbox} onPress={handlePress}>
             <MaterialIcons
@@ -62,7 +63,7 @@ const ShoppingListItem = (props) => {
           </Text>
           {displayQuantity()}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 };
