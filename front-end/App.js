@@ -11,6 +11,7 @@ import InventoryInputScreen from "./screens/InventoryInputScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
 import FinishedFoodScreen from "./screens/FinishedFoodScreen";
 import WastedFoodScreen from "./screens/WastedFoodScreen";
+import MyStatsScreen from "./screens/MyStatsScreen";
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
@@ -51,6 +52,20 @@ function MyTabs() {
         },
       }}
     >
+      <Tab.Screen
+        name="My Stats"
+        component={MyStatsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="assessment"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Inventory"
         component={InventoryAllFoods}
