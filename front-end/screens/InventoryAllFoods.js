@@ -8,13 +8,12 @@ import {
   Dimensions,
   Platform,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
-import Constants from "expo-constants";
 import InventoryListItem from "../components/InventoryListItem";
-import FinshedFoodScreen from "./FinishedFoodScreen";
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
 
@@ -32,6 +31,7 @@ export default class InventoryAllFoods extends React.Component {
       expiringArray: [],
       allFoods: true,
       fontsLoaded: false,
+      isLoaded: false,
     };
   }
 
@@ -41,12 +41,13 @@ export default class InventoryAllFoods extends React.Component {
   }
 
   _loadData = () => {
+    this.setState ({ isLoaded: false })
     // Load the list of user's inventory items from server
     send("getInventory", {}, "/test-user")
       .then((response) => response.json())
       .then((json) => {
         const inventory = this.deserializeItems(json);
-        this.setState({ inventoryArray: inventory });
+        this.setState({ inventoryArray: inventory, isLoaded: true });
       })
       .catch((error) => {
         console.log("Error getting user inventory");
@@ -85,7 +86,6 @@ export default class InventoryAllFoods extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
-    this._loadData();
 
     // For getting the new item send by the inventory input screen
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
@@ -233,29 +233,37 @@ export default class InventoryAllFoods extends React.Component {
   };
 
   displayItems = () => {
-    // Dynamically
-    if (this.state.allFoods) {
-      return this.state.inventoryArray.map((data, i) => (
-        <InventoryListItem
-          key={data.name + data.expiryDate.toISOString() + Math.random()}
-          item={data.name}
-          expiryDate={data.expiryDate}
-          quantity={data.quantity}
-          unitsOfMeasure={data.unitsOfMeasure}
-          onPress={() => this.createSelectionWindow(data, i)}
-        />
-      ));
+    if (!this.state.isLoaded) {
+      return (
+      <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
+      <ActivityIndicator/>
+      </View>
+      );
     } else {
-      return this.state.expiringArray.map((data, i) => (
-        <InventoryListItem
-          item={data.name}
-          key={data.name + data.expiryDate.toISOString() + Math.random()}
-          expiryDate={data.expiryDate}
-          quantity={data.quantity}
-          unitsOfMeasure={data.unitsOfMeasure}
-          onPress={() => this.createSelectionWindow(data, i, true)}
-        />
-      ));
+      // Dynamically
+      if (this.state.allFoods) {
+        return this.state.inventoryArray.map((data, i) => (
+          <InventoryListItem
+            key={data.name + data.expiryDate.toISOString() + Math.random()}
+            item={data.name}
+            expiryDate={data.expiryDate}
+            quantity={data.quantity}
+            unitsOfMeasure={data.unitsOfMeasure}
+            onPress={() => this.createSelectionWindow(data, i)}
+          />
+        ));
+      } else {
+        return this.state.expiringArray.map((data, i) => (
+          <InventoryListItem
+            item={data.name}
+            key={data.name + data.expiryDate.toISOString() + Math.random()}
+            expiryDate={data.expiryDate}
+            quantity={data.quantity}
+            unitsOfMeasure={data.unitsOfMeasure}
+            onPress={() => this.createSelectionWindow(data, i, true)}
+          />
+        ));
+      }
     }
   };
 

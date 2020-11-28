@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
@@ -38,6 +39,7 @@ export default class ShoppingListScreen extends React.Component {
       inventoryArray: [],
       fontsLoaded: false,
       modalVisible: 0,
+      isLoaded: false,
     };
   }
 
@@ -47,11 +49,12 @@ export default class ShoppingListScreen extends React.Component {
   }
 
   _loadData = () => {
+    this.setState({ isLoaded: false });
     // get user's shopping list from server
     send("getShoppingList", {}, "/test-user")
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ shoppingList: json });
+        this.setState({ shoppingList: json, isLoaded: true });
       })
       .catch((error) => {
         console.log("Error getting shopping list");
@@ -72,7 +75,6 @@ export default class ShoppingListScreen extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
-    this._loadData();
 
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
@@ -84,19 +86,26 @@ export default class ShoppingListScreen extends React.Component {
   }
 
   displayItems = () => {
-    const now = new Date().toISOString();
-    // Dynamically
-    return this.state.shoppingList.map((data, i) => (
-      <ShoppingListItem
-        key={data.name + now}
-        item={data.name}
-        quantity={data.quantity}
-        unitsOfMeasure={data.unitsOfMeasure}
-        checkedOff={data.checked_off}
-        index={i}
-        updateCheck={this.updateCheck}
-      />
-    ));
+    if (!this.state.isLoaded) {
+      return (
+      <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
+      <ActivityIndicator/>
+      </View>);  
+    } else {
+      const now = new Date().toISOString();
+      // Dynamically
+      return this.state.shoppingList.map((data, i) => (
+        <ShoppingListItem
+          key={data.name + now}
+          item={data.name}
+          quantity={data.quantity}
+          unitsOfMeasure={data.unitsOfMeasure}
+          checkedOff={data.checked_off}
+          index={i}
+          updateCheck={this.updateCheck}
+        />
+      ));
+    }
   };
 
   updateCheck = (index) => {
