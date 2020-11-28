@@ -8,11 +8,9 @@ import {
   Platform,
   Image,
 } from "react-native";
-import { LineChart } from "react-native-chart-kit";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
-import send from "../requests/request.js";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
