@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Image,
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import * as Font from "expo-font";
@@ -38,35 +39,24 @@ export default class AboutUsScreen extends React.Component {
     this._loadFontsAsync();
   }
 
-  displayItems = () => {
-    // Dynamically
-    if (this.state.imperial) {
-      return <Text style={styles.statsNumber}>123 lb</Text>;
-    } else {
-      return <Text style={styles.statsNumber}>123 kg</Text>;
-    }
-  };
-
-  switchItems = (state) => {
-    this.setState((state) => ({
-      imperial: !state.imperial,
-    }));
-  };
-
   render() {
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
-          <View
-            style={[styles.rowContainer, { justifyContent: "space-between" }]}
-          >
+          <View style={[styles.rowContainer, { justifyContent: "flex-start" }]}>
+            <Image
+              source={require("../assets/wasteless-logo.png")}
+              style={{ height: 44, width: 53, marginRight: 10 }}
+            />
             <Text style={styles.title}>About Us</Text>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={this.props.onCancel}
-            >
-              <Text style={styles.cancelText}>x</Text>
-            </TouchableOpacity>
+            <View style={{ justifyContent: "flex-end", flex: 1 }}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={this.props.onCancel}
+              >
+                <Text style={styles.cancelText}>x</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={[styles.divider, { marginBottom: 20 }]}></View>
           <View
