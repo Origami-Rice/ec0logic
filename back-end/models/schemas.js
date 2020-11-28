@@ -70,7 +70,7 @@ const UserSchema = new mongoose.Schema({
         minlength: 1,
         trim: true
     },
-    lastname: {
+    surname: {
         type: String,
         required: true,
         minlength: 1,
@@ -90,6 +90,10 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     password: {
+        type: String,
+        required: true
+    },
+    salt: {
         type: String,
         required: true
     },
