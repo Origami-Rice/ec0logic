@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "flex-end",
     backgroundColor: "#ffffff",
-    margin: 25,
+    marginVertical: 25,
     zIndex: 1,
     ...Platform.select({
       ios: {

@@ -9,11 +9,13 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import InventoryListItem from "../components/InventoryListItem";
 import FinshedFoodScreen from "./FinishedFoodScreen";
+import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
 
 let customFonts = {
@@ -82,7 +84,7 @@ export default class InventoryAllFoods extends React.Component {
   };
 
   componentDidMount() {
-    // this._loadFontsAsync();
+    this._loadFontsAsync();
     this._loadData();
 
     // For getting the new item send by the inventory input screen
@@ -271,7 +273,10 @@ export default class InventoryAllFoods extends React.Component {
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
             <Text style={styles.title}>My Inventory</Text>
-            <TouchableOpacity style={styles.infoButton}>
+            <TouchableOpacity
+              style={styles.infoButton}
+              onPress={() => this.setState({ visibleModal: 2 })}
+            >
               <Text style={styles.infoText}>i</Text>
             </TouchableOpacity>
           </View>
@@ -338,6 +343,20 @@ export default class InventoryAllFoods extends React.Component {
             <Text style={styles.addText}>+</Text>
           </TouchableOpacity>
         </View>
+        <Modal
+          isVisible={this.state.visibleModal === 2}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <AboutUsScreen
+                setSearchItem={this.setSearchedItem}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></AboutUsScreen>
+            </View>
+          }
+        </Modal>
       </View>
     );
   }
@@ -429,5 +448,19 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+  },
+  modal: {
+    backgroundColor: "white",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });

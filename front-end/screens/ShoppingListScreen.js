@@ -14,6 +14,7 @@ import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
+import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request";
 
 let customFonts = {
@@ -191,7 +192,10 @@ export default class ShoppingListScreen extends React.Component {
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
             <Text style={styles.title}>Shopping List</Text>
-            <TouchableOpacity style={styles.infoButton}>
+            <TouchableOpacity
+              style={styles.infoButton}
+              onPress={() => this.setState({ visibleModal: 2 })}
+            >
               <Text style={styles.infoText}>i</Text>
             </TouchableOpacity>
           </View>
@@ -242,6 +246,20 @@ export default class ShoppingListScreen extends React.Component {
                 inventoryArray={this.state.inventoryArray}
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></ShoppingListInputScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 2}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <AboutUsScreen
+                setSearchItem={this.setSearchedItem}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></AboutUsScreen>
             </View>
           }
         </Modal>

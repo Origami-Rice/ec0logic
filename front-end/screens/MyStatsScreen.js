@@ -8,9 +8,11 @@ import {
   Platform,
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
+import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
+import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
 
 let customFonts = {
@@ -60,7 +62,10 @@ export default class MyStatsScreen extends React.Component {
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
             <Text style={styles.title}>My Stats</Text>
-            <TouchableOpacity style={styles.infoButton}>
+            <TouchableOpacity
+              style={styles.infoButton}
+              onPress={() => this.setState({ visibleModal: 2 })}
+            >
               <Text style={styles.infoText}>i</Text>
             </TouchableOpacity>
           </View>
@@ -159,6 +164,20 @@ export default class MyStatsScreen extends React.Component {
             }}
           />
         </View>
+        <Modal
+          isVisible={this.state.visibleModal === 2}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <AboutUsScreen
+                setSearchItem={this.setSearchedItem}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></AboutUsScreen>
+            </View>
+          }
+        </Modal>
       </View>
     );
   }
@@ -230,5 +249,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     alignSelf: "center",
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+  },
+  modal: {
+    backgroundColor: "white",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });
