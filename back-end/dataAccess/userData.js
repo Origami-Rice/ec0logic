@@ -10,26 +10,61 @@ const {User} = require('../models/schemas');
 const {CommonFood} = require('../models/schemas');
 
 //////////////////// USER QUERIES ////////////////////
-exports.add_user = async (username) => {
-    //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-    //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
-    if (!(typeof username === 'string' && username != '')){
-        return false; 
-    }
+exports.add_user = async (username, email, password, salt, firstname, surname) => {
+    // if (!(typeof username === 'string' && username != '')) {
+    //     return false; 
+    // }
+    
     const newUser = new User({
-        username: username, 
+        username: username,
+        firstname: firstname,
+        surname: surname,
+        email: email,
+        password: password,
+        salt: salt,
         inventory_list: [], 
         wasted_items: [], 
         shopping_list: []
     });
+    
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
         newUser));
+};
+// exports.add_user = async (username) => {
+//     //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
+//     //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
+//     if (!(typeof username === 'string' && username != '')){
+//         return false; 
+//     }
+//     const newUser = new User({
+//         username: username, 
+//         inventory_list: [], 
+//         wasted_items: [], 
+//         shopping_list: []
+//     });
+//     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
+//         newUser));
+// };
+
+exports.find_user_by_username = async (username) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
+        {username: username}));
 };
 
 exports.remove_user = async (username) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).deleteOne(
         {username: username}
     ));
+};
+
+exports.update_email = async (username, email) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username}, {$set: {email: email}}));
+};
+
+exports.update_password = async (username, password, salt) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username}, {$set: {password: password, salt: salt}}));
 };
 
 //////////////////// INVENTORY QUERIES ////////////////////

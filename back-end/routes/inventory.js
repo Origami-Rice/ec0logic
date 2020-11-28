@@ -41,7 +41,7 @@ router
     })
     .post(async (request, response) => {
         console.log('POST request to path /api/inventory/:username');
-        // Description: Add a new item to <username>'s inventory
+        // Description: Update user <username>'s inventory
         
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
