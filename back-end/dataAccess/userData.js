@@ -7,7 +7,6 @@ const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 //
 const {User} = require('../models/schemas'); 
-const {CommonFood} = require('../models/schemas');
 
 //////////////////// USER QUERIES ////////////////////
 exports.add_user = async (username, email, password, salt, firstname, surname) => {
@@ -30,21 +29,6 @@ exports.add_user = async (username, email, password, salt, firstname, surname) =
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
         newUser));
 };
-// exports.add_user = async (username) => {
-//     //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-//     //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
-//     if (!(typeof username === 'string' && username != '')){
-//         return false; 
-//     }
-//     const newUser = new User({
-//         username: username, 
-//         inventory_list: [], 
-//         wasted_items: [], 
-//         shopping_list: []
-//     });
-//     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-//         newUser));
-// };
 
 exports.find_user_by_username = async (username) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
@@ -100,25 +84,7 @@ exports.get_entire_history = async (username) => {
     ));
 };
 
-//////////////////// Common Food Library Queries ////////////////////
-exports.get_common_food = async () => {
-    // Return all the foods in our food library
-    return await executeQuery("food-library", async (db) => await db.collection("items").find().sort({name: 1}).toArray());
-};
-
-exports.add_common_food = async (name, days) => {
-    //return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
-    //    {name: name, days: days}));
-    const newCommonFood = new CommonFood({
-        name: name,
-        days: days
-    });
-    return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
-        newCommonFood));
-};
-
 ////////////////// Shopping list queries /////////////////////
-
 exports.get_shopping_list = async (username) => {
     // gets the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(

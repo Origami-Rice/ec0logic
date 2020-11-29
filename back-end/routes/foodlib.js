@@ -8,7 +8,7 @@ router.use(bodyParser.json());
 const {
     get_common_food,
     add_common_food
-} = require('../dataAccess/userData')
+} = require('../dataAccess/foodlibData');
 
 
 router
