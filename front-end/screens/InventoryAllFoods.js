@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 import InventoryListItem from "../components/InventoryListItem";
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
@@ -96,7 +95,7 @@ export default class InventoryAllFoods extends React.Component {
       } else if (this.props.route.params?.update) {
         console.log("Update since item was deleted");
         this.updateInventory(this.state.inventoryArray);
-        this.props.navigation.setParams({});
+        this.props.navigation.setParams({ update: null });
       } else {
         console.log("focus - nothing added");
         this._loadData();
@@ -249,7 +248,8 @@ export default class InventoryAllFoods extends React.Component {
             expiryDate={data.expiryDate}
             quantity={data.quantity}
             unitsOfMeasure={data.unitsOfMeasure}
-            onPress={() => this.createSelectionWindow(data, i)}
+            onPressButton={() => this.createSelectionWindow(data, i)}
+            onPressWhole={() => this.navigateTo(data, i, 'Edit', false)}
           />
         ));
       } else {
@@ -260,7 +260,8 @@ export default class InventoryAllFoods extends React.Component {
             expiryDate={data.expiryDate}
             quantity={data.quantity}
             unitsOfMeasure={data.unitsOfMeasure}
-            onPress={() => this.createSelectionWindow(data, i, true)}
+            onPressButton={() => this.createSelectionWindow(data, i, true)}
+            onPressWhole={() => this.navigateTo(data, i, 'Edit', true)}
           />
         ));
       }

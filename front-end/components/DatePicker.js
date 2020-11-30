@@ -9,7 +9,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function DatePicker(props) {
-  const [date, setDate] = useState(props.default || new Date());
+  const [date, setDate] = useState(props.defaultDate || new Date());
   const [show, setShow] = useState(Platform.OS === "ios");
 
   const onChange = (event, selectedDate) => {
@@ -45,7 +45,7 @@ export default function DatePicker(props) {
           testID="dateTimePicker"
           value={date}
           mode="date"
-          minimumDate={new Date()}
+          minimumDate={props.defaultDate || new Date()}
           display="default"
           onChange={onChange}
           style={{ width: Dimensions.get("window").width }}

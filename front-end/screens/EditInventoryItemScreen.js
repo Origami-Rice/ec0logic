@@ -8,14 +8,10 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
-import Constants from "expo-constants";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
-import FoodSearchScreen from "./FoodSearchScreen";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -26,19 +22,16 @@ let customFonts = {
 export default class EditInventoryItemScreen extends React.Component {
   constructor(props) {
     super(props);
+    const item = this.props.route.params.item;
     this.state = {
-      inventoryArray: [],
-      name: "",
-      quantity: 0,
-      unitMeasure: "units",
-      expiryDate: new Date(),
-      visibleModal: 0,
-      estimateGiven: false,
+      name: item.name,
+      quantity: item.quantity,
+      unitsOfMeasure: item.unitsOfMeasure,
+      expiryDate: item.expiryDate,
     };
   }
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   componentDidMount() {
@@ -79,8 +72,12 @@ export default class EditInventoryItemScreen extends React.Component {
 
   setQuantity = (value) => {
     // Quality DropDown Child will set this value
-    const val = parseFloat(value);
-    this.setState({ quantity: val });
+    if (value === '') {
+      this.setState({ quantity: 0});
+    } else {
+      const val = parseFloat(value);
+      this.setState({ quantity: val });
+    }
   };
 
   setUnit = (value) => {
@@ -94,42 +91,15 @@ export default class EditInventoryItemScreen extends React.Component {
     // ExpiryDropDown component will call this
     this.setState({
       expiryDate: value,
-      estimateGiven: false,
     });
   };
 
-  setSearchedItem = (item) => {
-    // Called by Food Search Screen
-    var expiry = new Date();
-    expiry.setDate(expiry.getDate() + item.days);
-    this.setState({
-      name: item.name,
-      expiryDate: expiry,
-      estimateGiven: true,
-    });
-
-    this.setState({
-      visibleModal: 0,
-    });
-  };
-
-  displayEstimate = () => {
-    if (this.state.estimateGiven) {
-      return (
-        <View>
-          <Text style={styles.label}>
-            {" "}
-            Estimated Expiry Date: {this.state.expiryDate.toDateString()}
-          </Text>
-          <Text style={styles.note}>
-            This is only an estimate, select a different expiry date by clicking
-            above.
-          </Text>
-        </View>
-      );
-    }
-    return null;
-  };
+  handleDelete = () => {
+    this.props.navigation.navigate("List", {
+        screen: "Inventory",
+        params: { update: true },
+      });
+  }
 
   render() {
     return (
@@ -160,6 +130,7 @@ export default class EditInventoryItemScreen extends React.Component {
             />
             <Text style={styles.label}>Quantity:</Text>
             <QuantityDropdown
+              defaultUnit={this.state.unitsOfMeasure}
               setParentQuantity={this.setQuantity}
               setParentUnit={this.setUnit}
             ></QuantityDropdown>
@@ -168,7 +139,6 @@ export default class EditInventoryItemScreen extends React.Component {
               setParentExpiry={this.setExpiryDate}
               defaultDate={this.state.expiryDate}
             />
-            {this.displayEstimate()}
           </View>
         </View>
         <View
@@ -186,11 +156,13 @@ export default class EditInventoryItemScreen extends React.Component {
           >
             <TouchableOpacity
               style={styles.confirmButton}
-              onPress={this.validateItem}
+              onPress={this.saveItem}
             >
               <Text style={styles.confirmText}>Confirm</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.confirmButton}>
+            <TouchableOpacity 
+             style={styles.confirmButton}
+             onPress={() => this.handleDelete()} >
               <Text style={styles.confirmText}>Delete</Text>
             </TouchableOpacity>
           </View>

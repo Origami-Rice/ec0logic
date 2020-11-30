@@ -57,13 +57,14 @@ export default class QualityDropdown extends React.Component {
             <DropDownPicker
               label="Units"
               items={[
-                { label: "Units", value: "Units", selected: true },
+                { label: "units", value: "units"},
                 { label: "g", value: "g" },
                 { label: "mg", value: "mg" },
                 { label: "kg", value: "kg" },
                 { label: "oz", value: "oz" },
                 { label: "ml", value: "mL" },
               ]}
+              defaultValue={this.props.defaultUnit || 'units'}
               arrowStyle={styles.dropArrow}
               containerStyle={styles.dropContainer}
               dropDownStyle={{ elevation: 5000 }}

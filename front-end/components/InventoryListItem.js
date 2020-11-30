@@ -12,9 +12,8 @@ const InventoryListItem = (props) => {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-    // TODO: onPress
     return (
-      <TouchableOpacity style={styles.listItem}>
+      <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
           <Text style={styles.textInfo}>
@@ -27,7 +26,7 @@ const InventoryListItem = (props) => {
         <View style={styles.checkFlex}>
           <TouchableOpacity
             style={styles.checkbox}
-            onPress={props.onPress}
+            onPress={props.onPressButton}
           ></TouchableOpacity>
         </View>
       </TouchableOpacity>
