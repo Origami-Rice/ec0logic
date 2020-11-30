@@ -10,7 +10,7 @@ const users = require('./routes/users.js');
 const food_library = require('./routes/foodlib.js');
 const history = require('./routes/history');
 const shoppinglist = require('./routes/shoppinglist')
-
+const ghg_calculator = require('./routes/ghgcalculator.js') //added
 // const User = require('./models/schemas');
 
 let cors = require('cors');
@@ -24,6 +24,7 @@ app.use('/api/users', users);
 app.use('/api/food-library', food_library);
 app.use('/api/history', history);
 app.use('/api/shoppinglist', shoppinglist);
+app.use('/api/ghg-calculator', ghg_calculator) //added 
 
 app.get("/", function (req, res) {
     res.send("<h1>Test statement</h1>")
