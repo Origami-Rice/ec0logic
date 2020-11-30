@@ -63,3 +63,23 @@ DESCRIPTION OF THE ENDPOINTS IN INVETORY.JS ------------------------------------
 - otw return status 404 and {"error": "No such item found in inventory."}, if the precondition is satisfied then this should not occur
 - the returned object will be json
 - NOTE: currently the item name is not being updated, if this needs to change please let us know
+
+Integration changes:
+- modified start.js to display the port number even when the
+  app isn't listening to port 5000
+- added fields to user schema is schemas.js
+- started adding routes to users.js that will take care of signin/signup/signout
+- still haven't figured out the session and cookie stuff
+
+- npm install express-session
+- npm install connect-mongo
+- no longer need cookie-parser
+
+TO DO:
+- recipes
+- test the express-session stuff
+- figure out the cookie initialization and use
+- create config.json file for database pass and username
+- create .env file for session secret???
+- figure out what the final database will be for the sessions
+  and how to use the sessions and cookies

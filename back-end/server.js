@@ -9,11 +9,23 @@ const inventory = require('./routes/inventory.js');
 const users = require('./routes/users.js');
 const food_library = require('./routes/foodlib.js');
 const history = require('./routes/history');
-const shoppinglist = require('./routes/shoppinglist')
+const shoppinglist = require('./routes/shoppinglist');
 const tips = require('./routes/tips');
 
 let cors = require('cors');
 app.use(cors());
+
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+// consider using a config.json ?????????????????????????????????????????????????????????????????????????????????????????
+const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
+app.use(session({
+  name: 'wasteless.sid',
+  secret: 'please change this secret',
+  resave: false,
+  saveUninitialized: true,
+  store: new MongoStore({ url: mongodbUrl })
+}));
 
 // Routes
 app.use('/api/inventory', inventory);

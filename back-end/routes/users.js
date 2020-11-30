@@ -55,8 +55,17 @@ router
             const user = await add_user(username, email, password, salt, firstname, surname);
 
             if (user) {
-                // SESSION STUFF that i still don't understand
-
+                // Store the user's username in the session
+                request.session.username = username;
+                // Attach the cookie to the response
+                response.setHeader(
+                    "Set-Cookie",
+                    cookie.serialize("username", username, {
+                        path: "/",
+                        maxAge: 60 * 60 * 24 * 0.1 // 0.1 days  ????????????????????????????????????????????????????????????????????????????
+                    })
+                );
+                // Return the response
                 return response
                     .status(200)
                     .json({ success: "user " + username + " signed up" });
@@ -94,7 +103,8 @@ router
 router
     .route("/signin")
     .post(async (request, response) => {
-        // Description:
+        // Description: Checks if the username and password provided belong
+        // to an exisitng user.
         console.log("POST request to path /api/users/signin");
         
         // Check if the information for a valid user has been entered
@@ -122,11 +132,21 @@ router
             console.log(user.password);
             console.log(password);
             if (user.password !== password) {
-                return response.status(401).json({ error: "Username or password is incorrect." });
+                return response
+                    .status(401)
+                    .json({ error: "Username or password is incorrect." });
             }
             
-            // COOKIE STUFF that i still don't understand
-            // SESSION STUFF that i still don't understand
+            // Store the user's username in the session
+            request.session.username = username;
+            // Attach the cookie to the response
+            response.setHeader(
+                "Set-Cookie",
+                cookie.serialize("username", username, {
+                    path: "/",
+                    maxAge: 60 * 60 * 24 * 0.1 // 0.1 days ????????????????????????????????????????????????????????????????????????????
+                })
+            );
 
             return response
                 .status(200)
@@ -136,8 +156,26 @@ router
         }
     });
 
-// // MAY BE NEEDED LATER ONCE THE SESSION STUFF IS FIGURED OUT
-// router.get("/isauthenticated", async function(req, res) {
+// MAY BE NEEDED LATER ONCE THE SESSION STUFF IS FIGURED OUT ?????????????????????????????????????????
+router
+    .route("/isauthenticated")
+    .get(async (request, response) => {
+        // Description: 
+        if (request.session.username) {
+            try {
+                const user = await find_user_by_username(request.session.username);
+                // NOT SURE WHAT EXACTLY SHOULD BE RETURNED / STATUS CODE ??????????????????????????????????????????????????????????
+                return response
+                    .json({isauth: true, username: request.session.username, firstname: user.firstname});
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        return response
+            .json({ isauth: false, username: null, firstname: null });
+    });
+
+    // router.get("/isauthenticated", async function(req, res) {
 //     if (req.session.username) {
 //         const user = await find_user_by_username(req.session.username);
 //         console.log(user);
@@ -149,10 +187,23 @@ router
 router
     .route("/signout")
     .post(async (request, response) => {
-        // Description:
+        // Description: Destroys the user's current session
         console.log("POST request to path /api/users/signout");
-        // COOKIE STUFF that i still don't understand
-        // SESSION STUFF that i still don't understand
+        
+        // Destroys the current session
+        request.session.destroy();
+        // Set a cookie / why ??????????????????????????????????????????????????????????????????
+        response.setHeader(
+            "Set-Cookie",
+            cookie.serialize("username", "", {
+                path: "/",
+                maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+            })
+        );
+        console.log("Latest session", request.session);
+        response
+            .status(200)
+            .json({ success: "Signed out" });
 
     });
 
