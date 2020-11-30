@@ -24,7 +24,7 @@ app.use('/api/users', users);
 app.use('/api/food-library', food_library);
 app.use('/api/history', history);
 app.use('/api/shoppinglist', shoppinglist);
-app.use('/api/ghg-calculator', ghg_calculator) //added 
+app.use('/api/ghgcalculator', ghg_calculator) //added 
 
 app.get("/", function (req, res) {
     res.send("<h1>Test statement</h1>")
