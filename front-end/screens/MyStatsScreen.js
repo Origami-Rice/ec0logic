@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
   Dimensions,
   Platform,
 } from "react-native";
@@ -114,55 +115,47 @@ export default class MyStatsScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
-          <View style={{ marginVertical: 10 }}>
-            <Text style={styles.statsDescription}>Your footprint is</Text>
-            {this.displayItems()}
-            <Text style={styles.statsDescription}>of GHG this week</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: "flex-start",
-            flex: 0,
-          }}
-        >
-          <View style={styles.divider}></View>
-        </View>
-        <View>
-          {/* TODO: values change depending on unit of measurement */}
-          {/* TODO: see if there's a way to pass a custom for propsForLabels */}
-          <LineChart
-            data={{
-              labels: ["January", "February", "March", "April", "May"],
-              datasets: [
-                {
-                  data: [500, 663, 302, 50, 888],
+          <ScrollView>
+            <View style={{ marginVertical: 10 }}>
+              <Text style={styles.statsDescription}>Your footprint is</Text>
+              {this.displayItems()}
+              <Text style={styles.statsDescription}>of GHG this week</Text>
+            </View>
+            <View style={styles.divider}></View>
+            <Text style={styles.history}>History</Text>
+            <LineChart
+              data={{
+                labels: ["January", "February", "March", "April", "May"],
+                datasets: [
+                  {
+                    data: [500, 663, 302, 50, 888],
+                  },
+                ],
+              }}
+              width={Dimensions.get("window").width}
+              height={180}
+              yAxisSuffix={this.state.imperial ? "lb" : "kg"}
+              withVerticalLines={false}
+              withShadow={false}
+              chartConfig={{
+                backgroundGradientFrom: "#ffffff",
+                backgroundGradientTo: "#ffffff",
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                propsForLabels: {
+                  fontSize: 10,
                 },
-              ],
-            }}
-            width={Dimensions.get("window").width}
-            height={180}
-            yAxisSuffix={this.state.imperial ? "lb" : "kg"}
-            withVerticalLines={false}
-            withShadow={false}
-            chartConfig={{
-              backgroundGradientFrom: "#ffffff",
-              backgroundGradientTo: "#ffffff",
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              propsForLabels: {
-                fontSize: 10,
-              },
-              propsForBackgroundLines: {
-                stroke: "#D5D5D5",
-              },
-            }}
-            style={{
-              marginVertical: 10,
-              borderRadius: 16,
-              fontFamily: "Montserrat_400Regular",
-            }}
-          />
+                propsForBackgroundLines: {
+                  stroke: "#D5D5D5",
+                },
+              }}
+              style={{
+                marginVertical: 10,
+                borderRadius: 16,
+                fontFamily: "Montserrat_400Regular",
+              }}
+            />
+          </ScrollView>
         </View>
         <Modal
           isVisible={this.state.visibleModal === 2}
@@ -209,6 +202,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontFamily: "Montserrat_600SemiBold",
+  },
+  history: {
+    fontSize: 14,
+    textAlign: "left",
+    fontFamily: "Montserrat_600SemiBold",
+    margin: 5,
+    marginTop: 15,
   },
   statsDescription: {
     fontSize: 24,
