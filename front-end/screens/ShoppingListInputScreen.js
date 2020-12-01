@@ -29,7 +29,6 @@ export default class ShoppingListInput extends React.Component {
       name: "",
       quantity: 0,
       unitsOfMeasure: "units",
-      editing: false,
     };
   }
   async _loadFontsAsync() {
@@ -98,40 +97,6 @@ export default class ShoppingListInput extends React.Component {
     this.setState({ unitsOfMeasure: value });
   };
 
-  getBottomButtons = () => {
-    if (this.state.editing) {
-      // TODO: onPress
-      return (
-        <View
-          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
-        >
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={this.validateItem}
-          >
-            <Text style={styles.confirmText}>Confirm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.confirmButton}>
-            <Text style={styles.confirmText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return (
-        <View
-          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
-        >
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={this.validateItem}
-          >
-            <Text style={styles.confirmText}>Confirm</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  };
-
   render() {
     return (
       <View style={styles.container}>
@@ -154,7 +119,16 @@ export default class ShoppingListInput extends React.Component {
           ></QuantityDropdown>
           <Text style={styles.optional}>Optional</Text>
         </View>
-        {this.getBottomButtons()}
+        <View
+          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
+        >
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={this.validateItem}
+          >
+            <Text style={styles.confirmText}>Confirm</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
