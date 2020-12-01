@@ -39,7 +39,20 @@ function calculateCO2(foodList){
  * Not yet implemented 
  */
 function getGHGBreakdown(){
+    var breakdown = []; 
+    var start; 
+    var end; 
+    for (var i = 0; i < 5; i++){
+
+    }
     return; 
+}
+
+/**
+ * Takes in float and returns it rounded to 3 decimals. 
+ */
+function roundToThreeDecimals(number){
+    return (Math.round(number * 1000) / 1000).toFixed(3); 
 }
 
 /***
@@ -56,7 +69,7 @@ function calculateFoodWasteCO2(wastedItems, startDate, endDate){
             totalWeightInKg = totalWeightInKg + parseFloat(wastedItems[i].kilograms); 
         }
     }
-    return (Math.round(totalWeightInKg * CO2_KG_PER_FOOD_KG * 1000) / 1000).toFixed(3); 
+    return roundToThreeDecimals(totalWeightInKg * CO2_KG_PER_FOOD_KG); 
 }
 
 router  //not being used 
@@ -120,7 +133,8 @@ router
                 c02_kgs = calculateFoodWasteCO2(result.wasted_items, start, end);
                 return response
                     .status(200)
-                    .json({"emissions": parseFloat(c02_kgs)});
+                    .json({"emissions": {"kg": parseFloat(c02_kgs), "lbs": roundToThreeDecimals
+                        (parseFloat(c02_kgs) * LBS_PER_KG) }});
             } else {
                 return response.status(404).json({"error": "Couldn't find wasted items to calculate the GHG"}); 
             }
