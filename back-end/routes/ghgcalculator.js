@@ -8,12 +8,18 @@ router.use(bodyParser.json());
 const CO2_KG_PER_FOOD_KG = 1.9;
 const LBS_PER_KG = 2.20462262185; // 1 kg = 2.20462262185 lbs
 const G_PER_KG = 1000; 
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
+    "October", "November", "December"]; 
 const {
     get_inventorylist,
     get_shopping_list,
     get_entire_history
 } = require('../dataAccess/userData');
 
+/** 
+ * Calculates ghg of a list of inventory or food items. Uses the old format where items have 
+ * a weight attribute and quantity refers to the number of the item. 
+ */
 function calculateCO2(foodList){   
     var totalWeightInKg = 0; 
     var listLength = foodList.length; 
@@ -33,19 +39,6 @@ function calculateCO2(foodList){
         }
     }
     return (Math.round(totalWeightInKg * CO2_KG_PER_FOOD_KG * 1000) / 1000).toFixed(3); 
-}
-
-/**
- * Not yet implemented 
- */
-function getGHGBreakdown(){
-    var breakdown = []; 
-    var start; 
-    var end; 
-    for (var i = 0; i < 5; i++){
-
-    }
-    return; 
 }
 
 /**
@@ -72,7 +65,39 @@ function calculateFoodWasteCO2(wastedItems, startDate, endDate){
     return roundToThreeDecimals(totalWeightInKg * CO2_KG_PER_FOOD_KG); 
 }
 
-router  //not being used 
+/**
+ * Returns array of the ghg for this month and the last five months in the format 
+ * [{"month": string, "lbs": number, "kg": number}, ...]
+ */
+function getGHGBreakdown(wastedItems){
+    var breakdown = []; 
+    var end = new Date();
+    var start = new Date(end.getFullYear(), end.getMonth(), 1); 
+    var co2; 
+    var year; 
+    var month; 
+    var newMonthBreakdown; 
+    for (var i = 0; i < 6; i++){
+        co2 = calculateFoodWasteCO2(wastedItems, start, end);
+        year = start.getFullYear(); 
+        month = start.getMonth();  
+        newMonthBreakdown = {
+            "Month": String(MONTHS[month]),
+            "lbs": roundToThreeDecimals(parseFloat(co2) * LBS_PER_KG),
+            "kg": co2 
+        }
+        breakdown.push(newMonthBreakdown); 
+        if (month == 0){
+            year = year - 1; 
+        } 
+        month = (month + 11) % 12; 
+        end = new Date(start - 1); 
+        start = new Date(year, month, 1);
+    }
+    return breakdown; 
+}
+
+router  //currently not being used 
     .route('/inventory/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/ghgcalculator/inventory/:username');
@@ -94,7 +119,7 @@ router  //not being used
         }
     }); 
 
-router  //not being used 
+router  //currently not being used 
     .route('/shoppingList/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/ghgcalculator/shoppingList/:username');
