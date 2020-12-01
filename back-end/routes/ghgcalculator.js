@@ -120,7 +120,7 @@ router
                 c02_kgs = calculateFoodWasteCO2(result.wasted_items, start, end);
                 return response
                     .status(200)
-                    .json({"emissions": c02_kgs});
+                    .json({"emissions": parseFloat(c02_kgs)});
             } else {
                 return response.status(404).json({"error": "Couldn't find wasted items to calculate the GHG"}); 
             }
