@@ -29,13 +29,7 @@ export default class ShoppingListScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      shoppingList: [
-        { name: "Butter", quantity: 2 },
-        { name: "Cabbage", quantity: "" },
-        { name: "Sweet Potato" },
-        { name: "Mango" },
-        { name: "Apples" },
-      ],
+      shoppingList: [],
       inventoryArray: [],
       fontsLoaded: false,
       modalVisible: 0,
