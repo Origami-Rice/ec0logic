@@ -24,7 +24,7 @@ router
         console.log(intolerances);
 
         const url = new URL("https://api.spoonacular.com/recipes/search")
-        const parameters = {apiKey = api_key, query: query, diet: diet, intolerances:intolerances, number: 50, sort: "popularity"};
+        const parameters = {apiKey: api_key, query: query, diet: diet, intolerances:intolerances, number: 50, sort: "popularity"};
         Object.keys(parameters).forEach(param => url.searchParams.append(param, parameters[param]));
 
 
