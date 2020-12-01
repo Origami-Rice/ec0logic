@@ -35,6 +35,13 @@ function calculateCO2(foodList){
     return (Math.round(totalWeightInKg * CO2_KG_PER_FOOD_KG * 1000) / 1000).toFixed(3); 
 }
 
+/**
+ * Not yet implemented 
+ */
+function getGHGBreakdown(){
+    return; 
+}
+
 /***
  * Calculates GHG of items in wastedItems between the startDate and endDate 
  */
@@ -96,7 +103,7 @@ router  //not being used
         }
     }); 
     
-    router
+router
     .route('/history/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/ghgcalculator/history/:username');
@@ -113,7 +120,7 @@ router  //not being used
                 c02_kgs = calculateFoodWasteCO2(result.wasted_items, start, end);
                 return response
                     .status(200)
-                    .json(c02_kgs);
+                    .json({"emissions": c02_kgs});
             } else {
                 return response.status(404).json({"error": "Couldn't find wasted items to calculate the GHG"}); 
             }
@@ -121,5 +128,28 @@ router  //not being used
             console.log(error); 
         }
     }); 
+
+router 
+    .route('/history/breakdown/:username')
+    .get(async (request, response) => {
+        console.log('GET request to path /api/ghgcalculator/history/breakdown/:username');
+        console.log(request.params); 
+
+        const username = request.params.username; 
+        const result = await get_entire_history(username);
+        try {
+            if (result && result.wasted_items){
+                var ghgBreakdown = getGHGBreakdown(result.wasted_items);
+                return response
+                    .status(200)
+                    .json(ghgBreakdown);
+            } else {
+                return response.status(404).json({"error": "Couldn't find wasted items to calculate 6" + 
+                    "month GHG breakdown"});
+            }
+        } catch (error){
+            console.log(error); 
+        }
+    })
 
 module.exports = router;
