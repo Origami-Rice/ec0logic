@@ -73,16 +73,13 @@ function getGHGBreakdown(wastedItems){
     var breakdown = []; 
     var end = new Date();
     var start = new Date(end.getFullYear(), end.getMonth(), 1); 
-    var co2; 
-    var year; 
-    var month; 
-    var newMonthBreakdown; 
+    var co2; var year; var month; var newMonthBreakdown; 
     for (var i = 0; i < 6; i++){
         co2 = calculateFoodWasteCO2(wastedItems, start, end);
         year = start.getFullYear(); 
         month = start.getMonth();  
         newMonthBreakdown = {
-            "Month": String(MONTHS[month]),
+            "month": String(MONTHS[month]),
             "lbs": roundToThreeDecimals(parseFloat(co2) * LBS_PER_KG),
             "kg": co2 
         }
