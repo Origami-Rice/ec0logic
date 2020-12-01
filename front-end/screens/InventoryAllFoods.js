@@ -8,8 +8,8 @@ import {
   Dimensions,
   Platform,
   Alert,
-  ActivityIndicator,
 } from "react-native";
+import { ActivityIndicator } from 'react-native-paper';
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import InventoryListItem from "../components/InventoryListItem";
@@ -21,6 +21,8 @@ let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
+
+let username = '/tester';
 
 export default class InventoryAllFoods extends React.Component {
   constructor(props) {
@@ -42,7 +44,7 @@ export default class InventoryAllFoods extends React.Component {
   _loadData = () => {
     this.setState ({ isLoaded: false })
     // Load the list of user's inventory items from server
-    send("getInventory", {}, "/test-user")
+    send("getInventory", {}, username)
       .then((response) => response.json())
       .then((json) => {
         const inventory = this.deserializeItems(json);
@@ -54,7 +56,7 @@ export default class InventoryAllFoods extends React.Component {
       });
 
     // Load the list of user's expiring items
-    send("getExpiring", {}, "/test-user")
+    send("getExpiring", {}, username)
       .then((response) => response.json())
       .then((json) => {
         const expiring = this.deserializeItems(json);
@@ -89,16 +91,22 @@ export default class InventoryAllFoods extends React.Component {
     // For getting the new item send by the inventory input screen
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       if (this.props.route.params?.new_item) {
-        console.log("Added:" + this.props.route.params.new_item.name);
+
+        console.log("[Inventory] Added item to list:" + this.props.route.params.new_item.name);
         this.addItem(this.props.route.params.new_item);
         this.props.navigation.setParams({ new_item: null }); // Resetting params
+
       } else if (this.props.route.params?.update) {
-        console.log("Update since item was deleted");
+
+        console.log("[Inventory] Update since item was deleted");
         this.updateInventory(this.state.inventoryArray);
         this.props.navigation.setParams({ update: null });
+
       } else {
-        console.log("focus - nothing added");
+
+        console.log("[Inventory] Nothing changed");
         this._loadData();
+
       }
     });
   }
@@ -118,13 +126,17 @@ export default class InventoryAllFoods extends React.Component {
     this.updateInventory(currInventory);
   };
 
+  /**
+   * Adds item to expiringArray if applicable.
+   * Returns true if item was added. 
+   */
   addToExpiring = (item) => {
     var currExpiring = this.state.expiringArray;
     let now = new Date();
     let expires =
       (item.expiryDate.getTime() - now.getTime()) / (1000 * 3600 * 24);
     // check if expiring soon
-    if (expires < 7) {
+    if (expires < 3) {
       currExpiring.push(item);
       this.setState({ expiringArray: currExpiring });
       return true;
@@ -138,7 +150,7 @@ export default class InventoryAllFoods extends React.Component {
     };
 
     // Send updated list to server
-    send("addToInventory", data, "/test-user")
+    send("addToInventory", data, username)
       .then((response) => response.json())
       .then((json) => {
         console.log(json.error);
@@ -181,9 +193,12 @@ export default class InventoryAllFoods extends React.Component {
     );
   };
 
+  /**
+   * Remove item from expiringArray at index position.
+   * Also remove item from inventoryArray.
+   */
   removeFromExpiring = (item, index) => {
     // We remove the item from the expiring list
-    // Find the index of the
     var currExpiring = this.state.expiringArray;
     currExpiring.splice(index, 1);
     this.setState({ expiringArray: currExpiring });
@@ -235,7 +250,7 @@ export default class InventoryAllFoods extends React.Component {
     if (!this.state.isLoaded) {
       return (
       <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
-      <ActivityIndicator/>
+        <ActivityIndicator animating={true} colour={"grey"}/>
       </View>
       );
     } else {

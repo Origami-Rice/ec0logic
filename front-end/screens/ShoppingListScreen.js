@@ -7,14 +7,13 @@ import {
   ScrollView,
   Dimensions,
   Platform,
-  ActivityIndicator,
 } from "react-native";
+import { ActivityIndicator } from 'react-native-paper';
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
-import Constants from "expo-constants";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
+import ShoppingListEditScreen from './ShoppingListEditScreen';
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request";
 
@@ -24,7 +23,8 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
-// TODO: Close modal onpress (detect from child)
+let username = "/tester";
+
 export default class ShoppingListScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +34,7 @@ export default class ShoppingListScreen extends React.Component {
       fontsLoaded: false,
       modalVisible: 0,
       isLoaded: false,
+      itemSelected: {},
     };
   }
 
@@ -45,7 +46,7 @@ export default class ShoppingListScreen extends React.Component {
   _loadData = () => {
     this.setState({ isLoaded: false });
     // get user's shopping list from server
-    send("getShoppingList", {}, "/test-user")
+    send("getShoppingList", {}, username)
       .then((response) => response.json())
       .then((json) => {
         this.setState({ shoppingList: json, isLoaded: true });
@@ -56,7 +57,7 @@ export default class ShoppingListScreen extends React.Component {
       });
 
     // get the user's inventory list
-    send("getInventory", {}, "/test-user")
+    send("getInventory", {}, username)
       .then((response) => response.json())
       .then((json) => {
         this.setState({ inventoryArray: json });
@@ -83,7 +84,7 @@ export default class ShoppingListScreen extends React.Component {
     if (!this.state.isLoaded) {
       return (
       <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
-      <ActivityIndicator/>
+        <ActivityIndicator animating={true} colour={"grey"}/>
       </View>);  
     } else {
       const now = new Date().toISOString();
@@ -97,10 +98,21 @@ export default class ShoppingListScreen extends React.Component {
           checkedOff={data.checked_off}
           index={i}
           updateCheck={this.updateCheck}
+          onPress={() => this.toEdit(data, i)}
         />
       ));
     }
   };
+
+  toEdit = (item, index) => {
+    var currlist = this.state.shoppingList;
+    currlist.splice(index, 1);
+
+    // Delete item from shopping list
+    this.setState({shoppingList: currlist, itemSelected: item, visibleModal: 3});
+    // Update the list in server
+    this.updateList(currlist);
+  }
 
   updateCheck = (index) => {
     var currlist = this.state.shoppingList;
@@ -112,7 +124,7 @@ export default class ShoppingListScreen extends React.Component {
   };
 
   updateList = (updatedList) => {
-    send("updateShoppingList", updatedList, "/test-user")
+    send("updateShoppingList", updatedList, username)
       .then((response) => response.json())
       .catch((error) => {
         console.log(error);
@@ -127,7 +139,7 @@ export default class ShoppingListScreen extends React.Component {
     this.setState({ shoppingList: currlist });
 
     // add item to server
-    send("addToShoppingList", item, "/test-user")
+    send("addToShoppingList", item, username)
       .then((response) => response.json())
       .catch((error) => {
         console.log(error);
@@ -144,7 +156,7 @@ export default class ShoppingListScreen extends React.Component {
     };
 
     // Send updated list to server
-    send("addToInventory", data, "/test-user")
+    send("addToInventory", data, username)
       .then((response) => response.json())
       .then((json) => {
         console.log(json.error);
@@ -263,6 +275,23 @@ export default class ShoppingListScreen extends React.Component {
                 setSearchItem={this.setSearchedItem}
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></AboutUsScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 3}
+          style={styles.bottomModal}
+          avoidKeyboard={false}>
+          {
+            <View style={styles.modal}>
+              <ShoppingListEditScreen
+                addNewItem={this.addNewItem}
+                item={this.state.itemSelected}
+                onCancel={() =>
+                  this.setState({ visibleModal: 0 })}
+                onDelete={() => this.setState({ visibleModal: 0 })}
+                >
+                </ShoppingListEditScreen>
             </View>
           }
         </Modal>

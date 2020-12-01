@@ -45,18 +45,11 @@ export default function DatePicker(props) {
           testID="dateTimePicker"
           value={date}
           mode="date"
-          minimumDate={props.defaultDate || new Date()}
           display="default"
           onChange={onChange}
           style={{ width: Dimensions.get("window").width }}
         />
       )}
-      {Platform.OS === "ios" && (
-        <Text style={{ textAlign: "center" }}>{date.toString()}</Text>
-      )}
-      {
-        //TODO: Remove after styling
-      }
     </View>
   );
 }

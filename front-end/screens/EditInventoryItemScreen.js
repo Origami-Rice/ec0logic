@@ -7,8 +7,8 @@ import {
   TextInput,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
@@ -26,7 +26,7 @@ export default class EditInventoryItemScreen extends React.Component {
     this.state = {
       name: item.name,
       quantity: item.quantity,
-      unitsOfMeasure: item.unitsOfMeasure,
+      unitsOfMeasure: item.unitsOfMeasure || 'units',
       expiryDate: item.expiryDate,
     };
   }
@@ -45,45 +45,16 @@ export default class EditInventoryItemScreen extends React.Component {
       return;
     }
 
-    if (this.state.quantity === 0 || this.state.unitMeasure === "") {
-      alert("Some fields have not been filled correctly. Please review.");
-      return;
-    }
-
     const newItem = {
       name: this.state.name,
       expiryDate: this.state.expiryDate,
       quantity: this.state.quantity,
-      unitsOfMeasure: this.state.unitMeasure,
+      unitsOfMeasure: this.state.unitsOfMeasure,
     };
 
     this.props.navigation.navigate("List", {
       screen: "Inventory",
       params: { new_item: newItem },
-    });
-  };
-
-  setItemName = (value) => {
-    this.setState({
-      name: value,
-      estimateGiven: false,
-    });
-  };
-
-  setQuantity = (value) => {
-    // Quality DropDown Child will set this value
-    if (value === '') {
-      this.setState({ quantity: 0});
-    } else {
-      const val = parseFloat(value);
-      this.setState({ quantity: val });
-    }
-  };
-
-  setUnit = (value) => {
-    // QuantityDropdown component will call this function
-    this.setState({
-      unitMeasure: value,
     });
   };
 
@@ -95,11 +66,32 @@ export default class EditInventoryItemScreen extends React.Component {
   };
 
   handleDelete = () => {
+    console.log("Deleted Item from Inventory");
+
     this.props.navigation.navigate("List", {
         screen: "Inventory",
         params: { update: true },
       });
   }
+
+  confirmDeletion = () => {
+    Alert.alert(
+      'Confirm',
+      'You are about to delete this item from your inventory.',
+      [
+        {
+          text: 'Continue',
+          onPress: () => this.handleDelete(),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   render() {
     return (
@@ -122,19 +114,14 @@ export default class EditInventoryItemScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
+            <Text style={styles.label}>Update Item Name:</Text>
             <TextInput
               style={styles.inputFormat}
-              placeholder="Enter New Food Item"
+              placeholder="Enter Item Name"
               value={this.state.name}
-              onChangeText={(text) => this.setItemName(text)}
+              onChangeText={(text) => this.setState({name: text})}
             />
-            <Text style={styles.label}>Quantity:</Text>
-            <QuantityDropdown
-              defaultUnit={this.state.unitsOfMeasure}
-              setParentQuantity={this.setQuantity}
-              setParentUnit={this.setUnit}
-            ></QuantityDropdown>
-            <Text style={styles.label}>Select Expiry Date:</Text>
+            <Text style={styles.label}>Update Expiry Date:</Text>
             <DatePicker
               setParentExpiry={this.setExpiryDate}
               defaultDate={this.state.expiryDate}
@@ -158,12 +145,12 @@ export default class EditInventoryItemScreen extends React.Component {
               style={styles.confirmButton}
               onPress={this.saveItem}
             >
-              <Text style={styles.confirmText}>Confirm</Text>
+              <Text style={styles.confirmText}>Confirm Changes</Text>
             </TouchableOpacity>
             <TouchableOpacity 
              style={styles.confirmButton}
-             onPress={() => this.handleDelete()} >
-              <Text style={styles.confirmText}>Delete</Text>
+             onPress={() => this.confirmDeletion()} >
+              <Text style={styles.confirmText}>Delete Item</Text>
             </TouchableOpacity>
           </View>
         </View>
