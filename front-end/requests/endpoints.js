@@ -33,6 +33,11 @@ const endpoints = {
         method: 'GET',
     },
 
+    addWastedItem: {
+        endpoint: '/api/history',
+        method: 'POST',
+    },
+
     // Shopping List
     getShoppingList: {
         endpoint: '/api/shoppinglist',

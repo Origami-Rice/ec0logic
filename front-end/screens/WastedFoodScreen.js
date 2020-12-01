@@ -9,15 +9,16 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import Constants from "expo-constants";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
+import send from "../requests/request";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
+
+let username = "/tester";
 
 export default class WastedFoodScreen extends React.Component {
   constructor(props) {
@@ -57,7 +58,22 @@ export default class WastedFoodScreen extends React.Component {
         params: { update: true },
       });
     } else {
-      // TODO: send to server the record of wasted food
+      // Send to server the record of wasted food
+      const wastedData = {
+        name: this.state.name,
+        quantity: quantityToRemove,
+        unitsOfMeasure: this.state.unitsOfMeasure,
+        date: new Date(),
+      };
+
+      send("addToWaste", wastedData, username)
+      .then(response => response.json)
+      .then(json => {
+        console.log(json);
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
       // Create an updated item with the new quantity
       const newItem = {
