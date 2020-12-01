@@ -58,7 +58,7 @@ export default class MyStatsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
+        <View style={{ justifyContent: "flex-start", flex: 1, marginTop: 5 }}>
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
