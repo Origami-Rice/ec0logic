@@ -30,7 +30,7 @@ export default class MyStatsScreen extends React.Component {
       imperial: false,
       emissionsThisWeek: {},
       emissionsLastWeek: {},
-      monthlyBreakdown: {},
+      monthlyBreakdown: { months: [], kg: [], lbs: [] },
     };
   }
 
@@ -55,6 +55,8 @@ export default class MyStatsScreen extends React.Component {
       this.setState({ 
         emissionsThisWeek: json.emissions
       });
+
+      console.log(json);
 
     })
     .catch(error => {
@@ -86,6 +88,9 @@ export default class MyStatsScreen extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
+    this._unsubscribe = this.props.navigation.addListener("focus", () => {
+      this._loadData();
+    }); 
   }
 
   displayItems = () => {

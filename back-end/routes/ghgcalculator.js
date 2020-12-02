@@ -137,8 +137,8 @@ router  //currently not being used
     
 router
     .route('/history/:username')
-    .get(async (request, response) => {
-        console.log('GET request to path /api/ghgcalculator/history/:username');
+    .post(async (request, response) => {
+        console.log('POST request to path /api/ghgcalculator/history/:username');
         console.log(request.params);
         
         const username = request.params.username;
