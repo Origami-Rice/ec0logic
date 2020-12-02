@@ -48,9 +48,9 @@ router
 router
     .route('/:id/ingredients')
     .get(async (request, res) => {
-    console.log(req.params);
-    const url = new URL(`https://api.spoonacular.com/recipes/${req.params.id}/ingredientWidget.json`);
-    url.searchParams.append(apiKey, api_key);
+    console.log(request.params);
+    const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/ingredientWidget.json`);
+    url.searchParams.append("apiKey", api_key);
     fetch(url)
         .then((response) => {
             return response.json();
@@ -68,9 +68,9 @@ router
     .route('/:id/information')
     .get(async (request, res) => {
     console.log('path /recipe/');
-    console.log(req.params);
-    const url = new URL(`https://api.spoonacular.com/recipes/${req.params.id}/information?includeNutrition=false`);
-    url.searchParams.append(apiKey, api_key);
+    console.log(request.params);
+    const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/information?includeNutrition=false`);
+    url.searchParams.append("apiKey", api_key);
     fetch(url)
         .then((response) => {
             return response.json();
@@ -88,9 +88,9 @@ router
     .route('/:id/analyzedInstructions')
     .get(async (request, res) => {
     console.log('path /recipe/');
-    console.log(req.params);
-    const url = new URL(`https://api.spoonacular.com/recipes/${req.params.id}/analyzedInstructions`);
-    url.searchParams.append(apiKey, api_key);
+    console.log(request.params);
+    const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/analyzedInstructions`);
+    url.searchParams.append("apiKey", api_key);
     fetch(url)
         .then((response) => {
             return response.json();
