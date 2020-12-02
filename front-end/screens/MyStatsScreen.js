@@ -6,13 +6,11 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-  Platform,
 } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
-import Constants from "expo-constants";
+
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
 
@@ -22,18 +20,68 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
+const username = "/tester";
+
 export default class MyStatsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       fontsLoaded: false,
       imperial: false,
+      emissionsThisWeek: {},
+      emissionsLastWeek: {},
+      monthlyBreakdown: {},
     };
   }
 
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
+  }
+
+  _loadData = () => {
+    let weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    let timePeriod = {
+      start: weekAgo,
+      end: new Date(),
+    }
+    // Getting the GHG for the last week
+    send('getGHG', timePeriod, username)
+    .then(response => response.json())
+    .then((json) => {
+
+      this.setState({ 
+        emissionsThisWeek: json.emissions
+      });
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+    send('getGHG', timePeriod, username)
+    .then(response => response.json())
+    .then((json) => {
+
+      this.setState({ 
+        emissionsThisWeek: json.emissions
+      });
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+    send('getMonthlyGHGBreakdown', {}, username)
+    .then(response => response.json())
+    .then((json) => {
+      this.setState({ monthlyBreakdown: json });
+    })
+    .catch(error => {
+      console.log(error);
+    } )
   }
 
   componentDidMount() {
@@ -43,9 +91,15 @@ export default class MyStatsScreen extends React.Component {
   displayItems = () => {
     // Dynamically
     if (this.state.imperial) {
-      return <Text style={styles.statsNumber}>123 lb</Text>;
+      return (
+      <Text style={styles.statsNumber}> 
+        {this.state.emissionsThisWeek.lbs} lbs 
+      </Text> );
     } else {
-      return <Text style={styles.statsNumber}>123 kg</Text>;
+      return (
+      <Text style={styles.statsNumber}>
+        {this.state.emissionsThisWeek.kg} kg
+      </Text> );
     }
   };
 
@@ -119,22 +173,22 @@ export default class MyStatsScreen extends React.Component {
             <View style={{ marginVertical: 10 }}>
               <Text style={styles.statsDescription}>Your footprint is</Text>
               {this.displayItems()}
-              <Text style={styles.statsDescription}>of GHG this week</Text>
+              <Text style={styles.statsDescription}>of CO2 this week</Text>
             </View>
             <View style={styles.divider}></View>
             <Text style={styles.history}>History</Text>
             <LineChart
               data={{
-                labels: ["January", "February", "March", "April", "May"],
+                labels: this.state.monthlyBreakdown.months,
                 datasets: [
                   {
-                    data: [500, 663, 302, 50, 888],
+                    data: this.state.imperial ? this.state.monthlyBreakdown.kg : this.state.monthlyBreakdown.lbs,
                   },
                 ],
               }}
               width={Dimensions.get("window").width}
               height={180}
-              yAxisSuffix={this.state.imperial ? "lb" : "kg"}
+              yAxisSuffix={this.state.imperial ? " lbs" : " kg"}
               withVerticalLines={false}
               withShadow={false}
               chartConfig={{

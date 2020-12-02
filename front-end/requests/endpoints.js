@@ -52,7 +52,19 @@ const endpoints = {
     updateShoppingList: {
         endpoint: '/api/shoppinglist',
         method: 'PUT',
-    }
+    },
+
+    // GHG Calculator
+    getGHG: {
+        endpoint: '/api/ghgcalculator/history',
+        method: 'POST',
+    },
+
+    getMonthlyGHGBreakdown: {
+        endpoint: '/api/ghgcalculator/history/breakdown',
+        method: 'GET',
+    },
+
 }
 
 export default endpoints;
