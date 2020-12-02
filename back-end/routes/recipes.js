@@ -120,15 +120,13 @@ If you dont have any preferences for diet/intolerances, substitute with ""
     'intolerances': ['peanut', 'gluten']     //or ""
 }
 
+
+EMPTY DIET/INTOLERANCES QUERY EXAMPLE:
+
+{"query": "Pasta", "diet": "", "intolerances": ""}
 */
 
-// EMPTY DIET/INTOLERANCES QUERY EXAMPLES
-//{"query": "Pasta", "diet": "", "intolerances": ""}
-
-
-
-
-/* Returned response format: 
+/* Returned response format for /search: 
 e.g., search {"query": "Pasta", "diet": "", "intolerances": ""}
 returned:
 
@@ -142,23 +140,89 @@ returned:
             "sourceUrl": "http://DAMNDELICIOUS.NET/2014/03/29/spaghetti-carbonara/",
             "openLicense": 0,
             "image": "Spaghetti-Carbonara-535835.jpg"
-        },
-        {
-            "id": 249325,
-            "title": "Chili Tortellini",
-            "readyInMinutes": 45,
-            "servings": 10,
-            "sourceUrl": "http://picky-palate.com/2013/04/10/chili-tortellini/",
-            "openLicense": 0,
-            "image": "Chili-Tortellini-249325.jpg"
         }
     ],
     "baseUri": "https://spoonacular.com/recipeImages/",
     "offset": 0,
-    "number": 20,
+    "number": 1,
     "totalResults": 839,
     "processingTimeMs": 584,
     "expires": 1607126693519,
     "isStale": false
 }
+*/
+
+/* Returned format for /:id/ingredients
+{
+    "ingredients": [
+        {
+            "name": "diced bacon",
+            "image": "raw-bacon.png",
+            "amount": {
+                "metric": {
+                    "value": 4,
+                    "unit": "slice"
+                },
+                "us": {
+                    "value": 4,
+                    "unit": "slice"
+                }
+            }
+        },
+        {
+            "name": "eggs",
+            "image": "egg.png",
+            "amount": {
+                "metric": {
+                    "value": 2,
+                    "unit": "large"
+                },
+                "us": {
+                    "value": 2,
+                    "unit": "large"
+                }
+            }
+        }
+    ]
+}
+*/
+
+/* Returned from /:id/information
+essentially returns a huge dictionary of information including directions,ingredients,diet/intolerance info, wine pairing, cuisine, etc.
+*/
+
+/* Returned from /:id/analyzedInstructions
+[
+    {
+        "steps": [
+            {
+                "number": 1,
+                "step": "In a large pot of boiling salted water, cook pasta according to package instructions",
+                "ingredients": [
+                    {
+                        "id": 1033,
+                        "name": "parmesan",
+                        "localizedName": "parmesan",
+                        "image": "parmesan.jpg"
+                    },
+                    {
+                        "id": 20420,
+                        "name": "pasta",
+                        "localizedName": "pasta",
+                        "image": "fusilli.jpg"
+                    }
+                ],
+                "equipment": [
+                    {
+                        "id": 404661,
+                        "name": "whisk",
+                        "localizedName": "whisk",
+                        "image": "whisk.png"
+                    }
+                ]
+            },
+            etc
+        ]
+    }
+]
 */
