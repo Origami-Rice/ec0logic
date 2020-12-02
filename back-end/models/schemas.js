@@ -51,13 +51,13 @@ const ShoppingListSchema = new mongoose.Schema({
     
 });
 // // MAY NEED TO MODIFY ????????????????????????????????????????
-// const RecipeSchema = new mongoose.Schema({
-//     name: String,
-//     link: String,
-//     ingrediants: String,
-//     directions: String,
-//     image: String
-// });
+const RecipeSchema = new mongoose.Schema({
+     name: String,
+     link: String,
+     ingrediants: String,
+     directions: String,
+     image: String
+});
 // MAY NEED TO MODIFY ????????????????????????????????????????
 const TipsSchema = new mongoose.Schema({
     tipNum: Number
@@ -105,7 +105,7 @@ const UserSchema = new mongoose.Schema({
     inventory_list: [InventoryItemSchema],
     wasted_items: [WastedItemSchema],
     shopping_list: [ShoppingListSchema],
-    // saved_recipes: [RecipeSchema],
+    saved_recipes: [RecipeSchema],
     fav_tips: [TipsSchema]
 });
 
