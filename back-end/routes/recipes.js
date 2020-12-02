@@ -10,7 +10,7 @@ const fetch = require("node-fetch");
 const api_key = "1beca095b4c44b54b6861b16e89a2f63";
 
 const {
-    get_saved_recipes
+    get_saved_recipes, add_recipe_to_saved_recipes
 } = require('../dataAccess/userData');
 
 router
@@ -124,7 +124,30 @@ router
         }catch (error) {
                 console.log(error);
             }
-        });
+        })
+        .post(async (request, response) => {
+            // assign the username passed to the endpoint to a variable
+            const username = request.params.username;
+            
+            const recipe = request.body;
+            try{
+                const result = await add_recipe_to_saved_recipes(username, recipe);
+                if (result){
+                    return response
+                        .status(200)
+                        .json({"success": "Recipe was successfully added."});
+    
+                }else{
+                    return response
+                        .status(404)
+                        .json({"error": "Item could not be added to history."});
+    
+                }
+                
+            }catch (error) {
+                console.log(error);
+            }
+        })
 
 module.exports = router;
 /*
