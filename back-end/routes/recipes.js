@@ -15,7 +15,7 @@ const api_key = "1beca095b4c44b54b6861b16e89a2f63";
 
 router
     .route('/')
-    .post(async (request, res) => {
+    .get(async (request, res) => {
         console.log('GET request to path /api/recipe');
         const query = request.body.query;
         const diet = request.body.diet;
@@ -48,15 +48,17 @@ module.exports = router;
 
 
 /*
-POST REQUEST:
+GET REQUEST:
 
-url/api/recipe 
-with following JSON body:
+/api/recipe 
+with following JSON body variables: 'query', 'diet', 'intolerances'
+Note: 'intolerances' is a list of strings.
+If you dont have any preferences for diet/intolerances, substitute with ""
 
 {
     'query': 'beef'
     'diet': 'vegetarian'                //or ""
-    'intolerances': [peanut, gluten]     //or ""
+    'intolerances': ['peanut', 'gluten']     //or ""
 }
 
 */
