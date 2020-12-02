@@ -10,9 +10,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
-import Constants from "expo-constants";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
 import FoodSearchScreen from "./FoodSearchScreen";
