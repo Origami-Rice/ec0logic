@@ -23,7 +23,8 @@ exports.add_user = async (username, email, password, salt, firstname, surname) =
         salt: salt,
         inventory_list: [], 
         wasted_items: [], 
-        shopping_list: []
+        shopping_list: [],
+        saved_recipes: []
     });
     
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
@@ -129,3 +130,14 @@ exports.update_tips = async (username, tips) => {
         {username: username},  {$set: {tips: tips}}
     ));
 };
+
+////////////////////////////// RECIPE QUERIES ///////////////////////////////////////
+
+exports.get_saved_recipes = async (username) => {
+    // gets the user's saved_recipes
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
+        {username, username},
+        {username: 1, saved_recipes: 1}
+    ));
+};
+
