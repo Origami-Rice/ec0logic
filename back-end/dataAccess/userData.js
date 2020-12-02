@@ -141,3 +141,10 @@ exports.get_saved_recipes = async (username) => {
     ));
 };
 
+exports.add_recipe_to_saved_recipes = async (username, item) => {
+    // adds a new item to the user's saved_recipes
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne (
+        {username: username}, {$push: { saved_recipes: { $each: [item], $sort: {name: 1}} }}
+    ))
+}
+
