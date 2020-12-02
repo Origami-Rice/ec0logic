@@ -10,7 +10,6 @@ import {
   Alert,
 } from "react-native";
 import * as Font from "expo-font";
-import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
 
 let customFonts = {

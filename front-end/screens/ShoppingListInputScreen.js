@@ -9,11 +9,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import Constants from "expo-constants";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
-import send from "../requests/request";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -75,7 +72,7 @@ export default class ShoppingListInput extends React.Component {
       const { inventoryArray } = this.state;
       // Check if item is already in inventory, if so, alert
       for (var i = 0; i < inventoryArray.length; i++) {
-        if (inventoryArray[i].name === this.state.name) {
+        if (inventoryArray[i].name.toLowerCase() === this.state.name.toLowerCase()) {
           this.createAlert();
           return;
         }

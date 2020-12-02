@@ -9,8 +9,6 @@ import {
   Image,
 } from "react-native";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
-import Constants from "expo-constants";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
