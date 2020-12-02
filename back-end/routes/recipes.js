@@ -103,33 +103,49 @@ router
             res.status(500).send("500: Internal Server Error");
         });
     });
+
+
+    router
+    .route('/:username')
+    .get(async (request, response) => {
+        console.log('GET request to path /api/recipe/:username');
+        // assign the username passed to the endpoint to a variable
+        const username = request.params.username;
+        try{
+            const result = await get_saved_recipes(username);
+            console.log(result)
+            if(result && result.saved_recipes){
+                return response
+                    .status(200)
+                    .json(result.saved_recipes);
+            }else{
+                return response.status(500).json({ error: "Internal server error" });
+            }
+        }catch (error) {
+                console.log(error);
+    
+            }
+        });
+
 module.exports = router;
-
-
 /*
 GET REQUEST:
-
 /api/recipe 
 with following JSON body variables: 'query', 'diet', 'intolerances'
 Note: 'intolerances' is a list of strings.
 If you dont have any preferences for diet/intolerances, substitute with ""
-
 {
     'query': 'beef'
     'diet': 'vegetarian'                //or ""
     'intolerances': ['peanut', 'gluten']     //or ""
 }
-
-
 EMPTY DIET/INTOLERANCES QUERY EXAMPLE:
-
 {"query": "Pasta", "diet": "", "intolerances": ""}
 */
 
 /* Returned response format for /search: 
 e.g., search {"query": "Pasta", "diet": "", "intolerances": ""}
 returned:
-
 {
     "results": [
         {
