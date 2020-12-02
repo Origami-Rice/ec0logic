@@ -146,7 +146,7 @@ exports.add_recipe_to_saved_recipes = async (username, item) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne (
         {username: username}, {$push: { saved_recipes: { $each: [item], $sort: {name: 1}} }}
     ))
-}
+};
 
 exports.remove_recipe_from_saved_recipes = async (username, recipe) => {
     // removes a existing item from the user's saved_recipes
@@ -155,5 +155,5 @@ exports.remove_recipe_from_saved_recipes = async (username, recipe) => {
         {$pull: { saved_recipes: {name: recipe}} }
     ));
 
-}
+};
 

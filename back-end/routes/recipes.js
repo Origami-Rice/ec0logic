@@ -9,13 +9,13 @@ const fetch = require("node-fetch");
 
 const api_key = "1beca095b4c44b54b6861b16e89a2f63";
 
-// const {
-//     _functions
-// } = require('../dataAccess/userData');
+const {
+    get_saved_recipes
+} = require('../dataAccess/userData');
 
 router
     .route('/search')
-    .get(async (request, res) => {
+    .get(async (request, response) => {
         console.log('GET request to path /api/recipe/search');
         const query = request.body.query;
         const diet = request.body.diet;
@@ -35,11 +35,11 @@ router
             return response.json();
         })
         .then((data) => {
-            res.status(200).send(data);
+            response.status(200).send(data);
         })
         .catch((error) => {
             console.log(error)
-            res.status(500).send("500: Internal Server Error");
+            response.status(500).send("500: Internal Server Error");
         });
 
 
@@ -47,7 +47,7 @@ router
 
 router
     .route('/:id/ingredients')
-    .get(async (request, res) => {
+    .get(async (request, response) => {
     console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/ingredientWidget.json`);
     url.searchParams.append("apiKey", api_key);
@@ -56,17 +56,17 @@ router
             return response.json();
         })
         .then((data) => {
-            res.status(200).send(data);
+            response.status(200).send(data);
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).send("500: Internal Server Error");
+            response.status(500).send("500: Internal Server Error");
         });
     });
 
 router
     .route('/:id/information')
-    .get(async (request, res) => {
+    .get(async (request, response) => {
     console.log('path /recipe/');
     console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/information?includeNutrition=false`);
@@ -76,17 +76,17 @@ router
             return response.json();
         })
         .then((data) => {
-            res.status(200).send(data);
+            response.status(200).send(data);
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).send("500: Internal Server Error");
+            response.status(500).send("500: Internal Server Error");
         });
     });
 
 router
     .route('/:id/analyzedInstructions')
-    .get(async (request, res) => {
+    .get(async (request, response) => {
     console.log('path /recipe/');
     console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/analyzedInstructions`);
@@ -96,16 +96,16 @@ router
             return response.json();
         })
         .then((data) => {
-            res.status(200).send(data);
+            response.status(200).send(data);
         })
         .catch((error) => {
             console.log(error);
-            res.status(500).send("500: Internal Server Error");
+            response.status(500).send("500: Internal Server Error");
         });
     });
 
 
-    router
+router
     .route('/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/recipe/:username');
@@ -123,7 +123,6 @@ router
             }
         }catch (error) {
                 console.log(error);
-    
             }
         });
 
