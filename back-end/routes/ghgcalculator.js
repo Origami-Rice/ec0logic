@@ -70,20 +70,17 @@ function calculateFoodWasteCO2(wastedItems, startDate, endDate){
  * [{"month": string, "lbs": number, "kg": number}, ...]
  */
 function getGHGBreakdown(wastedItems){
-    var breakdown = []; 
+    var months = []; var lbs = []; var kg = []; 
     var end = new Date();
     var start = new Date(end.getFullYear(), end.getMonth(), 1); 
-    var co2; var year; var month; var newMonthBreakdown; 
+    var co2; var year; var month; 
     for (var i = 0; i < 6; i++){
         co2 = calculateFoodWasteCO2(wastedItems, start, end);
         year = start.getFullYear(); 
         month = start.getMonth();  
-        newMonthBreakdown = {
-            "month": String(MONTHS[month]),
-            "lbs": roundToThreeDecimals(parseFloat(co2) * LBS_PER_KG),
-            "kg": co2 
-        }
-        breakdown.push(newMonthBreakdown); 
+        months.push(String(MONTHS[month]));
+        lbs.push(parseFloat(roundToThreeDecimals(parseFloat(co2) * LBS_PER_KG)));
+        kg.push(parseFloat(co2)); 
         if (month == 0){
             year = year - 1; 
         } 
@@ -91,7 +88,7 @@ function getGHGBreakdown(wastedItems){
         end = new Date(start - 1); 
         start = new Date(year, month, 1);
     }
-    return breakdown; 
+    return {"months": months.reverse(), "kg": kg.reverse(), "lbs": lbs.reverse()}; 
 }
 
 router  //currently not being used 
