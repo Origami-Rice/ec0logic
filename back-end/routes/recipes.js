@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
+const fetch = require("node-fetch");
+
 
 const api_key = "1beca095b4c44b54b6861b16e89a2f63";
 
@@ -24,18 +26,15 @@ router
         console.log(intolerances);
 
         const url = new URL("https://api.spoonacular.com/recipes/search")
-        const parameters = {apiKey: api_key, query: query, diet: diet, intolerances:intolerances, number: 50, sort: "popularity"};
+        const parameters = {apiKey: api_key, query: query, diet: diet, intolerances:intolerances, number: 20, sort: "popularity"};
         Object.keys(parameters).forEach(param => url.searchParams.append(param, parameters[param]));
 
 
         fetch(url)
         .then((response) => {
-            return res
-            .status(200)
-            .json(response.json);
+            return response.json();
         })
         .then((data) => {
-            //console.log(data[0].usedIngredients[0]);
             res.status(200).send(data);
         })
         .catch((error) => {
@@ -51,7 +50,8 @@ module.exports = router;
 /*
 POST REQUEST:
 
-in body:
+url/api/recipe 
+with following JSON body:
 
 {
     'query': 'beef'
@@ -60,3 +60,6 @@ in body:
 }
 
 */
+
+// EMPTY DIET/INTOLERANCES QUERY EXAMPLES
+//{"query": "Pasta", "diet": "", "intolerances": ""}

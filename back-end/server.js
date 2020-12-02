@@ -11,7 +11,7 @@ const food_library = require('./routes/foodlib.js');
 const history = require('./routes/history');
 const shoppinglist = require('./routes/shoppinglist');
 const tips = require('./routes/tips');
-const recipe = require('./routes/recipes');
+const recipe = require('./routes/recipes.js');
 let cors = require('cors');
 app.use(cors());
 
