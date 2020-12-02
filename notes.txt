@@ -70,6 +70,10 @@ DESCRPTION OF ENDPOINTS IN SHOPPINGLIST.JS -------------------------------------
 - On success, returns status 200 and the user's shoppinglist.
 - If empty, returns an empty list.
 
+2. POST REQUEST TO PATH /api/shoppinglist/:username
+- To add an item to the user's shoppinglist 
+- On success, returns status 200 and adds the item to the user's shoppinglist
+- On failure returns status 404
 
 Integration changes:
 - modified start.js to display the port number even when the
