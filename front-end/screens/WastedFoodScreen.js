@@ -44,7 +44,7 @@ export default class WastedFoodScreen extends React.Component {
   }
 
   updateQuantity = () => {
-    var quantityToRemove = parseFloat(this.state.quantityToRemove);
+    let quantityToRemove = parseFloat(this.state.quantityToRemove);
     const newQuantity = this.state.quantity - quantityToRemove;
 
     if (quantityToRemove < 0 || newQuantity < 0) {
@@ -59,14 +59,18 @@ export default class WastedFoodScreen extends React.Component {
       });
     } else {
       // Send to server the record of wasted food
-      const wastedData = {
-        name: this.state.name,
-        quantity: quantityToRemove,
-        unitsOfMeasure: this.state.unitsOfMeasure,
-        date: new Date(),
+      const wastedData = { 
+        item: {
+          name: this.state.name,
+          quantity: quantityToRemove,
+          unitsOfMeasure: this.state.unitsOfMeasure,
+          date: new Date(),
+        }
       };
 
-      send("addToWaste", wastedData, username)
+      console.log(wastedData);
+
+      send("addWastedItem", wastedData, username)
       .then(response => response.json)
       .then(json => {
         console.log(json);

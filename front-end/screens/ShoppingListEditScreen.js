@@ -18,7 +18,7 @@ let customFonts = {
   Montserrat_600SemiBold: require('../fonts/Montserrat-SemiBold.ttf'),
 };
 
-export default class ShoppingListInput extends React.Component {
+export default class ShoppingListEditScreen extends React.Component {
   constructor(props) {
     super(props);
     const item = this.props.item;

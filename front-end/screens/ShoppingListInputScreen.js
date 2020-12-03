@@ -68,19 +68,21 @@ export default class ShoppingListInput extends React.Component {
   };
 
   validateItem = () => {
-    if (this.state.name) {
-      const { inventoryArray } = this.state;
-      // Check if item is already in inventory, if so, alert
-      for (var i = 0; i < inventoryArray.length; i++) {
-        if (inventoryArray[i].name.toLowerCase() === this.state.name.toLowerCase()) {
-          this.createAlert();
-          return;
-        }
-      }
-      this.saveItem();
-    } else {
+    if (!this.state.name) {
       alert("Please enter item name.");
+      return; 
+    } 
+    
+    const { inventoryArray } = this.state;
+    // Check if item is already in inventory, if so, alert
+    for (var i = 0; i < inventoryArray.length; i++) {
+      if (inventoryArray[i].name.toLowerCase() === this.state.name.toLowerCase()) {
+        this.createAlert();
+        return;
+      }
     }
+    this.saveItem();
+    
   };
 
   setQuantity = (value) => {

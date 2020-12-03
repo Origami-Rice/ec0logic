@@ -171,20 +171,33 @@ export default class ShoppingListScreen extends React.Component {
     const { shoppingList } = this.state;
     var currInventory = this.state.inventoryArray;
 
+    var defaultDate = new Date();
+    defaultDate.setDate(defaultDate.getDate() + 7);
+
+    var quantity_missing = false;
     var unchecked = [];
     // create a list of unchecked items to be new shopping list
     for (let i = 0; i < shoppingList.length; i++) {
       let item = shoppingList[i];
-      if (item.checked_off) {
+      if (item.checked_off && item.quantity !== 0) {
         currInventory.push({
           name: item.name,
           quantity: item.quantity,
           unitsOfMeasure: item.unitsOfMeasure,
-          expiryDate: new Date(), // TODO: default expirydate is today
+          expiryDate: defaultDate, // Default expiry date is a week from today
         });
       } else {
+        if (item.checked_off) {
+          quantity_missing = true;
+        }
         unchecked.push(item);
       }
+    }
+
+    if (quantity_missing) {
+      alert("Some checked off items had no quantities specified. " + 
+        "These were not added to your inventory. " + 
+        "Please edit these items and try again if you wish to add them.")
     }
 
     this.setState({
