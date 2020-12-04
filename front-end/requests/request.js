@@ -1,6 +1,8 @@
 import endpoints from './endpoints'; 
 
-const SERVER = 'https://powerful-scrubland-01586.herokuapp.com';
+// const SERVER = 'https://powerful-scrubland-01586.herokuapp.com';
+// const SERVER = 'http://localhost:5000';
+const SERVER = 'http://10.0.2.2:5000';
 
 export default function send(url, data = {}, extra_url = null) {
     const endpoint = endpoints[url];

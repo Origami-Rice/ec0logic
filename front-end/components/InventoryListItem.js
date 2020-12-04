@@ -13,18 +13,23 @@ const InventoryListItem = (props) => {
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.listItem}>
+      <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
         <View style={styles.textGroup}>
           <Text style={styles.textItem}>{props.item}</Text>
-          <Text style={styles.textInfo}>Expiry Date: {props.expiryDate.toDateString()} </Text>
-          <Text style={styles.textInfo}>Quantity: {props.quantity} {props.unitsOfMeasure} </Text>
+          <Text style={styles.textInfo}>
+            Expiry Date: {props.expiryDate.toDateString()}{" "}
+          </Text>
+          <Text style={styles.textInfo}>
+            Quantity: {props.quantity} {props.unitsOfMeasure}{" "}
+          </Text>
         </View>
         <View style={styles.checkFlex}>
-          <TouchableOpacity 
-            style={styles.checkbox} 
-            onPress={props.onPress}></TouchableOpacity>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={props.onPressButton}
+          ></TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 };

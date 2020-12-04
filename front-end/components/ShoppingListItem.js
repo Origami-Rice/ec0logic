@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
 const ShoppingListItem = (props) => {
-  // Note: if test = "" the empty string, "Bananas" will be centered
-  let test = "Quantity: 5";
   let [fontsLoaded] = useFonts({
     Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
     Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
@@ -23,22 +22,33 @@ const ShoppingListItem = (props) => {
 
   const displayQuantity = () => {
     if (quantity !== 0) {
-      return ("Quantity: " + quantity + " " + units);
-    } else {
-      return "";
+      return (
+        <Text
+          style={
+            checked
+              ? [styles.textInfo, { color: "#BDBDBD" }]
+              : [styles.textInfo, { color: "#000000" }]
+          }
+        >
+          Quantity: {quantity} {units}
+        </Text>
+      );
     }
-  }
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.listItem}>
+      <TouchableOpacity style={styles.listItem} onPress={props.onPress}>
         <View style={styles.checkFlex}>
-          <TouchableOpacity
-            style={styles.checkbox}
-            onPress={handlePress}
-          ></TouchableOpacity>
+          <TouchableOpacity style={styles.checkbox} onPress={handlePress}>
+            <MaterialIcons
+              name="check"
+              size={24}
+              color={checked ? "black" : "#DDDDDD"}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.textGroup}>
           <Text
@@ -50,18 +60,9 @@ const ShoppingListItem = (props) => {
           >
             {props.item}
           </Text>
-          {/* TODO: check if props.quantity is a certain value, change to "" if no quantity */}
-          <Text
-            style={
-              checked
-                ? [styles.textInfo, { color: "#BDBDBD" }]
-                : [styles.textInfo, { color: "#000000" }]
-            }
-          >
-            {displayQuantity()}
-          </Text>
+          {displayQuantity()}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 };

@@ -9,11 +9,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import Constants from "expo-constants";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
-import send from "../requests/request";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -71,19 +68,21 @@ export default class ShoppingListInput extends React.Component {
   };
 
   validateItem = () => {
-    if (this.state.name) {
-      const { inventoryArray } = this.state;
-      // Check if item is already in inventory, if so, alert
-      for (var i = 0; i < inventoryArray.length; i++) {
-        if (inventoryArray[i].name === this.state.name) {
-          this.createAlert();
-          return;
-        }
-      }
-      this.saveItem();
-    } else {
+    if (!this.state.name) {
       alert("Please enter item name.");
+      return; 
+    } 
+    
+    const { inventoryArray } = this.state;
+    // Check if item is already in inventory, if so, alert
+    for (var i = 0; i < inventoryArray.length; i++) {
+      if (inventoryArray[i].name.toLowerCase() === this.state.name.toLowerCase()) {
+        this.createAlert();
+        return;
+      }
     }
+    this.saveItem();
+    
   };
 
   setQuantity = (value) => {
@@ -100,13 +99,13 @@ export default class ShoppingListInput extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={this.props.onCancel}
-        >
-          <Text style={styles.cancelText}>x</Text>
-        </TouchableOpacity>
-        <View style={{ justifyContent: "flex-start" }}>
+        <View style={{ justifyContent: "flex-start", flex: 1 }}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={this.props.onCancel}
+          >
+            <Text style={styles.cancelText}>x</Text>
+          </TouchableOpacity>
           <TextInput
             style={styles.inputFormat}
             placeholder="Enter New Food Item"
@@ -119,7 +118,9 @@ export default class ShoppingListInput extends React.Component {
           ></QuantityDropdown>
           <Text style={styles.optional}>Optional</Text>
         </View>
-        <View style={{ justifyContent: "flex-end", zIndex: -1 }}>
+        <View
+          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
+        >
           <TouchableOpacity
             style={styles.confirmButton}
             onPress={this.validateItem}
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "flex-end",
     backgroundColor: "#ffffff",
-    margin: 25,
+    marginVertical: 25,
     zIndex: 1,
     ...Platform.select({
       ios: {
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: "#d8d8d8",
-    marginVertical: Dimensions.get("window").height * 0.2,
+    marginVertical: 15,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",

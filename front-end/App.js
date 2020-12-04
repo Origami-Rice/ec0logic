@@ -1,4 +1,5 @@
 import * as React from "react";
+import { LogBox } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -13,6 +14,8 @@ import {
   ShoppingListScreen,
   FinishedFoodScreen,
   WastedFoodScreen,
+  MyStatsScreen,
+  EditInventoryItemScreen,
   SignInScreen,
   SignUpScreen
 } from './screens'
@@ -21,9 +24,10 @@ import {
 // import ShoppingListScreen from "./screens/ShoppingListScreen";
 // import FinishedFoodScreen from "./screens/FinishedFoodScreen";
 // import WastedFoodScreen from "./screens/WastedFoodScreen";
+// import MyStatsScreen from "./screens/MyStatsScreen";
+// import EditInventoryItemScreen from './screens/EditInventoryItemScreen';
 // import SignInScreen from './screens/SignInScreen';
 // import SignUpScreen from './screens/SignUpScreen';
-const console = require("console");
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
@@ -71,11 +75,13 @@ function InventoryStackScreen() {
     <InventoryStack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       <InventoryStack.Screen name="List" component={MyTabs} />
       <InventoryStack.Screen name="Input" component={InventoryInputScreen} />
       <InventoryStack.Screen name="ThrownOut" component={WastedFoodScreen} />
       <InventoryStack.Screen name="Used" component={FinishedFoodScreen} />
+      <InventoryStack.Screen name="Edit" component={EditInventoryItemScreen} />
     </InventoryStack.Navigator>
   );
 }
@@ -90,16 +96,39 @@ function MyTabs() {
         inactiveTintColor: "#BDBDBD",
         activeBackgroundColor: "#E5E5E5",
         inactiveBackgroundColor: "#ffffff",
-        style: { marginBottom: 10, fontSize: 20 },
-        labelStyle: { fontSize: 10, fontFamily: "Montserrat_600SemiBold" },
+        style: { borderTopWidth: 0, height: 60 },
+        labelStyle: {
+          marginBottom: 10,
+          fontSize: 10,
+          fontFamily: "Montserrat_600SemiBold",
+        },
       }}
     >
+      <Tab.Screen
+        name="My Stats"
+        component={MyStatsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="assessment"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Inventory"
         component={InventoryAllFoods}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="kitchen" color={color} size={size} style={{marginTop: 5}}/>
+            <MaterialIcons
+              name="kitchen"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
           ),
         }}
       />
@@ -108,7 +137,12 @@ function MyTabs() {
         component={ShoppingListScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="shopping-cart" color={color} size={size} style={{marginTop: 5}}/>
+            <MaterialIcons
+              name="shopping-cart"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
           ),
         }}
       />
@@ -131,7 +165,7 @@ export default function App() {
   .then(session => {
     if (session.isauth) {
       setIsSignedIn(true);
-      // setIsLoading(false); // needed ?????????????????????????????????????????????????????
+      setIsLoading(false); // needed ?????????????????????????????????????????????????????
     }
     console.log('AUTH SESSION:', session);
   }).catch(err => console.log('Error getting session:', err))
@@ -226,9 +260,10 @@ export default function App() {
     </AuthContext.Provider>
   );
 
-  // old navigation
+  // // old navigation
   // return (
   //   <NavigationContainer>
+  //     {LogBox.ignoreAllLogs() }
   //     <InventoryStackScreen />
   //   </NavigationContainer>
   // );

@@ -7,13 +7,10 @@ import {
   TextInput,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
-import Modal from "react-native-modal";
-import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
-import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
-import FoodSearchScreen from "./FoodSearchScreen";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
@@ -21,22 +18,19 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
-export default class InventoryInputScreen extends React.Component {
+export default class EditInventoryItemScreen extends React.Component {
   constructor(props) {
     super(props);
+    const item = this.props.route.params.item;
     this.state = {
-      inventoryArray: [],
-      name: "",
-      quantity: 0,
-      unitMeasure: "units",
-      expiryDate: new Date(),
-      visibleModal: 0,
-      estimateGiven: false,
+      name: item.name,
+      quantity: item.quantity,
+      unitsOfMeasure: item.unitsOfMeasure || 'units',
+      expiryDate: item.expiryDate,
     };
   }
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   componentDidMount() {
@@ -50,16 +44,11 @@ export default class InventoryInputScreen extends React.Component {
       return;
     }
 
-    if (this.state.quantity === 0 || this.state.unitMeasure === "") {
-      alert("Some fields have not been filled correctly. Please review.");
-      return;
-    }
-
     const newItem = {
       name: this.state.name,
       expiryDate: this.state.expiryDate,
       quantity: this.state.quantity,
-      unitsOfMeasure: this.state.unitMeasure,
+      unitsOfMeasure: this.state.unitsOfMeasure,
     };
 
     this.props.navigation.navigate("List", {
@@ -68,65 +57,39 @@ export default class InventoryInputScreen extends React.Component {
     });
   };
 
-  setItemName = (value) => {
-    this.setState({
-      name: value,
-      estimateGiven: false,
-    });
-  };
-
-  setQuantity = (value) => {
-    // Quality DropDown Child will set this value
-    const val = parseFloat(value);
-    this.setState({ quantity: val });
-  };
-
-  setUnit = (value) => {
-    // QuantityDropdown component will call this function
-    this.setState({
-      unitMeasure: value,
-    });
-  };
-
   setExpiryDate = (value) => {
     // ExpiryDropDown component will call this
     this.setState({
       expiryDate: value,
-      estimateGiven: false,
     });
   };
 
-  setSearchedItem = (item) => {
-    // Called by Food Search Screen
-    var expiry = new Date();
-    expiry.setDate(expiry.getDate() + item.days);
-    this.setState({
-      name: item.name,
-      expiryDate: expiry,
-      estimateGiven: true,
-    });
+  handleDelete = () => {
+    console.log("Deleted Item from Inventory");
 
-    this.setState({
-      visibleModal: 0,
-    });
-  };
+    this.props.navigation.navigate("List", {
+        screen: "Inventory",
+        params: { update: true },
+      });
+  }
 
-  displayEstimate = () => {
-    if (this.state.estimateGiven) {
-      return (
-        <View>
-          <Text style={styles.label}>
-            {" "}
-            Estimated Expiry Date: {this.state.expiryDate.toDateString()}
-          </Text>
-          <Text style={styles.note}>
-            This is only an estimate, select a different expiry date by clicking
-            above.
-          </Text>
-        </View>
-      );
-    }
-    return null;
+  confirmDeletion = () => {
+    Alert.alert(
+      'Confirm',
+      'You are about to delete this item from your inventory.',
+      [
+        {
+          text: 'Continue',
+          onPress: () => this.handleDelete(),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   render() {
@@ -144,40 +107,24 @@ export default class InventoryInputScreen extends React.Component {
           <View style={styles.topButtonsContainer}>
             <TouchableOpacity
               style={styles.cancelButton}
-              onPress={() => this.setState({ visibleModal: 1 })}
-            >
-              <MaterialIcons
-                name="search"
-                size={18}
-                color="black"
-                style={{ alignSelf: "center" }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
               onPress={() => this.props.navigation.goBack(null)}
             >
               <Text style={styles.cancelText}>x</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
+            <Text style={styles.label}>Update Item Name:</Text>
             <TextInput
               style={styles.inputFormat}
-              placeholder="Enter New Food Item"
+              placeholder="Enter Item Name"
               value={this.state.name}
-              onChangeText={(text) => this.setItemName(text)}
+              onChangeText={(text) => this.setState({name: text})}
             />
-            <Text style={styles.label}>Quantity:</Text>
-            <QuantityDropdown
-              setParentQuantity={this.setQuantity}
-              setParentUnit={this.setUnit}
-            ></QuantityDropdown>
-            <Text style={styles.label}>Select Expiry Date:</Text>
+            <Text style={styles.label}>Update Expiry Date:</Text>
             <DatePicker
               setParentExpiry={this.setExpiryDate}
               defaultDate={this.state.expiryDate}
             />
-            {this.displayEstimate()}
           </View>
         </View>
         <View
@@ -186,27 +133,26 @@ export default class InventoryInputScreen extends React.Component {
             flex: 1,
           }}
         >
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={this.saveItem}
+          <View
+            style={{
+              justifyContent: "flex-end",
+              zIndex: -1,
+              marginBottom: 25,
+            }}
           >
-            <Text style={styles.confirmText}>Confirm</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={this.saveItem}
+            >
+              <Text style={styles.confirmText}>Confirm Changes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+             style={styles.confirmButton}
+             onPress={() => this.confirmDeletion()} >
+              <Text style={styles.confirmText}>Delete Item</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <Modal
-          isVisible={this.state.visibleModal === 1}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <FoodSearchScreen
-                setSearchItem={this.setSearchedItem}
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></FoodSearchScreen>
-            </View>
-          }
-        </Modal>
       </View>
     );
   }
@@ -242,7 +188,7 @@ const styles = StyleSheet.create({
     }),
   },
   topButtonsContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
   },
   cancelText: {
@@ -313,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: "#d8d8d8",
-    margin: 40,
+    margin: 15,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -325,19 +271,5 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    position: "absolute",
-    top: 0,
-  },
-  modal: {
-    backgroundColor: "white",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
   },
 });

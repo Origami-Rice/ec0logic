@@ -4,17 +4,14 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableHighlight,
   TextInput,
   TouchableOpacity,
   Platform,
   Dimensions
 } from "react-native";
-import { ListItem } from "react-native-elements";
 import LibraryListItem from "../components/LibraryListItem";
 
 import send from "../requests/request.js";
-import endpoints from "../requests/endpoints.js";
 
 let customFonts = {
   Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),

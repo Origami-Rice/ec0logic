@@ -10,6 +10,27 @@ const {
     add_item_to_wasted_history
 } = require('../dataAccess/userData');
 
+
+const LBS_PER_KG = 2.20462262185;
+const G_PER_KG = 1000; 
+/**
+ * Calculates the weight of a single item to 2 decimal places based on the item's quantity and 
+ * units of measure. Returns 0 if item's unitOfMeasure isn't equal to "g", "kg", or "lbs" (case-
+ * insensitive equality)
+ */
+function calculateKilograms(item){
+    var kilograms = item.quantity; 
+    var units = String(item.unitsOfMeasure);
+    if (units.toUpperCase() == "LBS"){  
+        kilograms = kilograms * LBS_PER_KG;   
+    } else if (units.toUpperCase() == "G"){
+        kilograms = kilograms / G_PER_KG;
+    } else if (!(units.toUpperCase() == "KG")){
+        kilograms = 0; 
+    }
+    return (Math.round(kilograms * 100) / 100).toFixed(2); 
+}
+
 router
     .route('/:username')
     .get(async (request, response) => {
@@ -47,6 +68,8 @@ router
 
         // try to add the item to the wasted items list
         try {
+            var weight = calculateKilograms(item);  
+            item["kilograms"] = weight;             
             const result = await add_item_to_wasted_history(username, item);
 
             if (result) {
