@@ -1,4 +1,5 @@
 import * as React from "react";
+import { LogBox } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,6 +18,7 @@ import EditInventoryItemScreen from './screens/EditInventoryItemScreen';
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
 };
+
 
 const InventoryStack = createStackNavigator();
 
@@ -103,6 +105,7 @@ function MyTabs() {
 export default function App() {
   return (
     <NavigationContainer>
+      {LogBox.ignoreAllLogs() }
       <InventoryStackScreen />
     </NavigationContainer>
   );

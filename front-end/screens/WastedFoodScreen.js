@@ -51,6 +51,29 @@ export default class WastedFoodScreen extends React.Component {
       // Alert that this is invalid
       alert("Quantity Invalid. Please try again");
     } else if (newQuantity === 0) {
+
+      // Send to server the record of wasted food
+      const wastedData = { 
+        item: {
+          name: this.state.name,
+          quantity: quantityToRemove,
+          unitsOfMeasure: this.state.unitsOfMeasure,
+          date: new Date(),
+        }
+      };
+
+      console.log(wastedData);
+
+      send("addWastedItem", wastedData, username)
+      .then(response => response.json)
+      .then(json => {
+        console.log(json);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+      
       // Navigate back only
       // Note that item was already removed from the inventory
       this.props.navigation.navigate("List", {
