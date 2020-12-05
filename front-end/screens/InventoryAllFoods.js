@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,18 +8,14 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
 import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
-import * as Font from "expo-font";
 import InventoryListItem from "../components/InventoryListItem";
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
 
 let username = "/tester";
 
@@ -31,14 +26,8 @@ export default class InventoryAllFoods extends React.Component {
       inventoryArray: [],
       expiringArray: [],
       allFoods: true,
-      fontsLoaded: false,
       isLoaded: false,
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   _loadData = () => {
@@ -86,8 +75,6 @@ export default class InventoryAllFoods extends React.Component {
   };
 
   componentDidMount() {
-    this._loadFontsAsync();
-
     // For getting the new item send by the inventory input screen
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       if (this.props.route.params?.new_item) {
@@ -300,12 +287,12 @@ export default class InventoryAllFoods extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>My Inventory</Text>
+            <TextSemiBold style={styles.title} text={"My Inventory"} />
             <TouchableOpacity
               style={styles.infoButton}
               onPress={() => this.setState({ visibleModal: 2 })}
             >
-              <Text style={styles.infoText}>i</Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -323,15 +310,14 @@ export default class InventoryAllFoods extends React.Component {
               }
               onPress={this.switchItems}
             >
-              <Text
+              <TextMedium
                 style={
                   this.state.allFoods
                     ? [styles.navText, { color: "#ffffff" }]
                     : [styles.navText, { color: "#000000" }]
                 }
-              >
-                All Foods
-              </Text>
+                text={"All Foods"}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={
@@ -341,15 +327,14 @@ export default class InventoryAllFoods extends React.Component {
               }
               onPress={this.switchItems}
             >
-              <Text
+              <TextMedium
                 style={
                   !this.state.allFoods
                     ? [styles.navText, { color: "#ffffff" }]
                     : [styles.navText, { color: "#000000" }]
                 }
-              >
-                Expiring Soon
-              </Text>
+                text={"Expiring Soon"}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -368,7 +353,7 @@ export default class InventoryAllFoods extends React.Component {
             style={styles.addButton}
             onPress={() => this.props.navigation.navigate("Input")}
           >
-            <Text style={styles.addText}>+</Text>
+            <TextRegular style={styles.addText} text={"+"} />
           </TouchableOpacity>
         </View>
         <Modal
@@ -421,10 +406,8 @@ const styles = StyleSheet.create({
     fontSize: 34,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   navText: {
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     textAlign: "center",
     alignSelf: "center",
@@ -440,7 +423,6 @@ const styles = StyleSheet.create({
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
   },
   infoButton: {
@@ -454,7 +436,6 @@ const styles = StyleSheet.create({
   addText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 24,
   },
   addButton: {

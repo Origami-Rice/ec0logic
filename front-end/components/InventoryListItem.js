@@ -1,37 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useFonts } from "expo-font";
-import { AppLoading } from "expo";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import TextRegular from "./TextRegular";
+import TextMedium from "./TextMedium";
 
 const InventoryListItem = (props) => {
-  let [fontsLoaded] = useFonts({
-    Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-    Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
-        <View style={styles.textGroup}>
-          <Text style={styles.textItem}>{props.item}</Text>
-          <Text style={styles.textInfo}>
-            Expiry Date: {props.expiryDate.toDateString()}{" "}
-          </Text>
-          <Text style={styles.textInfo}>
-            Quantity: {props.quantity} {props.unitsOfMeasure}{" "}
-          </Text>
-        </View>
-        <View style={styles.checkFlex}>
-          <TouchableOpacity
-            style={styles.checkbox}
-            onPress={props.onPressButton}
-          ></TouchableOpacity>
-        </View>
-      </TouchableOpacity>
-    );
-  }
+  return (
+    <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
+      <View style={styles.textGroup}>
+        <TextMedium style={styles.textItem} text={props.item} />
+        <TextRegular
+          style={styles.textInfo}
+          text={`Expiry Date: ${props.expiryDate.toDateString()}${" "}`}
+        />
+        <TextRegular
+          style={styles.textInfo}
+          text={`Quantity: ${props.quantity} ${props.unitsOfMeasure}${" "}`}
+        />
+      </View>
+      <View style={styles.checkFlex}>
+        <TouchableOpacity
+          style={styles.checkbox}
+          onPress={props.onPressButton}
+        ></TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -65,13 +58,11 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
-    fontFamily: "Montserrat_400Regular",
   },
 
   textItem: {
     marginLeft: 10,
     fontSize: 14,
-    fontFamily: "Montserrat_500Medium",
   },
 
   checkbox: {

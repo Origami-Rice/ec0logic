@@ -1,22 +1,20 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
   TextInput,
   TouchableOpacity,
   Platform,
-  Dimensions
+  Dimensions,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
 import LibraryListItem from "../components/LibraryListItem";
 
 import send from "../requests/request.js";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class FoodSearchScreen extends React.Component {
@@ -61,10 +59,9 @@ export default class FoodSearchScreen extends React.Component {
   };
 
   populateList = () => {
-
     return this.state.itemsFiltered.map((item) => (
       <LibraryListItem
-        key={item.name + item.days} 
+        key={item.name + item.days}
         item={item.name}
         shelfLife={item.days}
         onPress={() => this.onSelectItem(item)}
@@ -80,7 +77,7 @@ export default class FoodSearchScreen extends React.Component {
             style={styles.cancelButton}
             onPress={this.props.onCancel}
           >
-            <Text style={styles.cancelText}>x</Text>
+            <TextRegular style={styles.cancelText} text={"x"} />
           </TouchableOpacity>
         </View>
         <TextInput
@@ -131,7 +128,6 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
     zIndex: 1,
   },

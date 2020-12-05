@@ -1,25 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useFonts } from "expo-font";
-import { AppLoading } from "expo";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import TextRegular from "./TextRegular";
 
 const TipItem = (props) => {
-  let [fontsLoaded] = useFonts({
-    Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <TouchableOpacity style={styles.listItem}>
-        <Text style={styles.textInfo}>{props.tip}</Text>
-        <View style={styles.checkFlex}>
-          <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
-        </View>
-      </TouchableOpacity>
-    );
-  }
+  return (
+    <TouchableOpacity style={styles.listItem}>
+      <TextRegular style={styles.textInfo} text={props.tip} />
+      <View style={styles.checkFlex}>
+        <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -46,7 +37,6 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
-    fontFamily: "Montserrat_400Regular",
     flex: 3,
     flexWrap: "wrap",
     alignSelf: "center",

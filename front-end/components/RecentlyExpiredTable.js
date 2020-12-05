@@ -1,29 +1,14 @@
 import React from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
-import { AppLoading } from "expo";
-import * as Font from "expo-font";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-};
+import { View, StyleSheet, Dimensions } from "react-native";
+import TextRegular from "./TextRegular";
+import TextMedium from "./TextMedium";
 
 export default class RecentlyExpiredTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [{}].concat(this.props.items),
-      fontsLoaded: false,
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-
-  componentDidMount() {
-    this._loadFontsAsync();
   }
 
   createRows() {
@@ -36,15 +21,11 @@ export default class RecentlyExpiredTable extends React.Component {
               : [styles.cell, { backgroundColor: "#D8D8D8" }]
           }
         >
-          <Text
-            style={
-              i !== 0
-                ? styles.infoText
-                : [styles.infoText, { fontFamily: "Montserrat_500Medium" }]
-            }
-          >
-            {i !== 0 ? item.name : "Item"}
-          </Text>
+          {i !== 0 ? (
+            <TextRegular style={styles.infoText} text={item.name} />
+          ) : (
+            <TextMedium style={styles.infoText} text={"Item"} />
+          )}
         </View>
         <View
           style={
@@ -53,15 +34,11 @@ export default class RecentlyExpiredTable extends React.Component {
               : [styles.cell, { backgroundColor: "#D8D8D8" }]
           }
         >
-          <Text
-            style={
-              i !== 0
-                ? styles.infoText
-                : [styles.infoText, { fontFamily: "Montserrat_500Medium" }]
-            }
-          >
-            {i !== 0 ? item.expiryDate : "Expiry Date"}
-          </Text>
+          {i !== 0 ? (
+            <TextRegular style={styles.infoText} text={item.expiryDate} />
+          ) : (
+            <TextMedium style={styles.infoText} text={"Expiry Date"} />
+          )}
         </View>
         <View
           style={
@@ -70,26 +47,21 @@ export default class RecentlyExpiredTable extends React.Component {
               : [styles.cell, { backgroundColor: "#D8D8D8" }]
           }
         >
-          <Text
-            style={
-              i !== 0
-                ? styles.infoText
-                : [styles.infoText, { fontFamily: "Montserrat_500Medium" }]
-            }
-          >
-            {i !== 0 ? `${item.quantity} ${item.unitsOfMeasure}` : "Quantity"}
-          </Text>
+          {i !== 0 ? (
+            <TextRegular
+              style={styles.infoText}
+              text={`${item.quantity} ${item.unitsOfMeasure}`}
+            />
+          ) : (
+            <TextMedium style={styles.infoText} text={"Quantity"} />
+          )}
         </View>
       </View>
     ));
   }
 
   render() {
-    if (this.state.fontsLoaded) {
-      return <View style={styles.viewFormat}>{this.createRows()}</View>;
-    } else {
-      return <AppLoading />;
-    }
+    return <View style={styles.viewFormat}>{this.createRows()}</View>;
   }
 }
 
@@ -116,7 +88,6 @@ const styles = StyleSheet.create({
     borderColor: "black",
   },
   infoText: {
-    fontFamily: "Montserrat_400Regular",
     fontSize: 11,
     fontColor: "black",
     textAlign: "left",

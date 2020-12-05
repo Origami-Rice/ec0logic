@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,13 +8,14 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import DatePicker from "../components/DatePicker";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class EditInventoryItemScreen extends React.Component {
@@ -27,10 +27,13 @@ export default class EditInventoryItemScreen extends React.Component {
       quantity: item.quantity,
       unitsOfMeasure: item.unitsOfMeasure || "units",
       expiryDate: item.expiryDate,
+      fontsLoaded: false,
     };
   }
+
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
   }
 
   componentDidMount() {
@@ -109,18 +112,18 @@ export default class EditInventoryItemScreen extends React.Component {
               style={styles.cancelButton}
               onPress={() => this.props.navigation.goBack(null)}
             >
-              <Text style={styles.cancelText}>x</Text>
+              <TextRegular style={styles.cancelText} text={"x"} />
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Update Item Name:</Text>
+            <TextMedium style={styles.label} text={"Update Item Name:"} />
             <TextInput
               style={styles.inputFormat}
               placeholder="Enter Item Name"
               value={this.state.name}
               onChangeText={(text) => this.setState({ name: text })}
             />
-            <Text style={styles.label}>Update Expiry Date:</Text>
+            <TextMedium style={styles.label} text={"Update Expiry Date:"} />
             <DatePicker
               setParentExpiry={this.setExpiryDate}
               defaultDate={this.state.expiryDate}
@@ -144,13 +147,13 @@ export default class EditInventoryItemScreen extends React.Component {
               style={styles.confirmButton}
               onPress={this.saveItem}
             >
-              <Text style={styles.confirmText}>Confirm Changes</Text>
+              <TextMedium style={styles.confirmText} text={"Confirm Changes"} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.confirmButton}
               onPress={() => this.confirmDeletion()}
             >
-              <Text style={styles.confirmText}>Delete Item</Text>
+              <TextMedium style={styles.confirmText} text={"Delete Item"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -195,7 +198,6 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
   },
   cancelButton: {
@@ -235,14 +237,12 @@ const styles = StyleSheet.create({
   label: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     marginVertical: 5,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
   },
   confirmButton: {

@@ -1,28 +1,21 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Dimensions,
   Platform,
-  Alert,
 } from "react-native";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
 import { ActivityIndicator } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import * as Font from "expo-font";
 import AboutUsScreen from "./AboutUsScreen";
 import TipItem from "../components/TipItem";
 import { allTips } from "../Constants/AllTips";
 import send from "../requests/request.js";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
 
 let username = "/tester";
 
@@ -33,18 +26,8 @@ export default class EcoTipsScreen extends React.Component {
       savedTips: [],
       tipList: [],
       generateTips: true,
-      fontsLoaded: false,
       isLoaded: false,
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-
-  componentDidMount() {
-    this._loadFontsAsync();
   }
 
   getRandomTipList = () => {
@@ -109,9 +92,10 @@ export default class EcoTipsScreen extends React.Component {
                   style={{ alignSelf: "center" }}
                 />
               </TouchableOpacity>
-              <Text style={styles.refreshButtonLabel}>
-                Generate 10 Tips{"\n"}{" "}
-              </Text>
+              <TextMedium
+                style={styles.refreshButtonLabel}
+                text={`Generate 10 Tips${"\n"}${" "}`}
+              />
             </View>
           </View>
         </View>
@@ -126,12 +110,12 @@ export default class EcoTipsScreen extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>Eco Tips</Text>
+            <TextSemiBold style={styles.title} text={"Eco Tips"} />
             <TouchableOpacity
               style={styles.infoButton}
               onPress={() => this.setState({ visibleModal: 2 })}
             >
-              <Text style={styles.infoText}>i</Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -149,15 +133,14 @@ export default class EcoTipsScreen extends React.Component {
               }
               onPress={this.switchItems}
             >
-              <Text
+              <TextMedium
                 style={
                   this.state.generateTips
                     ? [styles.navText, { color: "#ffffff" }]
                     : [styles.navText, { color: "#000000" }]
                 }
-              >
-                Find Tips
-              </Text>
+                text={"Find Tips"}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={
@@ -167,15 +150,14 @@ export default class EcoTipsScreen extends React.Component {
               }
               onPress={this.switchItems}
             >
-              <Text
+              <TextMedium
                 style={
                   !this.state.generateTips
                     ? [styles.navText, { color: "#ffffff" }]
                     : [styles.navText, { color: "#000000" }]
                 }
-              >
-                Saved Tips
-              </Text>
+                text={"Saved Tips"}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -242,10 +224,8 @@ const styles = StyleSheet.create({
     fontSize: 34,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   navText: {
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     textAlign: "center",
     alignSelf: "center",
@@ -261,7 +241,6 @@ const styles = StyleSheet.create({
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
   },
   infoButton: {
@@ -297,7 +276,6 @@ const styles = StyleSheet.create({
   refreshButtonLabel: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 8,
     color: "#BDBDBD",
   },

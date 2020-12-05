@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -8,31 +7,17 @@ import {
   Platform,
   Image,
 } from "react-native";
-import * as Font from "expo-font";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
 
 export default class AboutUsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontsLoaded: false,
       imperial: false,
       visibleModal: 0,
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-
-  componentDidMount() {
-    this._loadFontsAsync();
   }
 
   render() {
@@ -44,13 +29,13 @@ export default class AboutUsScreen extends React.Component {
               source={require("../assets/wasteless-logo.png")}
               style={{ height: 44, width: 53, marginRight: 10 }}
             />
-            <Text style={styles.title}>About Us</Text>
+            <TextSemiBold style={styles.title} text={"About Us"} />
             <View style={{ justifyContent: "flex-end", flex: 1 }}>
               <TouchableOpacity
                 style={styles.cancelButton}
                 onPress={this.props.onCancel}
               >
-                <Text style={styles.cancelText}>x</Text>
+                <TextRegular style={styles.cancelText} text={"x"} />
               </TouchableOpacity>
             </View>
           </View>
@@ -58,31 +43,43 @@ export default class AboutUsScreen extends React.Component {
           <View
             style={{ justifyContent: "center", backgroundColor: "#ffffff" }}
           >
-            <Text style={styles.aboutText}>
-              Did you know that every year, an average Canadian puts about 140
-              kg of food in garbage?
-            </Text>
-            <Text style={styles.aboutText}>
-              Multiplied by an entire population, it equals to saving 9.8
-              million tonnes of CO2 and taking 2.1 million cars off the road!*
-            </Text>
-            <Text style={styles.aboutText}>
-              There are different ways of reducing this toll. Let us show you
-              how to waste less food and save some pocket change with Wasteless!
-            </Text>
-            <Text style={styles.aboutText}>
-              Don't know what to do with random ingredients? Want to stop
-              wasting food?
-            </Text>
-            <Text style={styles.aboutText}>Search recipes now!</Text>
-            <Text style={[styles.aboutText, { fontSize: 11 }]}>
-              *Source: Lovefoodhatewaste.ca
-            </Text>
+            <TextRegular
+              style={styles.aboutText}
+              text={
+                "Did you know that every year, an average Canadian puts about 140 kg of food in garbage?"
+              }
+            />
+            <TextRegular
+              style={styles.aboutText}
+              text={
+                "Multiplied by an entire population, it equals to saving 9.8 million tonnes of CO2 and taking 2.1 million cars off the road!*"
+              }
+            />
+            <TextRegular
+              style={styles.aboutText}
+              text={
+                "There are different ways of reducing this toll. Let us show you how to waste less food and save some pocket change with Wasteless!"
+              }
+            />
+            <TextRegular
+              style={styles.aboutText}
+              text={
+                "Don't know what to do with random ingredients? Want to stop wasting food?"
+              }
+            />
+            <TextRegular
+              style={styles.aboutText}
+              text={"Search recipes now!"}
+            />
+            <TextRegular
+              style={[styles.aboutText, { fontSize: 11 }]}
+              text={"*Source: Lovefoodhatewaste.ca"}
+            />
           </View>
         </View>
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
           <TouchableOpacity style={styles.confirmButton}>
-            <Text style={styles.confirmText}>Learn More</Text>
+            <TextMedium style={styles.confirmText} text={"Learn More"} />
           </TouchableOpacity>
         </View>
       </View>
@@ -115,19 +112,16 @@ const styles = StyleSheet.create({
     fontSize: 34,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   aboutText: {
     fontSize: 14,
     textAlign: "center",
-    fontFamily: "Montserrat_400Regular",
     marginVertical: 10,
     marginHorizontal: 25,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
   },
   confirmButton: {
@@ -153,7 +147,6 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
   },
   cancelButton: {

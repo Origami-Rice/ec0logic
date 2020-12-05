@@ -1,25 +1,19 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Dimensions,
 } from "react-native";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
 import { LineChart } from "react-native-chart-kit";
 import Modal from "react-native-modal";
-import * as Font from "expo-font";
 
 import AboutUsScreen from "./AboutUsScreen";
 import RecentlyExpiredTable from "../components/RecentlyExpiredTable";
 import send from "../requests/request.js";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
 
 const username = "/tester";
 
@@ -27,17 +21,11 @@ export default class MyStatsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontsLoaded: false,
       imperial: false,
       emissionsThisWeek: {},
       emissionsLastWeek: {},
       monthlyBreakdown: { months: [], kg: [], lbs: [] },
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   _loadData = () => {
@@ -84,7 +72,6 @@ export default class MyStatsScreen extends React.Component {
   };
 
   componentDidMount() {
-    this._loadFontsAsync();
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
     });
@@ -94,15 +81,17 @@ export default class MyStatsScreen extends React.Component {
     // Dynamically
     if (this.state.imperial) {
       return (
-        <Text style={styles.statsNumber}>
-          {this.state.emissionsThisWeek.lbs} lbs
-        </Text>
+        <TextSemiBold
+          style={styles.statsNumber}
+          text={`${this.state.emissionsThisWeek.lbs} lbs`}
+        />
       );
     } else {
       return (
-        <Text style={styles.statsNumber}>
-          {this.state.emissionsThisWeek.kg} kg
-        </Text>
+        <TextSemiBold
+          style={styles.statsNumber}
+          text={`${this.state.emissionsThisWeek.kg} kg`}
+        />
       );
     }
   };
@@ -120,12 +109,12 @@ export default class MyStatsScreen extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>My Stats</Text>
+            <TextSemiBold style={styles.title} text={"My Stats"} />
             <TouchableOpacity
               style={styles.infoButton}
               onPress={() => this.setState({ visibleModal: 2 })}
             >
-              <Text style={styles.infoText}>i</Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -134,17 +123,24 @@ export default class MyStatsScreen extends React.Component {
               style={styles.unitButton}
               onPress={this.switchItems}
             >
-              <Text style={styles.unitText}>
-                {this.state.imperial ? "Metric" : "Imperial"}
-              </Text>
+              <TextMedium
+                style={styles.unitText}
+                text={this.state.imperial ? "Metric" : "Imperial"}
+              />
             </TouchableOpacity>
             <View style={{ marginVertical: 10 }}>
-              <Text style={styles.statsDescription}>Your footprint is</Text>
+              <TextMedium
+                style={styles.statsDescription}
+                text={"Your footprint is"}
+              />
               {this.displayItems()}
-              <Text style={styles.statsDescription}>of CO2 this week</Text>
+              <TextMedium
+                style={styles.statsDescription}
+                text={"of CO2 this week"}
+              />
             </View>
             <View style={styles.divider}></View>
-            <Text style={styles.subheading}>History</Text>
+            <TextSemiBold style={styles.subheading} text={"History"} />
             <LineChart
               data={{
                 labels: this.state.monthlyBreakdown.months,
@@ -180,7 +176,7 @@ export default class MyStatsScreen extends React.Component {
               }}
             />
             <View style={styles.divider}></View>
-            <Text style={styles.subheading}>Recently Expired</Text>
+            <TextSemiBold style={styles.subheading} text={"Recently Expired"} />
             <RecentlyExpiredTable
               items={[
                 {
@@ -249,7 +245,6 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: 14,
     textAlign: "left",
-    fontFamily: "Montserrat_600SemiBold",
     margin: 5,
     marginTop: 15,
   },
@@ -257,16 +252,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
   },
   statsNumber: {
     fontSize: 72,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   unitText: {
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     textAlign: "center",
     alignSelf: "center",
@@ -284,7 +276,6 @@ const styles = StyleSheet.create({
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
   },
   infoButton: {

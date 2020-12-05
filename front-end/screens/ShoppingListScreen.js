@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -8,20 +7,16 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
 import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
-import * as Font from "expo-font";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import ShoppingListEditScreen from "./ShoppingListEditScreen";
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
 
 let username = "/tester";
 
@@ -31,16 +26,10 @@ export default class ShoppingListScreen extends React.Component {
     this.state = {
       shoppingList: [],
       inventoryArray: [],
-      fontsLoaded: false,
       modalVisible: 0,
       isLoaded: false,
       itemSelected: {},
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   _loadData = () => {
@@ -69,8 +58,6 @@ export default class ShoppingListScreen extends React.Component {
   };
 
   componentDidMount() {
-    this._loadFontsAsync();
-
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
     });
@@ -233,12 +220,12 @@ export default class ShoppingListScreen extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>Shopping List</Text>
+            <TextSemiBold style={styles.title} text={"Shopping List"} />
             <TouchableOpacity
               style={styles.infoButton}
               onPress={() => this.setState({ visibleModal: 2 })}
             >
-              <Text style={styles.infoText}>i</Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -258,22 +245,24 @@ export default class ShoppingListScreen extends React.Component {
               style={styles.addButton}
               onPress={() => this.setState({ visibleModal: 1 })}
             >
-              <Text style={styles.addText}>+</Text>
+              <TextRegular style={styles.addText} text={"+"} />
             </TouchableOpacity>
-            <Text style={styles.addButtonLabel}>
-              Add New Item to List{"\n"}{" "}
-            </Text>
+            <TextMedium
+              style={styles.addButtonLabel}
+              text={`Add New Item to List${"\n"}${" "}`}
+            />
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.addButton}
               onPress={this.addCheckedOffToInventory}
             >
-              <Text style={styles.addText}>↑</Text>
+              <TextRegular style={styles.addText} text={"↑"} />
             </TouchableOpacity>
-            <Text style={styles.addButtonLabel}>
-              Add Checked Off Items{"\n"}to Inventory
-            </Text>
+            <TextMedium
+              style={styles.addButtonLabel}
+              text={`Add Checked Off Items${"\n"}to Inventory`}
+            />
           </View>
         </View>
         <Modal
@@ -363,12 +352,10 @@ const styles = StyleSheet.create({
     fontSize: 34,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
   },
   infoButton: {
@@ -382,7 +369,6 @@ const styles = StyleSheet.create({
   addText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 24,
   },
   addButton: {
@@ -410,7 +396,6 @@ const styles = StyleSheet.create({
   addButtonLabel: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 8,
     color: "#BDBDBD",
   },
