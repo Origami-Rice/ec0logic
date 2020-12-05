@@ -8,12 +8,12 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
-import ShoppingListEditScreen from './ShoppingListEditScreen';
+import ShoppingListEditScreen from "./ShoppingListEditScreen";
 import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request";
 
@@ -83,9 +83,17 @@ export default class ShoppingListScreen extends React.Component {
   displayItems = () => {
     if (!this.state.isLoaded) {
       return (
-      <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
-        <ActivityIndicator animating={true} colour={"grey"}/>
-      </View>);  
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+        >
+          <ActivityIndicator animating={true} colour={"grey"} />
+        </View>
+      );
     } else {
       const now = new Date().toISOString();
       // Dynamically
@@ -109,10 +117,14 @@ export default class ShoppingListScreen extends React.Component {
     currlist.splice(index, 1);
 
     // Delete item from shopping list
-    this.setState({shoppingList: currlist, itemSelected: item, visibleModal: 3});
+    this.setState({
+      shoppingList: currlist,
+      itemSelected: item,
+      visibleModal: 3,
+    });
     // Update the list in server
     this.updateList(currlist);
-  }
+  };
 
   updateCheck = (index) => {
     var currlist = this.state.shoppingList;
@@ -195,9 +207,11 @@ export default class ShoppingListScreen extends React.Component {
     }
 
     if (quantity_missing) {
-      alert("Some checked off items had no quantities specified. " + 
-        "These were not added to your inventory. " + 
-        "Please edit these items and try again if you wish to add them.")
+      alert(
+        "Some checked off items had no quantities specified. " +
+          "These were not added to your inventory. " +
+          "Please edit these items and try again if you wish to add them."
+      );
     }
 
     this.setState({
@@ -294,17 +308,16 @@ export default class ShoppingListScreen extends React.Component {
         <Modal
           isVisible={this.state.visibleModal === 3}
           style={styles.bottomModal}
-          avoidKeyboard={false}>
+          avoidKeyboard={false}
+        >
           {
             <View style={styles.modal}>
               <ShoppingListEditScreen
                 addNewItem={this.addNewItem}
                 item={this.state.itemSelected}
-                onCancel={() =>
-                  this.setState({ visibleModal: 0 })}
+                onCancel={() => this.setState({ visibleModal: 0 })}
                 onDelete={() => this.setState({ visibleModal: 0 })}
-                >
-                </ShoppingListEditScreen>
+              ></ShoppingListEditScreen>
             </View>
           }
         </Modal>
@@ -378,7 +391,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: "5%",
+    marginTop: 10,
     marginBottom: 15,
     backgroundColor: "#ffffff",
     ...Platform.select({

@@ -1,24 +1,26 @@
 import * as React from "react";
-import { LogBox } from 'react-native';
+import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
+
 import InventoryAllFoods from "./screens/InventoryAllFoods";
 import InventoryInputScreen from "./screens/InventoryInputScreen";
 import ShoppingListScreen from "./screens/ShoppingListScreen";
 import FinishedFoodScreen from "./screens/FinishedFoodScreen";
 import WastedFoodScreen from "./screens/WastedFoodScreen";
 import MyStatsScreen from "./screens/MyStatsScreen";
-import EditInventoryItemScreen from './screens/EditInventoryItemScreen';
+import EcoTipsScreen from "./screens/EcoTipsScreen";
+import EditInventoryItemScreen from "./screens/EditInventoryItemScreen";
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
 };
-
 
 const InventoryStack = createStackNavigator();
 
@@ -98,6 +100,20 @@ function MyTabs() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Eco Tips"
+        component={EcoTipsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="earth"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -105,7 +121,7 @@ function MyTabs() {
 export default function App() {
   return (
     <NavigationContainer>
-      {LogBox.ignoreAllLogs() }
+      {LogBox.ignoreAllLogs()}
       <InventoryStackScreen />
     </NavigationContainer>
   );
