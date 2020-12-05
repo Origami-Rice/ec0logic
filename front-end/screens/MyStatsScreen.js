@@ -129,51 +129,15 @@ export default class MyStatsScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
-          <View
-            style={[
-              styles.rowContainer,
-              { justifyContent: "center", backgroundColor: "#ffffff" },
-            ]}
-          >
-            <TouchableOpacity
-              style={
-                this.state.imperial
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
-              }
-              onPress={this.switchItems}
-            >
-              <Text
-                style={
-                  this.state.imperial
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
-                }
-              >
-                Imperial
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                !this.state.imperial
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
-              }
-              onPress={this.switchItems}
-            >
-              <Text
-                style={
-                  !this.state.imperial
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
-                }
-              >
-                Metric
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.divider}></View>
           <ScrollView>
+            <TouchableOpacity
+              style={styles.unitButton}
+              onPress={this.switchItems}
+            >
+              <Text style={styles.unitText}>
+                {this.state.imperial ? "Metric" : "Imperial"}
+              </Text>
+            </TouchableOpacity>
             <View style={{ marginVertical: 10 }}>
               <Text style={styles.statsDescription}>Your footprint is</Text>
               {this.displayItems()}
@@ -300,19 +264,21 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "Montserrat_600SemiBold",
   },
-  navText: {
+  unitText: {
     fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     textAlign: "center",
     alignSelf: "center",
   },
-  navButton: {
-    borderWidth: 1,
-    borderColor: "#5A5A5A",
+  unitButton: {
+    borderRadius: 30,
+    backgroundColor: "#DCDCDC",
     justifyContent: "center",
-    alignSelf: "center",
-    height: 33,
-    width: "40%",
+    alignSelf: "flex-start",
+    height: 28,
+    width: "25%",
+    marginHorizontal: 5,
+    marginTop: 10,
   },
   infoText: {
     textAlign: "center",
