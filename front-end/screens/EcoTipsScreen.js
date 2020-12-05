@@ -97,7 +97,10 @@ export default class EcoTipsScreen extends React.Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.refreshButton}
-                onPress={() => this.getRandomTipList()}
+                onPress={() => {
+                  this.getRandomTipList();
+                  this.scrollView.scrollTo({ y: 0, animated: false });
+                }}
               >
                 <MaterialIcons
                   name="refresh"
@@ -177,7 +180,10 @@ export default class EcoTipsScreen extends React.Component {
           </View>
           <View style={styles.divider}></View>
         </View>
-        <ScrollView style={styles.listContainer}>
+        <ScrollView
+          style={styles.listContainer}
+          ref={(ref) => (this.scrollView = ref)}
+        >
           {this.displayItems()}
         </ScrollView>
         {this.showRefresh()}
