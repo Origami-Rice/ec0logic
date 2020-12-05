@@ -9,7 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import InventoryListItem from "../components/InventoryListItem";
@@ -22,7 +22,7 @@ let customFonts = {
   Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
-let username = '/tester';
+let username = "/tester";
 
 export default class InventoryAllFoods extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ export default class InventoryAllFoods extends React.Component {
   }
 
   _loadData = () => {
-    this.setState ({ isLoaded: false })
+    this.setState({ isLoaded: false });
     // Load the list of user's inventory items from server
     send("getInventory", {}, username)
       .then((response) => response.json())
@@ -91,22 +91,19 @@ export default class InventoryAllFoods extends React.Component {
     // For getting the new item send by the inventory input screen
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       if (this.props.route.params?.new_item) {
-
-        console.log("[Inventory] Added item to list:" + this.props.route.params.new_item.name);
+        console.log(
+          "[Inventory] Added item to list:" +
+            this.props.route.params.new_item.name
+        );
         this.addItem(this.props.route.params.new_item);
         this.props.navigation.setParams({ new_item: null }); // Resetting params
-
       } else if (this.props.route.params?.update) {
-
         console.log("[Inventory] Update since item was deleted");
         this.updateInventory(this.state.inventoryArray);
         this.props.navigation.setParams({ update: null });
-
       } else {
-
         console.log("[Inventory] Nothing changed");
         this._loadData();
-
       }
     });
   }
@@ -128,7 +125,7 @@ export default class InventoryAllFoods extends React.Component {
 
   /**
    * Adds item to expiringArray if applicable.
-   * Returns true if item was added. 
+   * Returns true if item was added.
    */
   addToExpiring = (item) => {
     var currExpiring = this.state.expiringArray;
@@ -249,9 +246,16 @@ export default class InventoryAllFoods extends React.Component {
   displayItems = () => {
     if (!this.state.isLoaded) {
       return (
-      <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
-        <ActivityIndicator animating={true} colour={"grey"}/>
-      </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+        >
+          <ActivityIndicator animating={true} colour={"grey"} />
+        </View>
       );
     } else {
       // Dynamically
@@ -264,7 +268,7 @@ export default class InventoryAllFoods extends React.Component {
             quantity={data.quantity}
             unitsOfMeasure={data.unitsOfMeasure}
             onPressButton={() => this.createSelectionWindow(data, i)}
-            onPressWhole={() => this.navigateTo(data, i, 'Edit', false)}
+            onPressWhole={() => this.navigateTo(data, i, "Edit", false)}
           />
         ));
       } else {
@@ -276,7 +280,7 @@ export default class InventoryAllFoods extends React.Component {
             quantity={data.quantity}
             unitsOfMeasure={data.unitsOfMeasure}
             onPressButton={() => this.createSelectionWindow(data, i, true)}
-            onPressWhole={() => this.navigateTo(data, i, 'Edit', true)}
+            onPressWhole={() => this.navigateTo(data, i, "Edit", true)}
           />
         ));
       }
@@ -396,6 +400,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
+    paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
     backgroundColor: "#ffffff",

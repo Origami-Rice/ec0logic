@@ -69,9 +69,9 @@ export default class EcoTipsScreen extends React.Component {
   displayItems = () => {
     // Dynamically
     if (this.state.generateTips) {
-      return this.state.tipList.map((data, i) => <TipItem tip={data.tip} />);
+      return this.state.tipList.map((data) => <TipItem tip={data.tip} />);
     } else {
-      return;
+      return this.state.savedTips.map((data) => <TipItem tip={data.tip} />);
     }
   };
 
@@ -153,7 +153,7 @@ export default class EcoTipsScreen extends React.Component {
                     : [styles.navText, { color: "#000000" }]
                 }
               >
-                Today's Tips
+                Find Tips
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
+    paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
     backgroundColor: "#ffffff",
