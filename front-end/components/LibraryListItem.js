@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
+import { Colours } from "../constants/colours.js";
 
 const LibraryListItem = (props) => {
   return (
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     alignSelf: "center",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     marginVertical: 5,
   },
 
@@ -43,11 +44,13 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
+    color: Colours.tint,
   },
 
   textItem: {
     marginLeft: 10,
     fontSize: 12,
+    color: Colours.tint,
   },
 });
 

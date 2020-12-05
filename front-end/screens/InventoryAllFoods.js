@@ -11,6 +11,7 @@ import {
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
 import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
 import InventoryListItem from "../components/InventoryListItem";
@@ -241,7 +242,7 @@ export default class InventoryAllFoods extends React.Component {
             padding: 24,
           }}
         >
-          <ActivityIndicator animating={true} colour={"grey"} />
+          <ActivityIndicator animating={true} colour={Colours.notice} />
         </View>
       );
     } else {
@@ -299,22 +300,37 @@ export default class InventoryAllFoods extends React.Component {
           <View
             style={[
               styles.rowContainer,
-              { justifyContent: "center", backgroundColor: "#ffffff" },
+              {
+                justifyContent: "center",
+                backgroundColor: Colours.screenBackground,
+              },
             ]}
           >
             <TouchableOpacity
               style={
                 this.state.allFoods
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
+                  ? [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonSelected },
+                    ]
+                  : [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonNotSelected },
+                    ]
               }
               onPress={this.switchItems}
             >
               <TextMedium
                 style={
                   this.state.allFoods
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
+                    ? [
+                        styles.navText,
+                        { color: Colours.switchButtonSelectedText },
+                      ]
+                    : [
+                        styles.navText,
+                        { color: Colours.switchButtonNotSelectedText },
+                      ]
                 }
                 text={"All Foods"}
               />
@@ -322,16 +338,28 @@ export default class InventoryAllFoods extends React.Component {
             <TouchableOpacity
               style={
                 !this.state.allFoods
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
+                  ? [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonSelected },
+                    ]
+                  : [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonNotSelected },
+                    ]
               }
               onPress={this.switchItems}
             >
               <TextMedium
                 style={
                   !this.state.allFoods
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
+                    ? [
+                        styles.navText,
+                        { color: Colours.switchButtonSelectedText },
+                      ]
+                    : [
+                        styles.navText,
+                        { color: Colours.switchButtonNotSelectedText },
+                      ]
                 }
                 text={"Expiring Soon"}
               />
@@ -380,7 +408,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
@@ -388,7 +416,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -404,6 +432,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
@@ -414,7 +443,7 @@ const styles = StyleSheet.create({
   },
   navButton: {
     borderWidth: 1,
-    borderColor: "#5A5A5A",
+    borderColor: Colours.switchButtonSelected,
     justifyContent: "center",
     alignSelf: "center",
     height: 33,
@@ -424,12 +453,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -437,6 +468,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 24,
+    color: Colours.tint,
   },
   addButton: {
     width: 57,
@@ -446,7 +478,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     marginVertical: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -468,7 +500,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

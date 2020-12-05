@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
+import { Colours } from "../constants/colours.js";
 
 const ShoppingListItem = (props) => {
   const [checked, setChecked] = useState(props.checkedOff || false);
@@ -22,8 +23,8 @@ const ShoppingListItem = (props) => {
         <TextRegular
           style={
             checked
-              ? [styles.textInfo, { color: "#BDBDBD" }]
-              : [styles.textInfo, { color: "#000000" }]
+              ? [styles.textInfo, { color: Colours.navInactiveTint }]
+              : [styles.textInfo, { color: Colours.tint }]
           }
           text={`Quantity: ${quantity} ${units}`}
         />
@@ -38,7 +39,7 @@ const ShoppingListItem = (props) => {
           <MaterialIcons
             name="check"
             size={24}
-            color={checked ? "black" : "#DDDDDD"}
+            color={checked ? Colours.tint : Colours.listButton}
           />
         </TouchableOpacity>
       </View>
@@ -46,8 +47,8 @@ const ShoppingListItem = (props) => {
         <TextMedium
           style={
             checked
-              ? [styles.textItem, { color: "#BDBDBD" }]
-              : [styles.textItem, { color: "#000000" }]
+              ? [styles.textItem, { color: Colours.navInactiveTint }]
+              : [styles.textItem, { color: Colours.tint }]
           }
           text={props.item}
         />
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignSelf: "flex-end",
-    backgroundColor: "#DDDDDD",
+    backgroundColor: Colours.listButton,
   },
 });
 

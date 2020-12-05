@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import TextRegular from "./TextRegular";
+import { Colours } from "../constants/colours.js";
 
 const TipItem = (props) => {
   return (
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
+    color: Colours.tint,
     flex: 3,
     flexWrap: "wrap",
     alignSelf: "center",
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end",
     alignSelf: "flex-end",
-    backgroundColor: "#DDDDDD",
+    backgroundColor: Colours.listButton,
   },
 });
 

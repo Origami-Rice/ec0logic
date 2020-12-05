@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import DatePicker from "../components/DatePicker";
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
     position: "absolute",
@@ -199,15 +200,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
   },
   cancelButton: {
     width: 37,
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     margin: 25,
     ...Platform.select({
       ios: {
@@ -224,10 +227,11 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.screenBackground,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     margin: 10,
@@ -238,12 +242,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
     marginVertical: 5,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
   },
   confirmButton: {
     width: 148,
@@ -251,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     margin: 15,
     ...Platform.select({
       ios: {

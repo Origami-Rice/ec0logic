@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
+import { Colours } from "../constants/colours.js";
 
 export default class RecentlyExpiredTable extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class RecentlyExpiredTable extends React.Component {
           style={
             i !== 0
               ? styles.cell
-              : [styles.cell, { backgroundColor: "#D8D8D8" }]
+              : [styles.cell, { backgroundColor: Colours.filledButton }]
           }
         >
           {i !== 0 ? (
@@ -31,7 +32,7 @@ export default class RecentlyExpiredTable extends React.Component {
           style={
             i !== 0
               ? styles.cell
-              : [styles.cell, { backgroundColor: "#D8D8D8" }]
+              : [styles.cell, { backgroundColor: Colours.filledButton }]
           }
         >
           {i !== 0 ? (
@@ -44,7 +45,7 @@ export default class RecentlyExpiredTable extends React.Component {
           style={
             i !== 0
               ? styles.cell
-              : [styles.cell, { backgroundColor: "#D8D8D8" }]
+              : [styles.cell, { backgroundColor: Colours.filledButton }]
           }
         >
           {i !== 0 ? (
@@ -85,11 +86,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     padding: 5,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: Colours.tint,
   },
   infoText: {
     fontSize: 11,
-    fontColor: "black",
+    color: Colours.tint,
     textAlign: "left",
   },
 });

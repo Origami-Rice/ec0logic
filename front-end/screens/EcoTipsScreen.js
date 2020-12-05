@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
 import { ActivityIndicator } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
@@ -88,7 +89,7 @@ export default class EcoTipsScreen extends React.Component {
                 <MaterialIcons
                   name="refresh"
                   size={30}
-                  color="black"
+                  color={Colours.tint}
                   style={{ alignSelf: "center" }}
                 />
               </TouchableOpacity>
@@ -122,22 +123,37 @@ export default class EcoTipsScreen extends React.Component {
           <View
             style={[
               styles.rowContainer,
-              { justifyContent: "center", backgroundColor: "#ffffff" },
+              {
+                justifyContent: "center",
+                backgroundColor: Colours.screenBackground,
+              },
             ]}
           >
             <TouchableOpacity
               style={
                 this.state.generateTips
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
+                  ? [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonSelected },
+                    ]
+                  : [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonNotSelected },
+                    ]
               }
               onPress={this.switchItems}
             >
               <TextMedium
                 style={
                   this.state.generateTips
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
+                    ? [
+                        styles.navText,
+                        { color: Colours.switchButtonSelectedText },
+                      ]
+                    : [
+                        styles.navText,
+                        { color: Colours.switchButtonNotSelectedText },
+                      ]
                 }
                 text={"Find Tips"}
               />
@@ -145,16 +161,28 @@ export default class EcoTipsScreen extends React.Component {
             <TouchableOpacity
               style={
                 !this.state.generateTips
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
+                  ? [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonSelected },
+                    ]
+                  : [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonNotSelected },
+                    ]
               }
               onPress={this.switchItems}
             >
               <TextMedium
                 style={
                   !this.state.generateTips
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
+                    ? [
+                        styles.navText,
+                        { color: Colours.switchButtonSelectedText },
+                      ]
+                    : [
+                        styles.navText,
+                        { color: Colours.switchButtonNotSelectedText },
+                      ]
                 }
                 text={"Saved Tips"}
               />
@@ -193,7 +221,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
@@ -201,7 +229,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -222,17 +250,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
   navText: {
     fontSize: 14,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
   navButton: {
     borderWidth: 1,
-    borderColor: "#5A5A5A",
+    borderColor: Colours.switchButtonSelected,
     justifyContent: "center",
     alignSelf: "center",
     height: 33,
@@ -242,12 +272,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -256,11 +288,12 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
     marginTop: 10,
     marginBottom: 15,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -277,7 +310,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 8,
-    color: "#BDBDBD",
+    color: Colours.notice,
   },
   bottomModal: {
     justifyContent: "flex-end",
@@ -288,7 +321,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

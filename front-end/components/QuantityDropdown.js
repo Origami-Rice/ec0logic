@@ -6,6 +6,7 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
+import { Colours } from "../constants/colours.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
@@ -125,13 +126,14 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.screenBackground,
+    borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 11,
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
+    color: Colours.tint,
     ...Platform.select({
       ios: {
         zIndex: 5000,
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
-    color: "#000000",
+    color: Colours.tint,
     ...Platform.select({
       ios: {
         zIndex: 5000,

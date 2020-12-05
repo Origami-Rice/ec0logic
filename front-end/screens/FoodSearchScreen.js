@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import TextRegular from "../components/TextRegular";
+import { Colours } from "../constants/colours.js";
 import LibraryListItem from "../components/LibraryListItem";
 
 import send from "../requests/request.js";
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     padding: 8,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
@@ -110,8 +111,8 @@ const styles = StyleSheet.create({
   },
   inputFormat: {
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.screenBackground,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
     padding: 5,
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign: "center",
     fontFamily: "Montserrat_500Medium",
+    color: Colours.tint,
     zIndex: 1,
   },
   topButtonsContainer: {
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
     zIndex: 1,
   },
   cancelButton: {
@@ -136,9 +139,10 @@ const styles = StyleSheet.create({
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     margin: 25,
     zIndex: 1,
     ...Platform.select({

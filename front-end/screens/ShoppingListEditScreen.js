@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 import QuantityDropdown from "../components/QuantityDropdown";
 
@@ -155,12 +156,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5,
     zIndex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
   },
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
     zIndex: 1,
   },
   cancelButton: {
@@ -168,9 +170,10 @@ const styles = StyleSheet.create({
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     marginVertical: 25,
     zIndex: 1,
     ...Platform.select({
@@ -188,10 +191,11 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.8,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.screenBackground,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     margin: 10,
@@ -203,6 +207,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
     marginBottom: 5,
     marginTop: 50,
     zIndex: 1,
@@ -212,13 +217,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 11,
     marginVertical: 5,
-    color: "#BDBDBD",
+    color: Colours.notice,
     zIndex: 1,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
     zIndex: 1,
   },
   confirmButton: {
@@ -227,7 +233,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     marginVertical: 15,
     ...Platform.select({
       ios: {

@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
+import { Colours } from "../Constants/colours.js";
 
 const InventoryListItem = (props) => {
   return (
@@ -58,11 +59,13 @@ const styles = StyleSheet.create({
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
+    color: Colours.tint,
   },
 
   textItem: {
     marginLeft: 10,
     fontSize: 14,
+    color: Colours.tint,
   },
 
   checkbox: {
@@ -70,10 +73,11 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 25,
     borderWidth: 1,
+    borderColor: Colours.tint,
     flexDirection: "column",
     justifyContent: "flex-end",
     alignSelf: "flex-end",
-    backgroundColor: "#DDDDDD",
+    backgroundColor: Colours.listButton,
   },
 });
 

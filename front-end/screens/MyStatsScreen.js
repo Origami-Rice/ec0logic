@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
 import { LineChart } from "react-native-chart-kit";
 import Modal from "react-native-modal";
 
@@ -158,21 +159,22 @@ export default class MyStatsScreen extends React.Component {
               withVerticalLines={false}
               withShadow={false}
               chartConfig={{
-                backgroundGradientFrom: "#ffffff",
-                backgroundGradientTo: "#ffffff",
+                backgroundGradientFrom: Colours.screenBackground,
+                backgroundGradientTo: Colours.screenBackground,
                 color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                 propsForLabels: {
                   fontSize: 10,
                 },
                 propsForBackgroundLines: {
-                  stroke: "#D5D5D5",
+                  stroke: Colours.filledButton,
                 },
               }}
               style={{
                 marginVertical: 10,
                 borderRadius: 16,
                 fontFamily: "Montserrat_400Regular",
+                color: Colours.tint,
               }}
             />
             <View style={styles.divider}></View>
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
@@ -227,7 +229,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -238,34 +240,38 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   subheading: {
     fontSize: 14,
+    color: Colours.tint,
     textAlign: "left",
     margin: 5,
     marginTop: 15,
   },
   statsDescription: {
     fontSize: 24,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
   statsNumber: {
     fontSize: 72,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
   unitText: {
     fontSize: 14,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
   unitButton: {
     borderRadius: 30,
-    backgroundColor: "#DCDCDC",
+    backgroundColor: Colours.filledButton,
     justifyContent: "center",
     alignSelf: "flex-start",
     height: 28,
@@ -277,12 +283,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -295,7 +303,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

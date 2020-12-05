@@ -10,6 +10,7 @@ import {
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
 import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
 import ShoppingListItem from "../components/ShoppingListItem";
@@ -78,7 +79,7 @@ export default class ShoppingListScreen extends React.Component {
             padding: 24,
           }}
         >
-          <ActivityIndicator animating={true} colour={"grey"} />
+          <ActivityIndicator animating={true} colour={Colours.notice} />
         </View>
       );
     } else {
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
@@ -328,7 +329,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -350,6 +351,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
@@ -357,12 +359,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -370,12 +374,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 24,
+    color: Colours.tint,
   },
   addButton: {
     width: 57,
     height: 57,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
     marginTop: 10,
@@ -397,10 +403,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 8,
-    color: "#BDBDBD",
+    color: Colours.notice,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

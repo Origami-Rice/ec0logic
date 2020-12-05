@@ -10,6 +10,7 @@ import {
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
 
 export default class AboutUsScreen extends React.Component {
   constructor(props) {
@@ -41,7 +42,10 @@ export default class AboutUsScreen extends React.Component {
           </View>
           <View style={[styles.divider, { marginBottom: 20 }]}></View>
           <View
-            style={{ justifyContent: "center", backgroundColor: "#ffffff" }}
+            style={{
+              justifyContent: "center",
+              backgroundColor: Colours.screenBackground,
+            }}
           >
             <TextRegular
               style={styles.aboutText}
@@ -92,14 +96,14 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
     padding: 8,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -110,11 +114,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
   aboutText: {
     fontSize: 14,
+    color: Colours.tint,
     textAlign: "center",
     marginVertical: 10,
     marginHorizontal: 25,
@@ -123,6 +129,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
   },
   confirmButton: {
     width: 148,
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     margin: 40,
     ...Platform.select({
       ios: {
@@ -148,15 +155,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
+    color: Colours.tint,
   },
   cancelButton: {
     width: 37,
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",

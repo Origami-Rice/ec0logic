@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 import send from "../requests/request";
 
@@ -160,7 +161,7 @@ export default class WastedFoodScreen extends React.Component {
                 </View>
               </View>
               <TextMedium
-                style={[styles.notice, { color: "#BDBDBD" }]}
+                style={[styles.notice, { color: Colours.notice }]}
                 text={`You had ${this.state.quantity} ${
                   this.state.unitsOfMeasure
                 }${" "}remaining.`}
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -215,11 +216,13 @@ const styles = StyleSheet.create({
   header: {
     textAlign: "center",
     fontSize: 24,
+    color: Colours.tint,
     marginTop: 40,
   },
   label: {
     textAlign: "center",
     fontSize: 14,
+    color: Colours.tint,
     marginBottom: 5,
     marginTop: 40,
   },
@@ -227,15 +230,17 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.8,
     textAlign: "left",
     fontSize: 10,
+    color: Colours.tint,
     marginHorizontal: 10,
   },
   inputFormat: {
     width: Dimensions.get("window").width * 0.4,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.screenBackground,
+    borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     marginHorizontal: 10,
@@ -245,10 +250,12 @@ const styles = StyleSheet.create({
   unitText: {
     textAlign: "left",
     fontSize: 12,
+    color: Colours.tint,
   },
   confirmText: {
     textAlign: "center",
     fontSize: 14,
+    color: Colours.tint,
   },
   confirmButton: {
     width: 148,
@@ -256,7 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     marginVertical: 15,
     ...Platform.select({
       ios: {
