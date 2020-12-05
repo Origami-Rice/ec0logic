@@ -12,6 +12,7 @@ import Modal from "react-native-modal";
 import * as Font from "expo-font";
 
 import AboutUsScreen from "./AboutUsScreen";
+import RecentlyExpiredTable from "../components/RecentlyExpiredTable";
 import send from "../requests/request.js";
 
 let customFonts = {
@@ -46,65 +47,63 @@ export default class MyStatsScreen extends React.Component {
     let timePeriod = {
       start: weekAgo,
       end: new Date(),
-    }
+    };
     // Getting the GHG for the last week
-    send('getGHG', timePeriod, username)
-    .then(response => response.json())
-    .then((json) => {
+    send("getGHG", timePeriod, username)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          emissionsThisWeek: json.emissions,
+        });
 
-      this.setState({ 
-        emissionsThisWeek: json.emissions
+        console.log(json);
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
-      console.log(json);
-
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-    send('getGHG', timePeriod, username)
-    .then(response => response.json())
-    .then((json) => {
-
-      this.setState({ 
-        emissionsThisWeek: json.emissions
+    send("getGHG", timePeriod, username)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          emissionsThisWeek: json.emissions,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-    send('getMonthlyGHGBreakdown', {}, username)
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({ monthlyBreakdown: json });
-    })
-    .catch(error => {
-      console.log(error);
-    } )
-  }
+    send("getMonthlyGHGBreakdown", {}, username)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ monthlyBreakdown: json });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   componentDidMount() {
     this._loadFontsAsync();
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
-    }); 
+    });
   }
 
   displayItems = () => {
     // Dynamically
     if (this.state.imperial) {
       return (
-      <Text style={styles.statsNumber}> 
-        {this.state.emissionsThisWeek.lbs} lbs 
-      </Text> );
+        <Text style={styles.statsNumber}>
+          {this.state.emissionsThisWeek.lbs} lbs
+        </Text>
+      );
     } else {
       return (
-      <Text style={styles.statsNumber}>
-        {this.state.emissionsThisWeek.kg} kg
-      </Text> );
+        <Text style={styles.statsNumber}>
+          {this.state.emissionsThisWeek.kg} kg
+        </Text>
+      );
     }
   };
 
@@ -181,13 +180,15 @@ export default class MyStatsScreen extends React.Component {
               <Text style={styles.statsDescription}>of CO2 this week</Text>
             </View>
             <View style={styles.divider}></View>
-            <Text style={styles.history}>History</Text>
+            <Text style={styles.subheading}>History</Text>
             <LineChart
               data={{
                 labels: this.state.monthlyBreakdown.months,
                 datasets: [
                   {
-                    data: this.state.imperial ? this.state.monthlyBreakdown.kg : this.state.monthlyBreakdown.lbs,
+                    data: this.state.imperial
+                      ? this.state.monthlyBreakdown.kg
+                      : this.state.monthlyBreakdown.lbs,
                   },
                 ],
               }}
@@ -214,6 +215,24 @@ export default class MyStatsScreen extends React.Component {
                 fontFamily: "Montserrat_400Regular",
               }}
             />
+            <View style={styles.divider}></View>
+            <Text style={styles.subheading}>Recently Expired</Text>
+            <RecentlyExpiredTable
+              items={[
+                {
+                  name: "Pineapple",
+                  expiryDate: "blah",
+                  quantity: 50,
+                  unitsOfMeasure: "g",
+                },
+                {
+                  name: "Blueberries",
+                  expiryDate: "blah",
+                  quantity: 30,
+                  unitsOfMeasure: "g",
+                },
+              ]}
+            ></RecentlyExpiredTable>
           </ScrollView>
         </View>
         <Modal
@@ -262,7 +281,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: "Montserrat_600SemiBold",
   },
-  history: {
+  subheading: {
     fontSize: 14,
     textAlign: "left",
     fontFamily: "Montserrat_600SemiBold",

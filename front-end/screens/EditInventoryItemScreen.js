@@ -25,7 +25,7 @@ export default class EditInventoryItemScreen extends React.Component {
     this.state = {
       name: item.name,
       quantity: item.quantity,
-      unitsOfMeasure: item.unitsOfMeasure || 'units',
+      unitsOfMeasure: item.unitsOfMeasure || "units",
       expiryDate: item.expiryDate,
     };
   }
@@ -68,24 +68,24 @@ export default class EditInventoryItemScreen extends React.Component {
     console.log("Deleted Item from Inventory");
 
     this.props.navigation.navigate("List", {
-        screen: "Inventory",
-        params: { update: true },
-      });
-  }
+      screen: "Inventory",
+      params: { update: true },
+    });
+  };
 
   confirmDeletion = () => {
     Alert.alert(
-      'Confirm',
-      'You are about to delete this item from your inventory.',
+      "Confirm",
+      "You are about to delete this item from your inventory.",
       [
         {
-          text: 'Continue',
+          text: "Continue",
           onPress: () => this.handleDelete(),
         },
         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
         },
       ],
       { cancelable: false }
@@ -118,7 +118,7 @@ export default class EditInventoryItemScreen extends React.Component {
               style={styles.inputFormat}
               placeholder="Enter Item Name"
               value={this.state.name}
-              onChangeText={(text) => this.setState({name: text})}
+              onChangeText={(text) => this.setState({ name: text })}
             />
             <Text style={styles.label}>Update Expiry Date:</Text>
             <DatePicker
@@ -146,9 +146,10 @@ export default class EditInventoryItemScreen extends React.Component {
             >
               <Text style={styles.confirmText}>Confirm Changes</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-             style={styles.confirmButton}
-             onPress={() => this.confirmDeletion()} >
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => this.confirmDeletion()}
+            >
               <Text style={styles.confirmText}>Delete Item</Text>
             </TouchableOpacity>
           </View>
@@ -237,14 +238,6 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     marginVertical: 5,
-  },
-  note: {
-    textAlign: "center",
-    alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
-    fontSize: 11,
-    marginVertical: 5,
-    color: "#828282",
   },
   confirmText: {
     textAlign: "center",
