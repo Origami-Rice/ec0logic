@@ -12,3 +12,6 @@ front-end/web-build/
 
 # macOS
 front-end/.DS_Store
+
+# misc
+yarn.lock

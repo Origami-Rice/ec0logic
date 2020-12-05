@@ -8,26 +8,27 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 import Constants from "expo-constants";
 import { AuthContext } from "./AuthContext";
-import {
-  InventoryAllFoods,
-  InventoryInputScreen,
-  ShoppingListScreen,
-  FinishedFoodScreen,
-  WastedFoodScreen,
-  MyStatsScreen,
-  EditInventoryItemScreen,
-  SignInScreen,
-  SignUpScreen
-} from './screens'
-// import InventoryAllFoods from "./screens/InventoryAllFoods";
-// import InventoryInputScreen from "./screens/InventoryInputScreen";
-// import ShoppingListScreen from "./screens/ShoppingListScreen";
-// import FinishedFoodScreen from "./screens/FinishedFoodScreen";
-// import WastedFoodScreen from "./screens/WastedFoodScreen";
-// import MyStatsScreen from "./screens/MyStatsScreen";
-// import EditInventoryItemScreen from './screens/EditInventoryItemScreen';
-// import SignInScreen from './screens/SignInScreen';
-// import SignUpScreen from './screens/SignUpScreen';
+import send from "./requests/request.js";
+// import {
+//   InventoryAllFoods,
+//   InventoryInputScreen,
+//   ShoppingListScreen,
+//   FinishedFoodScreen,
+//   WastedFoodScreen,
+//   MyStatsScreen,
+//   EditInventoryItemScreen,
+//   SignInScreen,
+//   SignUpScreen
+// } from './screens';
+import InventoryAllFoods from "./screens/InventoryAllFoods";
+import InventoryInputScreen from "./screens/InventoryInputScreen";
+import ShoppingListScreen from "./screens/ShoppingListScreen";
+import FinishedFoodScreen from "./screens/FinishedFoodScreen";
+import WastedFoodScreen from "./screens/WastedFoodScreen";
+import MyStatsScreen from "./screens/MyStatsScreen";
+import EditInventoryItemScreen from './screens/EditInventoryItemScreen';
+import SignInScreen from './screens/SignInScreen';
+import SignUpScreen from './screens/SignUpScreen';
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
@@ -56,12 +57,10 @@ function AuthenticationTabs() {
       <AuthTab.Screen
         name="Signup"
         component={SignUpScreen} // screen name may change and must be imported
-        options={}
       />
       <AuthTab.Screen
         name="Signin"
         component={SignInScreen} // screen name may change and must be imported
-        options={}
       />
     </AuthTab.Navigator>
   );
@@ -153,28 +152,38 @@ function MyTabs() {
 
 export default function App() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false); // testing
   
   // does this need to be inside of useEffect??????
   // useEffect(() => {
   //   // place fetch here ????????????????????????/
   // }, []);
 
-  fetch('.../users/isauthenticated')
-  .then(response => response.json())
-  .then(session => {
-    if (session.isauth) {
-      setIsSignedIn(true);
-      setIsLoading(false); // needed ?????????????????????????????????????????????????????
-    }
-    console.log('AUTH SESSION:', session);
-  }).catch(err => console.log('Error getting session:', err))
+  // send("getAuthenticated", {})
+  // .then(response => response.json())
+  // .then(session => {
+  //   if (session.isauth) {
+  //     setIsSignedIn(true);
+  //   }
+  //   console.log('AUTH SESSION:', session);
+  //   setIsLoading(false); // needed ?????????????????????????????????????????????????????
+  // })
+  // .catch(err => console.log('Error getting session:', err));
 
   const authContext = React.useMemo(() => {
+    // Im not sure why these are being marked as unused even
+    // though the buttons in the SignUpScreen and SignInScreen
+    // are using them. We may need to figure out how the useMemo
+    // and useContext hooks actually work.
     signIn: ({username, password}) => {
       // fetch the result from the signin endpoint, process
       // it and set the necessary states
-      fetch()
+      const data = {
+        username: username,
+        password: password
+      };
+
+      send("signinUser", data)
       .then(result => {
         if (result.status === 200) {
           result.json().then(json => {
@@ -199,14 +208,14 @@ export default function App() {
     signOut: () => {
       // fetch the result from the signout endpoint, process
       // it and set the necessary states
-      fetch()
+      send("signoutUser", {})
       .then(result => {
         if (result.status === 200) {
           result.json().then(json => {
             console.log(json)
             console.log('Logged out')
             setIsLoggedIn(false)
-            console.log("SIGN_OUT auth:", isLoggedIn)
+            console.log("SIGN_OUT auth:", isSignedIn)
           }).catch(err => {
             console.log('JSON parse error');
           });
@@ -214,31 +223,50 @@ export default function App() {
           console.log('Logout failed:', result.status)
         }
       }).catch(err => {
-        console.log('Session logout error', err)
+        console.log('Session signout error', err)
       })
     };
 
     signUp: ({ email, firstName, lastName, password, confirmPassword, checked }) => {
       if (email.length < 5 || !email.includes('@') || !email.includes('.')) {
-        alert('Please enter a valid email')
+        alert('Please enter a valid email');
       } else if (firstName.length < 2 || lastName.length < 2) {
-        alert('Please enter a valid name')
+        alert('Please enter a valid name');
       } else if (password.length < 6) {
-        alert('Password must be at least 6 characters')
+        alert('Password must be at least 6 characters');
       } else if (password !== confirmPassword) {
-        alert('Passwords do not match')
+        alert('Passwords do not match');
       } else {
         // fetch the result from the signout endpoint, process
         // it and set the necessary states
-        fetch()
+        const data = {
+          firstname: firstName,
+          lastname: lastName,
+          email: email.toLowerCase(),
+          username: email.toLowerCase(),
+          password: password
+        }
+        send("signupUser", data)
         .then(result => {
-          if (result.status === 200) {
-            result.json().then()
+          return result.json();
+        })
+        .then(result => {
+          if (result.status === 409) {
+            alert('Email already in use.');
+          } else if (result.status === 200) {
+            setIsSignedIn(true);
+            // setIsLoading(false); // is needed ?????????????????????????????????????????????????????
+            console.log("SIGN_UP auth:", isSignedIn)
+          } else {
+            console.log(result.error);
           }
         })
+        .catch(err => {
+          console.log('Signup error', err)
+        })
       }
-    }
-  },[]); // is [] needed ?????????????????????????????????????????????????????
+    };
+  }, []); // is [] needed ?????????????????????????????????????????????????????
 
   if( isLoading ) { // or display splash screen with return <screen name/>;
     return(
