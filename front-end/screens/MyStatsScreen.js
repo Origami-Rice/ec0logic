@@ -13,7 +13,7 @@ import { LineChart } from "react-native-chart-kit";
 import Modal from "react-native-modal";
 
 import AboutUsScreen from "./AboutUsScreen";
-import RecentlyExpiredTable from "../components/RecentlyExpiredTable";
+import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
 
 const username = "/tester";
@@ -179,22 +179,22 @@ export default class MyStatsScreen extends React.Component {
             />
             <View style={styles.divider}></View>
             <TextSemiBold style={styles.subheading} text={"Recently Expired"} />
-            <RecentlyExpiredTable
+            <RecentlyWastedTable
               items={[
                 {
                   name: "Pineapple",
-                  expiryDate: "blah",
+                  dateWasted: "blah",
                   quantity: 50,
                   unitsOfMeasure: "g",
                 },
                 {
                   name: "Blueberries",
-                  expiryDate: "blah",
+                  dateWasted: "blah",
                   quantity: 30,
                   unitsOfMeasure: "g",
                 },
               ]}
-            ></RecentlyExpiredTable>
+            ></RecentlyWastedTable>
           </ScrollView>
         </View>
         <Modal

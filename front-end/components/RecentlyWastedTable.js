@@ -4,7 +4,7 @@ import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
 import { Colours } from "../constants/colours.js";
 
-export default class RecentlyExpiredTable extends React.Component {
+export default class RecentlyWastedTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,9 +36,9 @@ export default class RecentlyExpiredTable extends React.Component {
           }
         >
           {i !== 0 ? (
-            <TextRegular style={styles.infoText} text={item.expiryDate} />
+            <TextRegular style={styles.infoText} text={item.dateWasted} />
           ) : (
-            <TextMedium style={styles.infoText} text={"Expiry Date"} />
+            <TextMedium style={styles.infoText} text={"Date Wasted"} />
           )}
         </View>
         <View
