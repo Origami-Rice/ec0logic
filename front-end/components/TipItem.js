@@ -5,8 +5,8 @@ import { Colours } from "../constants/colours.js";
 
 const TipItem = (props) => {
   return (
-    <TouchableOpacity style={styles.listItem}>
-      <TextRegular style={styles.textInfo} text={props.tip} />
+    <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
+      <TextRegular style={styles.textInfo} text={props.tip} numberOfLines={2} />
       <View style={styles.checkFlex}>
         <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
       </View>
@@ -17,7 +17,7 @@ const TipItem = (props) => {
 const styles = StyleSheet.create({
   listItem: {
     width: "85%",
-    height: 95,
+    height: 80,
     flex: 0,
     flexDirection: "row",
     justifyContent: "space-between",

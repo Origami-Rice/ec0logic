@@ -12,7 +12,10 @@ const TextRegular = (props) => {
     return <AppLoading />;
   } else {
     return (
-      <Text style={[{ fontFamily: "Montserrat_400Regular" }, props.style]}>
+      <Text
+        style={[{ fontFamily: "Montserrat_400Regular" }, props.style]}
+        numberOfLines={props.numberOfLines}
+      >
         {props.text}
       </Text>
     );

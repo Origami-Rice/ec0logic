@@ -14,6 +14,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import AboutUsScreen from "./AboutUsScreen";
+import ExpandTipScreen from "./ExpandTipScreen";
 import TipItem from "../components/TipItem";
 import { allTips } from "../Constants/AllTips";
 import send from "../requests/request.js";
@@ -28,6 +29,8 @@ export default class EcoTipsScreen extends React.Component {
       tipList: [],
       generateTips: true,
       isLoaded: false,
+      tipSelected: {},
+      visibleModal: 0,
     };
   }
 
@@ -53,10 +56,23 @@ export default class EcoTipsScreen extends React.Component {
   displayItems = () => {
     // Dynamically
     if (this.state.generateTips) {
-      return this.state.tipList.map((data) => <TipItem tip={data.tip} />);
+      return this.state.tipList.map((data) => (
+        <TipItem tip={data.tip} onPressWhole={() => this.expand(data)} />
+      ));
     } else {
       return this.state.savedTips.map((data) => <TipItem tip={data.tip} />);
     }
+  };
+
+  expand = (data) => {
+    this.setState({
+      tipSelected: data,
+      visibleModal: 3,
+    });
+  };
+
+  save = () => {
+    //TODO: Save tip
   };
 
   switchItems = (state) => {
@@ -211,6 +227,22 @@ export default class EcoTipsScreen extends React.Component {
             </View>
           }
         </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 3}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <ExpandTipScreen
+                setSearchItem={this.setSearchedItem}
+                tip={this.state.tipSelected.tip}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+                onSave={() => this.save(this.state.tipSelected)}
+              ></ExpandTipScreen>
+            </View>
+          }
+        </Modal>
       </View>
     );
   }
@@ -322,7 +354,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   modal: {
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: "white",
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
