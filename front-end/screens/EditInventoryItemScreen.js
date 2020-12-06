@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     margin: 25,
     ...Platform.select({
       ios: {
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 31,
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,

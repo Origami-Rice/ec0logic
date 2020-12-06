@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",

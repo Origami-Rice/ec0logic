@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
   },
   infoText: {
     fontSize: 11,

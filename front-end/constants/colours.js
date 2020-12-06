@@ -5,6 +5,7 @@ export const Colours = {
   navInactiveBG: "#ffffff",
   divider: "#CCC5C5",
   screenBackground: "#ffffff",
+  borderedComponentFill: "#ffffff",
   switchButtonSelected: "#5A5A5A",
   switchButtonSelectedText: "#ffffff",
   switchButtonNotSelected: "#ffffff",
@@ -13,5 +14,4 @@ export const Colours = {
   tint: "#000000",
   listButton: "#DDDDDD",
   notice: "#BDBDBD",
-  inventoryNote: "#828282",
 };

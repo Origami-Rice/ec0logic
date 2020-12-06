@@ -28,8 +28,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
+    borderColor: Colours.tint,
     alignSelf: "center",
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     marginVertical: 5,
   },
 

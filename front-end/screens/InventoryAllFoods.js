@@ -461,6 +461,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
     justifyContent: "center",
     alignSelf: "center",
   },
@@ -478,7 +479,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     marginVertical: 20,
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",

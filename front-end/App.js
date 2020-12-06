@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Colours } from "./constants/colours.js";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -46,10 +47,10 @@ function MyTabs() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: "#828282",
-        inactiveTintColor: "#BDBDBD",
-        activeBackgroundColor: "#E5E5E5",
-        inactiveBackgroundColor: "#ffffff",
+        activeTintColor: Colours.navActiveTint,
+        inactiveTintColor: Colours.navInactiveTint,
+        activeBackgroundColor: Colours.navActiveBackground,
+        inactiveBackgroundColor: Colours.navInactiveBackground,
         style: { borderTopWidth: 0, height: 60 },
         labelStyle: {
           marginBottom: 10,

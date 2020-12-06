@@ -70,15 +70,27 @@ export default class QualityDropdown extends React.Component {
               arrowStyle={styles.dropArrow}
               containerStyle={styles.dropContainer}
               dropDownStyle={{ elevation: 5000 }}
-              style={{ borderColor: "black", borderWidth: 1 }}
+              style={{
+                borderColor: Colours.tint,
+                borderWidth: 1,
+                backgroundColor: Colours.borderedComponentFill,
+              }}
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
               customArrowDown={() => (
-                <MaterialIcons name="expand-less" size={24} color="black" />
+                <MaterialIcons
+                  name="expand-less"
+                  size={24}
+                  color={Colours.tint}
+                />
               )}
               customArrowUp={() => (
-                <MaterialIcons name="expand-more" size={24} color="black" />
+                <MaterialIcons
+                  name="expand-more"
+                  size={24}
+                  color={Colours.tint}
+                />
               )}
               onChangeItem={(item) => this.onSelectUnit(item.value)}
               zIndex={5000}
@@ -126,7 +138,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 11,

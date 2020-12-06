@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.4,
     height: 31,
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 14,

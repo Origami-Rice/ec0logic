@@ -291,6 +291,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
     justifyContent: "center",
     alignSelf: "center",
   },

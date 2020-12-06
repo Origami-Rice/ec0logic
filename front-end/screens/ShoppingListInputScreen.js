@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     marginVertical: 25,
     zIndex: 1,
     ...Platform.select({
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.8,
     height: 31,
-    backgroundColor: Colours.screenBackground,
+    backgroundColor: Colours.borderedComponentFill,
     borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
