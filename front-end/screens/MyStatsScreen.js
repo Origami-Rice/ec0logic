@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert,
 } from "react-native";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
@@ -13,6 +14,7 @@ import { LineChart } from "react-native-chart-kit";
 import Modal from "react-native-modal";
 
 import AboutUsScreen from "./AboutUsScreen";
+import SettingsScreen from "./SettingsScreen";
 import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
 
@@ -78,6 +80,29 @@ export default class MyStatsScreen extends React.Component {
     });
   }
 
+  createInfoWindow = () => {
+    Alert.alert(
+      "Information",
+      "Select an option.",
+      [
+        {
+          text: "About Us",
+          onPress: () => this.setState({ visibleModal: 2 }),
+        },
+        {
+          text: "Settings",
+          onPress: () => this.setState({ visibleModal: 4 }),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   displayItems = () => {
     // Dynamically
     if (this.state.imperial) {
@@ -113,7 +138,7 @@ export default class MyStatsScreen extends React.Component {
             <TextSemiBold style={styles.title} text={"My Stats"} />
             <TouchableOpacity
               style={styles.infoButton}
-              onPress={() => this.setState({ visibleModal: 2 })}
+              onPress={() => this.createInfoWindow()}
             >
               <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
@@ -205,9 +230,21 @@ export default class MyStatsScreen extends React.Component {
           {
             <View style={styles.modal}>
               <AboutUsScreen
-                setSearchItem={this.setSearchedItem}
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></AboutUsScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 4}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <SettingsScreen
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></SettingsScreen>
             </View>
           }
         </Modal>

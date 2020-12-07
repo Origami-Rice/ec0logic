@@ -7,6 +7,7 @@ import {
   TextInput,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
@@ -45,6 +46,29 @@ export default class RecipesScreen extends React.Component {
     this._loadFontsAsync();
   }
 
+  createInfoWindow = () => {
+    Alert.alert(
+      "Information",
+      "Select an option.",
+      [
+        {
+          text: "About Us",
+          onPress: () => this.setState({ visibleModal: 2 }),
+        },
+        {
+          text: "Settings",
+          onPress: () => this.setState({ visibleModal: 4 }),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   toggleVegan = (state) => {
     this.setState((state) => ({
       isVegan: !state.isVegan,
@@ -73,7 +97,7 @@ export default class RecipesScreen extends React.Component {
             <TextSemiBold style={styles.title} text={"Recipes"} />
             <TouchableOpacity
               style={styles.infoButton}
-              onPress={() => this.setState({ visibleModal: 2 })}
+              onPress={() => this.createInfoWindow()}
             >
               <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
@@ -169,7 +193,6 @@ export default class RecipesScreen extends React.Component {
           {
             <View style={styles.modal}>
               <AboutUsScreen
-                setSearchItem={this.setSearchedItem}
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></AboutUsScreen>
             </View>
@@ -185,6 +208,19 @@ export default class RecipesScreen extends React.Component {
               <SavedRecipesScreen
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></SavedRecipesScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 4}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <SettingsScreen
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></SettingsScreen>
             </View>
           }
         </Modal>

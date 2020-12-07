@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
@@ -51,6 +52,29 @@ export default class EcoTipsScreen extends React.Component {
     }
 
     this.setState({ tipList: randomTips });
+  };
+
+  createInfoWindow = () => {
+    Alert.alert(
+      "Information",
+      "Select an option.",
+      [
+        {
+          text: "About Us",
+          onPress: () => this.setState({ visibleModal: 2 }),
+        },
+        {
+          text: "Settings",
+          onPress: () => this.setState({ visibleModal: 4 }),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   displayItems = () => {
@@ -130,7 +154,7 @@ export default class EcoTipsScreen extends React.Component {
             <TextSemiBold style={styles.title} text={"Eco Tips"} />
             <TouchableOpacity
               style={styles.infoButton}
-              onPress={() => this.setState({ visibleModal: 2 })}
+              onPress={() => this.createInfoWindow()}
             >
               <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
@@ -221,7 +245,6 @@ export default class EcoTipsScreen extends React.Component {
           {
             <View style={styles.modal}>
               <AboutUsScreen
-                setSearchItem={this.setSearchedItem}
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></AboutUsScreen>
             </View>
@@ -235,11 +258,23 @@ export default class EcoTipsScreen extends React.Component {
           {
             <View style={styles.modal}>
               <ExpandTipScreen
-                setSearchItem={this.setSearchedItem}
                 tip={this.state.tipSelected.tip}
                 onCancel={() => this.setState({ visibleModal: 0 })}
                 onSave={() => this.save(this.state.tipSelected)}
               ></ExpandTipScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 4}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <SettingsScreen
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></SettingsScreen>
             </View>
           }
         </Modal>

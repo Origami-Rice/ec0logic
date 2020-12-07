@@ -19,6 +19,7 @@ import MyStatsScreen from "./screens/MyStatsScreen";
 import EcoTipsScreen from "./screens/EcoTipsScreen";
 import RecipesScreen from "./screens/RecipesScreen";
 import EditInventoryItemScreen from "./screens/EditInventoryItemScreen";
+import AboutUsScreen from "./screens/AboutUsScreen";
 
 let customFonts = {
   Montserrat_600SemiBold: require("./fonts/Montserrat-SemiBold.ttf"),
@@ -38,6 +39,7 @@ function InventoryStackScreen() {
       <InventoryStack.Screen name="ThrownOut" component={WastedFoodScreen} />
       <InventoryStack.Screen name="Used" component={FinishedFoodScreen} />
       <InventoryStack.Screen name="Edit" component={EditInventoryItemScreen} />
+      <InventoryStack.Screen name="About" component={AboutUsScreen} />
     </InventoryStack.Navigator>
   );
 }
