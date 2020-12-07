@@ -1,15 +1,3 @@
-// import { AuthContext } from '../AuthContext';
-
-// const SignInScreen = ({navigation}) => {
-//     //....
-
-//     const { signIn } = React.useContext(AuthContext);
-
-//     //.... 
-//     // onPress of signin button can now access the
-//     // signIn() function in App.js
-// }
-
 import * as React from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity, View, ScrollView, TextInput} from 'react-native';
 import { AuthContext } from '../AuthContext';

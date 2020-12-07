@@ -1,16 +1,4 @@
-// import { AuthContext } from '../AuthContext';
-
-// const SignUpScreen = ({navigation}) => {
-//     //....
-
-//     const { signUp } = React.useContext(AuthContext);
-
-//     //.... 
-//     // onPress of signUp button can now access the
-//     // signUp() function in App.js
-// }
-
-import * as React from 'react';
+import React from 'react';
 import {
   Image,
   StyleSheet,
@@ -89,14 +77,14 @@ export default function SignupScreen() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.signupButton}
-          onPress={() =>
-            signUp({
-              email,
-              firstName,
-              lastName,
-              password,
-              confirmPassword,
-            })
+          onPress={() => signUp()
+            // signUp({
+            //   email,
+            //   firstName,
+            //   lastName,
+            //   password,
+            //   confirmPassword,
+            // })
           }>
           <Text style={[styles.signupHeaderText, {color: "white"}]}>Sign Up</Text>
         </TouchableOpacity>
