@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Colours } from "./Constants/colours.js";
+import { Colours } from "./constants/colours.js";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

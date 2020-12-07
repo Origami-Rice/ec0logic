@@ -15,6 +15,7 @@ import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import AboutUsScreen from "./AboutUsScreen";
+import SettingsScreen from "./SettingsScreen";
 import SavedRecipesScreen from "./SavedRecipesScreen";
 import send from "../requests/request.js";
 

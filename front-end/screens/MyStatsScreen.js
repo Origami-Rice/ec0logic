@@ -12,7 +12,6 @@ import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import { LineChart } from "react-native-chart-kit";
 import Modal from "react-native-modal";
-
 import AboutUsScreen from "./AboutUsScreen";
 import SettingsScreen from "./SettingsScreen";
 import RecentlyWastedTable from "../components/RecentlyWastedTable";

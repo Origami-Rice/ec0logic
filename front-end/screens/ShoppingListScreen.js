@@ -18,6 +18,7 @@ import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import ShoppingListEditScreen from "./ShoppingListEditScreen";
 import AboutUsScreen from "./AboutUsScreen";
+import SettingsScreen from "./SettingsScreen";
 import send from "../requests/request";
 
 let username = "/tester";

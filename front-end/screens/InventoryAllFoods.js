@@ -16,6 +16,7 @@ import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
 import InventoryListItem from "../components/InventoryListItem";
 import AboutUsScreen from "./AboutUsScreen";
+import SettingsScreen from "./SettingsScreen";
 import send from "../requests/request.js";
 
 let username = "/tester";

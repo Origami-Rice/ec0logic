@@ -15,6 +15,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import AboutUsScreen from "./AboutUsScreen";
+import SettingsScreen from "./SettingsScreen";
 import ExpandTipScreen from "./ExpandTipScreen";
 import TipItem from "../components/TipItem";
 import { allTips } from "../Constants/AllTips";
