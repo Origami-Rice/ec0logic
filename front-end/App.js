@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Colours } from "./constants/colours.js";
+import { Colours } from "./Constants/colours.js";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,6 +17,7 @@ import FinishedFoodScreen from "./screens/FinishedFoodScreen";
 import WastedFoodScreen from "./screens/WastedFoodScreen";
 import MyStatsScreen from "./screens/MyStatsScreen";
 import EcoTipsScreen from "./screens/EcoTipsScreen";
+import RecipesScreen from "./screens/RecipesScreen";
 import EditInventoryItemScreen from "./screens/EditInventoryItemScreen";
 
 let customFonts = {
@@ -80,6 +81,20 @@ function MyTabs() {
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons
               name="kitchen"
+              color={color}
+              size={size}
+              style={{ marginTop: 5 }}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Recipes"
+        component={RecipesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="description"
               color={color}
               size={size}
               style={{ marginTop: 5 }}

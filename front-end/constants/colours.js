@@ -1,8 +1,8 @@
 export const Colours = {
   navActiveTint: "#828282",
-  navActiveBG: "#E5E5E5",
+  navActiveBackground: "#E5E5E5",
   navInactiveTint: "#BDBDBD",
-  navInactiveBG: "#ffffff",
+  navInactiveBackground: "#ffffff",
   divider: "#CCC5C5",
   screenBackground: "#ffffff",
   borderedComponentFill: "#ffffff",
