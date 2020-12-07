@@ -12,6 +12,5 @@ export const Colours = {
   switchButtonNotSelectedText: "#000000",
   filledButton: "#d8d8d8",
   tint: "#000000",
-  listButton: "#DDDDDD",
   notice: "#BDBDBD",
 };

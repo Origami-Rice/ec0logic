@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
-import { Colours } from "../Constants/colours.js";
+import { Colours } from "../constants/colours.js";
 
 const RecipeCard = (props) => {
   return (
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-end",
-    backgroundColor: Colours.listButton,
+    backgroundColor: Colours.filledButton,
   },
 });
 

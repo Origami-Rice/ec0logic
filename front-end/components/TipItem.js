@@ -27,14 +27,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 8.5,
   },
-
   checkFlex: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
     margin: 10,
   },
-
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
@@ -43,7 +41,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignSelf: "center",
   },
-
   checkbox: {
     width: 25,
     height: 25,
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end",
     alignSelf: "flex-end",
-    backgroundColor: Colours.listButton,
+    backgroundColor: Colours.filledButton,
   },
 });
 

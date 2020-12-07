@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colours.borderedComponentFill,
     marginVertical: 5,
   },
-
   textGroup: {
     flex: 20,
     flexDirection: "column",
@@ -41,13 +40,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
   },
-
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
     color: Colours.tint,
   },
-
   textItem: {
     marginLeft: 10,
     fontSize: 12,

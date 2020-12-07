@@ -115,12 +115,10 @@ const styles = StyleSheet.create({
       zIndex: 5000,
     }),
   },
-
   dropContainer: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
   },
-
   dropArrow: {
     height: 24,
     flexDirection: "row",
@@ -134,7 +132,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
@@ -155,7 +152,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",

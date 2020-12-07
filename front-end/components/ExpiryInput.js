@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
     margin: 5,
     zIndex: 2500,
   },
-
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
@@ -164,7 +163,6 @@ const styles = StyleSheet.create({
     color: Colours.tint,
     zIndex: 2500,
   },
-
   dropContainer: {
     width: Dimensions.get("window").width * 0.3,
     height: 31,
@@ -172,14 +170,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     zIndex: 2500,
   },
-
   dropArrow: {
     height: 19,
     flexDirection: "row",
     justifyContent: "flex-start",
     zIndex: 2500,
   },
-
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",

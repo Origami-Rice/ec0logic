@@ -39,7 +39,7 @@ const ShoppingListItem = (props) => {
           <MaterialIcons
             name="check"
             size={24}
-            color={checked ? Colours.tint : Colours.listButton}
+            color={checked ? Colours.tint : Colours.filledButton}
           />
         </TouchableOpacity>
       </View>
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 8.5,
   },
-
   textGroup: {
     flexDirection: "column",
     alignItems: "flex-start",
@@ -80,23 +79,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 10,
   },
-
   checkFlex: {
     flexDirection: "column",
     justifyContent: "center",
     marginLeft: 10,
   },
-
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
   },
-
   textItem: {
     marginLeft: 10,
     fontSize: 14,
   },
-
   checkbox: {
     width: 25,
     height: 25,
@@ -105,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignSelf: "flex-end",
-    backgroundColor: Colours.listButton,
+    backgroundColor: Colours.filledButton,
   },
 });
 

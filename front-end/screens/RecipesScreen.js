@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
-import { Colours } from "../Constants/colours.js";
+import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import AboutUsScreen from "./AboutUsScreen";

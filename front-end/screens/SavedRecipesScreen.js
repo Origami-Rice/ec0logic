@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import RecipeCard from "../components/RecipeCard";
-import { Colours } from "../Constants/colours.js";
+import { Colours } from "../constants/colours.js";
 
 import send from "../requests/request.js";
 

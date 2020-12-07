@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 8.5,
   },
-
   textGroup: {
     flex: 20,
     flexDirection: "column",
@@ -51,25 +50,21 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
   },
-
   checkFlex: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-end",
   },
-
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
     color: Colours.tint,
   },
-
   textItem: {
     marginLeft: 10,
     fontSize: 14,
     color: Colours.tint,
   },
-
   checkbox: {
     width: 25,
     height: 25,
@@ -79,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-end",
     alignSelf: "flex-end",
-    backgroundColor: Colours.listButton,
+    backgroundColor: Colours.filledButton,
   },
 });
 
