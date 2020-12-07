@@ -85,6 +85,22 @@ const endpoints = {
         endpoint: '/api/users/isauthenticated',
         method: 'GET',
     },
+
+    // Tips
+    addTip: {
+        endpoint: 'api/tips/add',
+        method: 'POST',
+    },
+
+    deleteTip: {
+        endpoint: 'api/tips/delete',
+        method: 'POST',
+    },
+    
+    getSavedTips: {
+        endpoint: 'api/tips',
+        method: 'GET',
+    },
 }
 
 export default endpoints;

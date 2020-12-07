@@ -97,8 +97,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    //false for regular user, true for admin
-    usertype: {
+    usertype: { //false for regular user, true for admin
         type: Boolean,
         default: false
     },
@@ -106,7 +105,7 @@ const UserSchema = new mongoose.Schema({
     wasted_items: [WastedItemSchema],
     shopping_list: [ShoppingListSchema],
     saved_recipes: [RecipeSchema],
-    fav_tips: [TipsSchema]
+    saved_tips: [TipsSchema]
 });
 
 // MAY NEED TO MODIFY ????????????????????????????????????????
