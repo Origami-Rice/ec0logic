@@ -8,13 +8,13 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../Constants/colours.js";
 import Modal from "react-native-modal";
 import * as Font from "expo-font";
 import AboutUsScreen from "./AboutUsScreen";
+import SavedRecipesScreen from "./SavedRecipesScreen";
 import send from "../requests/request.js";
 
 const username = "/tester";
@@ -32,6 +32,7 @@ export default class RecipesScreen extends React.Component {
       isVegetarian: false,
       isGlutenFree: false,
       ingredient: "",
+      visibleModal: 0,
     };
   }
 
@@ -81,7 +82,7 @@ export default class RecipesScreen extends React.Component {
           <View>
             <TouchableOpacity
               style={styles.unitButton}
-              onPress={this.switchItems}
+              onPress={() => this.setState({ visibleModal: 3 })}
             >
               <TextMedium style={styles.unitText} text={"Saved Recipes"} />
             </TouchableOpacity>
@@ -171,6 +172,19 @@ export default class RecipesScreen extends React.Component {
                 setSearchItem={this.setSearchedItem}
                 onCancel={() => this.setState({ visibleModal: 0 })}
               ></AboutUsScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 3}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <SavedRecipesScreen
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></SavedRecipesScreen>
             </View>
           }
         </Modal>
