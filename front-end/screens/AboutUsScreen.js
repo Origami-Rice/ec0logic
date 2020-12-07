@@ -6,6 +6,7 @@ import {
   Dimensions,
   Platform,
   Image,
+  Linking,
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
@@ -82,7 +83,12 @@ export default class AboutUsScreen extends React.Component {
           </View>
         </View>
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <TouchableOpacity style={styles.confirmButton}>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={() => {
+              Linking.openURL("https://www.facebook.com/ec0logic");
+            }}
+          >
             <TextMedium style={styles.confirmText} text={"Learn More"} />
           </TouchableOpacity>
         </View>
