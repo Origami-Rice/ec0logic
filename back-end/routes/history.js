@@ -108,32 +108,28 @@ router
         // get the user's history
         try {
             const result = await get_entire_history(username);
-            if (result && result.wasted_items) { // find out if this will still be true if the list is empty
-                delete result._id; // im guessing this deletes the id field that mongodb automatically assigns
+            if (result && result.wasted_items) { 
+                delete result._id; 
                 // items should be sorted by date with the most recent at index 0
                 const history = result.wasted_items;
-                // find the items in the specified range
                 const filtered = [];
 
-                // loop through all the dates
+                // find the items within the specified date range
                 for (let i = 0; i < history.length; i++) {
                     let dateWasted = new Date(history[i]["date"]);
                     if (dateWasted < beginDate) {
-                        // since items are sorted by most recent date, no other items
-                        // will be within the desired range.
                         break;
                     } else {
                         filtered.push(history[i]);
                     }
                 }
-                
                 return response
                     .status(200)
                     .json(filtered);
             } else {
                 return response
                     .status(404)
-                    .json({"error": "Could not find user or history of wasted items detected."});
+                    .json({"error": "Could not find user or history of wasted items."});
             }
         } catch (error) {
             console.log(error);

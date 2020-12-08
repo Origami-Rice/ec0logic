@@ -65,6 +65,42 @@ const endpoints = {
         method: 'GET',
     },
 
+    // Authentication
+    signupUser: {
+        endpoint: '/api/users/signup',
+        method: 'POST',
+    },
+
+    signinUser: {
+        endpoint: '/api/users/signin',
+        method: 'POST',
+    },
+
+    signoutUser: {
+        endpoint: '/api/users/signout',
+        method: 'POST',
+    },
+
+    getAuthenticated: {
+        endpoint: '/api/users/isauthenticated',
+        method: 'GET',
+    },
+
+    // Tips
+    addTip: {
+        endpoint: 'api/tips/add',
+        method: 'POST',
+    },
+
+    deleteTip: {
+        endpoint: 'api/tips/delete',
+        method: 'POST',
+    },
+    
+    getSavedTips: {
+        endpoint: 'api/tips',
+        method: 'GET',
+    },
 }
 
 export default endpoints;

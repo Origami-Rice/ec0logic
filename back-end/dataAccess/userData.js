@@ -7,29 +7,49 @@ const users_collection = "test_users";
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 //
 const {User} = require('../models/schemas'); 
-const {CommonFood} = require('../models/schemas');
 
 //////////////////// USER QUERIES ////////////////////
-exports.add_user = async (username) => {
-    //return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
-    //    { username: username, inventory_list: [], wasted_items: [], shopping_list: [] }));
-    if (!(typeof username === 'string' && username != '')){
-        return false; 
-    }
+exports.add_user = async (username, email, password, salt, firstname, surname) => {
+    // if (!(typeof username === 'string' && username != '')) {
+    //     return false; 
+    // }
+    
     const newUser = new User({
-        username: username, 
+        username: username,
+        firstname: firstname,
+        surname: surname,
+        email: email,
+        password: password,
+        salt: salt,
         inventory_list: [], 
         wasted_items: [], 
-        shopping_list: []
+        shopping_list: [],
+        saved_recipes: []
     });
+    
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
         newUser));
+};
+
+exports.find_user_by_username = async (username) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
+        {username: username}));
 };
 
 exports.remove_user = async (username) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).deleteOne(
         {username: username}
     ));
+};
+
+exports.update_email = async (username, email) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username}, {$set: {email: email}}));
+};
+
+exports.update_password = async (username, password, salt) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username}, {$set: {password: password, salt: salt}}));
 };
 
 //////////////////// INVENTORY QUERIES ////////////////////
@@ -65,25 +85,7 @@ exports.get_entire_history = async (username) => {
     ));
 };
 
-//////////////////// Common Food Library Queries ////////////////////
-exports.get_common_food = async () => {
-    // Return all the foods in our food library
-    return await executeQuery("food-library", async (db) => await db.collection("items").find().sort({name: 1}).toArray());
-};
-
-exports.add_common_food = async (name, days) => {
-    //return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
-    //    {name: name, days: days}));
-    const newCommonFood = new CommonFood({
-        name: name,
-        days: days
-    });
-    return await executeQuery("food-library", async (db) => await db.collection("items").insertOne(
-        newCommonFood));
-};
-
 ////////////////// Shopping list queries /////////////////////
-
 exports.get_shopping_list = async (username) => {
     // gets the user's shopping list
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
@@ -114,3 +116,43 @@ exports.update_shopping_list = async(username, newList) => {
         {username: username}, {$set: {shopping_list: newList}}
     ));
 };
+
+//////////////////////////// TIP QUERIES ///////////////////////////////
+exports.get_tips = async (username) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
+        {username: username}, {username: 1, saved_tips: 1}
+    ));
+};
+
+exports.update_tips = async (username, tips) => {
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username},  {$set: {saved_tips: tips}}
+    ));
+};
+
+////////////////////////////// RECIPE QUERIES ///////////////////////////////////////
+
+exports.get_saved_recipes = async (username) => {
+    // gets the user's saved_recipes
+    return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
+        {username, username},
+        {username: 1, saved_recipes: 1}
+    ));
+};
+
+exports.add_recipe_to_saved_recipes = async (username, item) => {
+    // adds a new item to the user's saved_recipes
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne (
+        {username: username}, {$push: { saved_recipes: { $each: [item], $sort: {name: 1}} }}
+    ))
+};
+
+exports.remove_recipe_from_saved_recipes = async (username, recipe) => {
+    // removes a existing item from the user's saved_recipes
+    return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
+        {username: username},
+        {$pull: { saved_recipes: {name: recipe}} }
+    ));
+
+};
+
