@@ -9,6 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
@@ -16,6 +17,7 @@ import Modal from "react-native-modal";
 import InfoModals from "../constants/InfoModals";
 import * as Font from "expo-font";
 import SavedRecipesScreen from "./SavedRecipesScreen";
+import FoundRecipesScreen from "./FoundRecipesScreen";
 import send from "../requests/request.js";
 
 const username = "/tester";
@@ -93,6 +95,18 @@ export default class RecipesScreen extends React.Component {
     });
   };
 
+  getSavedRecipes = () => {
+    this.setState({
+      visibleModal: 1,
+    });
+  };
+
+  searchForRecipes = () => {
+    this.setState({
+      visibleModal: 3,
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -112,12 +126,16 @@ export default class RecipesScreen extends React.Component {
           <View>
             <TouchableOpacity
               style={styles.unitButton}
-              onPress={() => this.setState({ visibleModal: 3 })}
+              onPress={this.getSavedRecipes}
             >
               <TextMedium style={styles.unitText} text={"Saved Recipes"} />
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
+            <TextRegular
+              style={styles.notice}
+              text={"Powered by Spoonacular API"}
+            />
             <TextInput style={styles.inputFormat} placeholder="Ingredient" />
             <View
               style={[
@@ -187,12 +205,15 @@ export default class RecipesScreen extends React.Component {
         <View
           style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
         >
-          <TouchableOpacity style={styles.confirmButton}>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={this.searchForRecipes}
+          >
             <TextMedium style={styles.confirmText} text={"Find Recipes"} />
           </TouchableOpacity>
         </View>
         <Modal
-          isVisible={this.state.visibleModal === 3}
+          isVisible={this.state.visibleModal === 1}
           style={styles.bottomModal}
           avoidKeyboard={false}
         >
@@ -201,6 +222,19 @@ export default class RecipesScreen extends React.Component {
               <SavedRecipesScreen
                 onCancel={this.closeModal}
               ></SavedRecipesScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 3}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <FoundRecipesScreen
+                onCancel={this.closeModal}
+              ></FoundRecipesScreen>
             </View>
           }
         </Modal>
@@ -247,6 +281,13 @@ const styles = StyleSheet.create({
     color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
+  },
+  notice: {
+    width: "80%",
+    textAlign: "left",
+    fontSize: 10,
+    color: Colours.notice,
+    margin: 10,
   },
   inputFormat: {
     width: "80%",

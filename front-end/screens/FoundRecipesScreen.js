@@ -13,7 +13,7 @@ import RecipeCard from "../components/RecipeCard";
 import { Colours } from "../constants/colours.js";
 
 // NOTE: Current items array does not reflect json result from spoonacular
-export default class SavedRecipesScreen extends React.Component {
+export default class FoundRecipesScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +49,7 @@ export default class SavedRecipesScreen extends React.Component {
             <TextRegular style={styles.cancelText} text={"x"} />
           </TouchableOpacity>
         </View>
-        <TextMedium style={styles.header} text={"Your Saved Recipes"} />
+        <TextMedium style={styles.header} text={"We Found 4 Recipes"} />
         <View style={styles.divider}></View>
         <ScrollView style={styles.listContainer}>
           {this.populateList()}
