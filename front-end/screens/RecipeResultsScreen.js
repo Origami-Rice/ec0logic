@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "flex-end",
     backgroundColor: Colours.screenBackground,
-    margin: 25,
+    margin: 10,
     marginBottom: 5,
     zIndex: 1,
     ...Platform.select({

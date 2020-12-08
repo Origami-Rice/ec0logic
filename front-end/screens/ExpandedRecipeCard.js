@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "flex-end",
     backgroundColor: Colours.screenBackground,
-    margin: 25,
+    margin: 10,
     marginBottom: 5,
     zIndex: 1,
     ...Platform.select({
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 200,
-    width: "100%",
+    width: "95%",
     margin: 10,
     overflow: "hidden",
     borderRadius: 10,
