@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import {
-  View,
-  Platform,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { View, Platform, TouchableOpacity, Dimensions } from "react-native";
+import TextRegular from "./TextRegular";
+import { Colours } from "../constants/colours.js";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function DatePicker(props) {
@@ -31,12 +27,15 @@ export default function DatePicker(props) {
           <TouchableOpacity
             style={{
               alignItems: "center",
-              backgroundColor: "#DDDDDD",
+              backgroundColor: Colours.listButton,
               padding: 10,
             }}
             onPress={showDatepicker}
           >
-            <Text>{date.toDateString()}</Text>
+            <TextRegular
+              style={{ colour: Colours.tint }}
+              text={date.toDateString()}
+            ></TextRegular>
           </TouchableOpacity>
         )}
       </View>

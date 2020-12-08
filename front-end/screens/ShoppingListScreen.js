@@ -1,27 +1,24 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
-import { ActivityIndicator } from 'react-native-paper';
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
+import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
-import * as Font from "expo-font";
+import InfoModals from "../constants/InfoModals";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
-import ShoppingListEditScreen from './ShoppingListEditScreen';
-import AboutUsScreen from "./AboutUsScreen";
+import ShoppingListEditScreen from "./ShoppingListEditScreen";
 import send from "../requests/request";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
 
 let username = "/tester";
 
@@ -31,16 +28,10 @@ export default class ShoppingListScreen extends React.Component {
     this.state = {
       shoppingList: [],
       inventoryArray: [],
-      fontsLoaded: false,
       modalVisible: 0,
       isLoaded: false,
       itemSelected: {},
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   _loadData = () => {
@@ -69,8 +60,6 @@ export default class ShoppingListScreen extends React.Component {
   };
 
   componentDidMount() {
-    this._loadFontsAsync();
-
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
     });
@@ -80,12 +69,43 @@ export default class ShoppingListScreen extends React.Component {
     this._unsubscribe();
   }
 
+  createInfoWindow = () => {
+    Alert.alert(
+      "Information",
+      "Select an option.",
+      [
+        {
+          text: "About Us",
+          onPress: () => this.setState({ visibleModal: 2 }),
+        },
+        {
+          text: "Settings",
+          onPress: () => this.setState({ visibleModal: 4 }),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   displayItems = () => {
     if (!this.state.isLoaded) {
       return (
-      <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
-        <ActivityIndicator animating={true} colour={"grey"}/>
-      </View>);  
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+        >
+          <ActivityIndicator animating={true} colour={Colours.notice} />
+        </View>
+      );
     } else {
       const now = new Date().toISOString();
       // Dynamically
@@ -109,10 +129,14 @@ export default class ShoppingListScreen extends React.Component {
     currlist.splice(index, 1);
 
     // Delete item from shopping list
-    this.setState({shoppingList: currlist, itemSelected: item, visibleModal: 3});
+    this.setState({
+      shoppingList: currlist,
+      itemSelected: item,
+      visibleModal: 3,
+    });
     // Update the list in server
     this.updateList(currlist);
-  }
+  };
 
   updateCheck = (index) => {
     var currlist = this.state.shoppingList;
@@ -195,9 +219,11 @@ export default class ShoppingListScreen extends React.Component {
     }
 
     if (quantity_missing) {
-      alert("Some checked off items had no quantities specified. " + 
-        "These were not added to your inventory. " + 
-        "Please edit these items and try again if you wish to add them.")
+      alert(
+        "Some checked off items had no quantities specified. " +
+          "These were not added to your inventory. " +
+          "Please edit these items and try again if you wish to add them."
+      );
     }
 
     this.setState({
@@ -207,6 +233,12 @@ export default class ShoppingListScreen extends React.Component {
 
     this.updateList(unchecked);
     this.updateInventory(currInventory);
+  };
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
   };
 
   render() {
@@ -219,12 +251,12 @@ export default class ShoppingListScreen extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>Shopping List</Text>
+            <TextSemiBold style={styles.title} text={"Shopping List"} />
             <TouchableOpacity
               style={styles.infoButton}
-              onPress={() => this.setState({ visibleModal: 2 })}
+              onPress={() => this.createInfoWindow()}
             >
-              <Text style={styles.infoText}>i</Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -244,22 +276,24 @@ export default class ShoppingListScreen extends React.Component {
               style={styles.addButton}
               onPress={() => this.setState({ visibleModal: 1 })}
             >
-              <Text style={styles.addText}>+</Text>
+              <TextRegular style={styles.addText} text={"+"} />
             </TouchableOpacity>
-            <Text style={styles.addButtonLabel}>
-              Add New Item to List{"\n"}{" "}
-            </Text>
+            <TextMedium
+              style={styles.addButtonLabel}
+              text={`Add New Item to List${"\n"}${" "}`}
+            />
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.addButton}
               onPress={this.addCheckedOffToInventory}
             >
-              <Text style={styles.addText}>↑</Text>
+              <TextRegular style={styles.addText} text={"↑"} />
             </TouchableOpacity>
-            <Text style={styles.addButtonLabel}>
-              Add Checked Off Items{"\n"}to Inventory
-            </Text>
+            <TextMedium
+              style={styles.addButtonLabel}
+              text={`Add Checked Off Items${"\n"}to Inventory`}
+            />
           </View>
         </View>
         <Modal
@@ -272,42 +306,31 @@ export default class ShoppingListScreen extends React.Component {
               <ShoppingListInputScreen
                 addNewItem={this.addNewItem}
                 inventoryArray={this.state.inventoryArray}
-                onCancel={() => this.setState({ visibleModal: 0 })}
+                onCancel={this.closeModal}
               ></ShoppingListInputScreen>
-            </View>
-          }
-        </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                setSearchItem={this.setSearchedItem}
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
             </View>
           }
         </Modal>
         <Modal
           isVisible={this.state.visibleModal === 3}
           style={styles.bottomModal}
-          avoidKeyboard={false}>
+          avoidKeyboard={false}
+        >
           {
             <View style={styles.modal}>
               <ShoppingListEditScreen
                 addNewItem={this.addNewItem}
                 item={this.state.itemSelected}
-                onCancel={() =>
-                  this.setState({ visibleModal: 0 })}
-                onDelete={() => this.setState({ visibleModal: 0 })}
-                >
-                </ShoppingListEditScreen>
+                onCancel={this.closeModal}
+                onDelete={this.closeModal}
+              ></ShoppingListEditScreen>
             </View>
           }
         </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }
@@ -318,14 +341,15 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
     padding: 8,
+    paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -347,40 +371,43 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
     justifyContent: "center",
     alignSelf: "center",
   },
   addText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 24,
+    color: Colours.tint,
   },
   addButton: {
     width: 57,
     height: 57,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: "5%",
+    marginTop: 10,
     marginBottom: 15,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -396,12 +423,11 @@ const styles = StyleSheet.create({
   addButtonLabel: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 8,
-    color: "#BDBDBD",
+    color: Colours.notice,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

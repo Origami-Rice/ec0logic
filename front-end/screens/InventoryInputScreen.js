@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -8,6 +7,9 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
@@ -16,9 +18,7 @@ import DatePicker from "../components/DatePicker";
 import FoodSearchScreen from "./FoodSearchScreen";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class InventoryInputScreen extends React.Component {
@@ -115,14 +115,16 @@ export default class InventoryInputScreen extends React.Component {
     if (this.state.estimateGiven) {
       return (
         <View>
-          <Text style={styles.label}>
-            {" "}
-            Estimated Expiry Date: {this.state.expiryDate.toDateString()}
-          </Text>
-          <Text style={styles.note}>
-            This is only an estimate, select a different expiry date by clicking
-            above.
-          </Text>
+          <TextMedium
+            style={styles.label}
+            text={`${" "}Estimated Expiry Date: ${this.state.expiryDate.toDateString()}`}
+          />
+          <TextRegular
+            style={styles.note}
+            text={
+              "This is only an estimate, select a different expiry date by clicking above."
+            }
+          />
         </View>
       );
     }
@@ -149,7 +151,7 @@ export default class InventoryInputScreen extends React.Component {
               <MaterialIcons
                 name="search"
                 size={18}
-                color="black"
+                color={Colours.tint}
                 style={{ alignSelf: "center" }}
               />
             </TouchableOpacity>
@@ -157,7 +159,7 @@ export default class InventoryInputScreen extends React.Component {
               style={styles.cancelButton}
               onPress={() => this.props.navigation.goBack(null)}
             >
-              <Text style={styles.cancelText}>x</Text>
+              <TextRegular style={styles.cancelText} text={"x"} />
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
@@ -167,12 +169,12 @@ export default class InventoryInputScreen extends React.Component {
               value={this.state.name}
               onChangeText={(text) => this.setItemName(text)}
             />
-            <Text style={styles.label}>Quantity:</Text>
+            <TextMedium style={styles.label} text={"Quantity:"} />
             <QuantityDropdown
               setParentQuantity={this.setQuantity}
               setParentUnit={this.setUnit}
             ></QuantityDropdown>
-            <Text style={styles.label}>Select Expiry Date:</Text>
+            <TextMedium style={styles.label} text={"Select Expiry Date:"} />
             <DatePicker
               setParentExpiry={this.setExpiryDate}
               defaultDate={this.state.expiryDate}
@@ -190,7 +192,7 @@ export default class InventoryInputScreen extends React.Component {
             style={styles.confirmButton}
             onPress={this.saveItem}
           >
-            <Text style={styles.confirmText}>Confirm</Text>
+            <TextMedium style={styles.confirmText} text={"Confirm"} />
           </TouchableOpacity>
         </View>
         <Modal
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
     position: "absolute",
@@ -248,17 +250,18 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
+    color: Colours.tint,
   },
   cancelButton: {
     width: 37,
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     margin: 25,
     ...Platform.select({
       ios: {
@@ -275,10 +278,11 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     margin: 10,
@@ -288,23 +292,22 @@ const styles = StyleSheet.create({
   label: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
     marginVertical: 5,
   },
   note: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 11,
     marginVertical: 5,
-    color: "#828282",
+    color: Colours.notice,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
   },
   confirmButton: {
     width: 148,
@@ -312,7 +315,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     margin: 40,
     ...Platform.select({
       ios: {
@@ -335,7 +338,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

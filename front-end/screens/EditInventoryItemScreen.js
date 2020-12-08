@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,13 +8,15 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
+import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import DatePicker from "../components/DatePicker";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class EditInventoryItemScreen extends React.Component {
@@ -25,12 +26,15 @@ export default class EditInventoryItemScreen extends React.Component {
     this.state = {
       name: item.name,
       quantity: item.quantity,
-      unitsOfMeasure: item.unitsOfMeasure || 'units',
+      unitsOfMeasure: item.unitsOfMeasure || "units",
       expiryDate: item.expiryDate,
+      fontsLoaded: false,
     };
   }
+
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
   }
 
   componentDidMount() {
@@ -68,24 +72,24 @@ export default class EditInventoryItemScreen extends React.Component {
     console.log("Deleted Item from Inventory");
 
     this.props.navigation.navigate("List", {
-        screen: "Inventory",
-        params: { update: true },
-      });
-  }
+      screen: "Inventory",
+      params: { update: true },
+    });
+  };
 
   confirmDeletion = () => {
     Alert.alert(
-      'Confirm',
-      'You are about to delete this item from your inventory.',
+      "Confirm",
+      "You are about to delete this item from your inventory.",
       [
         {
-          text: 'Continue',
+          text: "Continue",
           onPress: () => this.handleDelete(),
         },
         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
         },
       ],
       { cancelable: false }
@@ -109,18 +113,18 @@ export default class EditInventoryItemScreen extends React.Component {
               style={styles.cancelButton}
               onPress={() => this.props.navigation.goBack(null)}
             >
-              <Text style={styles.cancelText}>x</Text>
+              <TextRegular style={styles.cancelText} text={"x"} />
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Update Item Name:</Text>
+            <TextMedium style={styles.label} text={"Update Item Name:"} />
             <TextInput
               style={styles.inputFormat}
               placeholder="Enter Item Name"
               value={this.state.name}
-              onChangeText={(text) => this.setState({name: text})}
+              onChangeText={(text) => this.setState({ name: text })}
             />
-            <Text style={styles.label}>Update Expiry Date:</Text>
+            <TextMedium style={styles.label} text={"Update Expiry Date:"} />
             <DatePicker
               setParentExpiry={this.setExpiryDate}
               defaultDate={this.state.expiryDate}
@@ -144,12 +148,13 @@ export default class EditInventoryItemScreen extends React.Component {
               style={styles.confirmButton}
               onPress={this.saveItem}
             >
-              <Text style={styles.confirmText}>Confirm Changes</Text>
+              <TextMedium style={styles.confirmText} text={"Confirm Changes"} />
             </TouchableOpacity>
-            <TouchableOpacity 
-             style={styles.confirmButton}
-             onPress={() => this.confirmDeletion()} >
-              <Text style={styles.confirmText}>Delete Item</Text>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => this.confirmDeletion()}
+            >
+              <TextMedium style={styles.confirmText} text={"Delete Item"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
     position: "absolute",
@@ -194,17 +199,18 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
+    color: Colours.tint,
   },
   cancelButton: {
     width: 37,
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     margin: 25,
     ...Platform.select({
       ios: {
@@ -221,10 +227,11 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     margin: 10,
@@ -234,23 +241,15 @@ const styles = StyleSheet.create({
   label: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
     marginVertical: 5,
-  },
-  note: {
-    textAlign: "center",
-    alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
-    fontSize: 11,
-    marginVertical: 5,
-    color: "#828282",
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
   },
   confirmButton: {
     width: 148,
@@ -258,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     margin: 15,
     ...Platform.select({
       ios: {

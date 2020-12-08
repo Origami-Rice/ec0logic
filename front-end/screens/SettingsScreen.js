@@ -1,37 +1,74 @@
 import * as React from "react";
 import {
+  TextInput,
   View,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Platform,
-  Image,
-  Linking,
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
-import { Colours } from "../constants/colours.js";
+import { Colours } from "../Constants/colours.js";
+import * as Font from "expo-font";
 
-export default class AboutUsScreen extends React.Component {
+let customFonts = {
+  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
+};
+
+export default class SettingsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      imperial: false,
-      visibleModal: 0,
+      newEmail: "",
+      newPassword: "",
+      fontsLoaded: false,
     };
   }
+
+  async _loadFontsAsync() {
+    await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
+  }
+
+  componentDidMount() {
+    this._loadFontsAsync();
+  }
+
+  currentPasswordInput = () => {
+    if (this.state.newEmail || this.state.newPassword) {
+      return (
+        <View style={{ width: "100%", alignItems: "center" }}>
+          <TextRegular style={styles.label} text={"Current Password:"} />
+          <TextInput
+            style={styles.inputFormat}
+            placeholder="********"
+            secureTextEntry={true}
+            value={this.state.name}
+            onChangeText={(text) => this.setState({ newPassword: text })}
+          />
+        </View>
+      );
+    }
+  };
+
+  confirmChangesButton = () => {
+    if (this.state.newEmail || this.state.newPassword) {
+      return (
+        <TouchableOpacity style={styles.confirmButton}>
+          <TextMedium style={styles.confirmText} text={"Confirm Changes"} />
+        </TouchableOpacity>
+      );
+    }
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
           <View style={[styles.rowContainer, { justifyContent: "flex-start" }]}>
-            <Image
-              source={require("../assets/wasteless-logo.png")}
-              style={{ height: 44, width: 53, marginRight: 10 }}
-            />
-            <TextSemiBold style={styles.title} text={"About Us"} />
+            <TextSemiBold style={styles.title} text={"Settings"} />
             <View style={{ justifyContent: "flex-end", flex: 1 }}>
               <TouchableOpacity
                 style={styles.cancelButton}
@@ -46,50 +83,40 @@ export default class AboutUsScreen extends React.Component {
             style={{
               justifyContent: "center",
               backgroundColor: Colours.screenBackground,
+              alignItems: "center",
+              flex: 0,
             }}
           >
             <TextRegular
-              style={styles.aboutText}
-              text={
-                "Did you know that every year, an average Canadian puts about 140 kg of food in garbage?"
-              }
+              style={[styles.label, { marginTop: 0 }]}
+              text={"Update Email:"}
             />
-            <TextRegular
-              style={styles.aboutText}
-              text={
-                "Multiplied by an entire population, it equals to saving 9.8 million tonnes of CO2 and taking 2.1 million cars off the road!*"
-              }
+            <TextInput
+              style={styles.inputFormat}
+              placeholder="sample@email.com"
+              value={this.state.name}
+              onChangeText={(text) => this.setState({ newEmail: text })}
             />
-            <TextRegular
-              style={styles.aboutText}
-              text={
-                "There are different ways of reducing this toll. Let us show you how to waste less food and save some pocket change with Wasteless!"
-              }
+            <TextRegular style={styles.label} text={"Update Password:"} />
+            <TextInput
+              style={styles.inputFormat}
+              placeholder="********"
+              secureTextEntry={true}
+              value={this.state.name}
+              onChangeText={(text) => this.setState({ newPassword: text })}
             />
-            <TextRegular
-              style={styles.aboutText}
-              text={
-                "Don't know what to do with random ingredients? Want to stop wasting food?"
-              }
-            />
-            <TextRegular
-              style={styles.aboutText}
-              text={"Search recipes now!"}
-            />
-            <TextRegular
-              style={[styles.aboutText, { fontSize: 11 }]}
-              text={"*Source: Lovefoodhatewaste.ca"}
-            />
+            {this.currentPasswordInput()}
           </View>
         </View>
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          {this.confirmChangesButton()}
           <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={() => {
-              Linking.openURL("https://www.facebook.com/ec0logic");
-            }}
+            style={[
+              styles.confirmButton,
+              { marginBottom: Dimensions.get("window").height * 0.1 },
+            ]}
           >
-            <TextMedium style={styles.confirmText} text={"Learn More"} />
+            <TextMedium style={styles.confirmText} text={"Log Out"} />
           </TouchableOpacity>
         </View>
       </View>
@@ -124,12 +151,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
   },
-  aboutText: {
+  label: {
+    width: "80%",
     fontSize: 14,
     color: Colours.tint,
+    textAlign: "left",
+    margin: 10,
+    marginBottom: 5,
+  },
+  inputFormat: {
+    width: "80%",
+    height: 45,
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
+    borderWidth: 1,
+    borderRadius: 10,
+    fontSize: 14,
+    color: Colours.tint,
+    padding: 5,
+    paddingLeft: 10,
+    margin: 10,
+    marginTop: 5,
     textAlign: "center",
-    marginVertical: 10,
-    marginHorizontal: 25,
+    fontFamily: "Montserrat_500Medium",
   },
   confirmText: {
     textAlign: "center",
@@ -144,7 +188,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: Colours.filledButton,
-    margin: 40,
+    marginVertical: 15,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",

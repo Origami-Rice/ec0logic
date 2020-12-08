@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,20 +8,16 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { ActivityIndicator } from 'react-native-paper';
-import Modal from "react-native-modal";
-import * as Font from "expo-font";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
+import { ActivityIndicator } from "react-native-paper";
+import InfoModals from "../constants/InfoModals";
 import InventoryListItem from "../components/InventoryListItem";
-import AboutUsScreen from "./AboutUsScreen";
 import send from "../requests/request.js";
 
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
-
-let username = '/tester';
+let username = "/tester";
 
 export default class InventoryAllFoods extends React.Component {
   constructor(props) {
@@ -31,18 +26,12 @@ export default class InventoryAllFoods extends React.Component {
       inventoryArray: [],
       expiringArray: [],
       allFoods: true,
-      fontsLoaded: false,
       isLoaded: false,
     };
   }
 
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
-  }
-
   _loadData = () => {
-    this.setState ({ isLoaded: false })
+    this.setState({ isLoaded: false });
     // Load the list of user's inventory items from server
     send("getInventory", {}, username)
       .then((response) => response.json())
@@ -86,27 +75,22 @@ export default class InventoryAllFoods extends React.Component {
   };
 
   componentDidMount() {
-    this._loadFontsAsync();
-
     // For getting the new item send by the inventory input screen
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       if (this.props.route.params?.new_item) {
-
-        console.log("[Inventory] Added item to list:" + this.props.route.params.new_item.name);
+        console.log(
+          "[Inventory] Added item to list:" +
+            this.props.route.params.new_item.name
+        );
         this.addItem(this.props.route.params.new_item);
         this.props.navigation.setParams({ new_item: null }); // Resetting params
-
       } else if (this.props.route.params?.update) {
-
         console.log("[Inventory] Update since item was deleted");
         this.updateInventory(this.state.inventoryArray);
         this.props.navigation.setParams({ update: null });
-
       } else {
-
         console.log("[Inventory] Nothing changed");
         this._loadData();
-
       }
     });
   }
@@ -128,7 +112,7 @@ export default class InventoryAllFoods extends React.Component {
 
   /**
    * Adds item to expiringArray if applicable.
-   * Returns true if item was added. 
+   * Returns true if item was added.
    */
   addToExpiring = (item) => {
     var currExpiring = this.state.expiringArray;
@@ -159,6 +143,29 @@ export default class InventoryAllFoods extends React.Component {
         console.log("Error adding new item to inventory");
         console.log(error);
       });
+  };
+
+  createInfoWindow = () => {
+    Alert.alert(
+      "Information",
+      "Select an option.",
+      [
+        {
+          text: "About Us",
+          onPress: () => this.setState({ visibleModal: 2 }),
+        },
+        {
+          text: "Settings",
+          onPress: () => this.setState({ visibleModal: 4 }),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   createSelectionWindow = (item, i, expiring = false) => {
@@ -249,9 +256,16 @@ export default class InventoryAllFoods extends React.Component {
   displayItems = () => {
     if (!this.state.isLoaded) {
       return (
-      <View style={{flex: 1, alignItems:'center', justifyContent: 'center', padding: 24}}> 
-        <ActivityIndicator animating={true} colour={"grey"}/>
-      </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+        >
+          <ActivityIndicator animating={true} colour={Colours.notice} />
+        </View>
       );
     } else {
       // Dynamically
@@ -264,7 +278,7 @@ export default class InventoryAllFoods extends React.Component {
             quantity={data.quantity}
             unitsOfMeasure={data.unitsOfMeasure}
             onPressButton={() => this.createSelectionWindow(data, i)}
-            onPressWhole={() => this.navigateTo(data, i, 'Edit', false)}
+            onPressWhole={() => this.navigateTo(data, i, "Edit", false)}
           />
         ));
       } else {
@@ -276,7 +290,7 @@ export default class InventoryAllFoods extends React.Component {
             quantity={data.quantity}
             unitsOfMeasure={data.unitsOfMeasure}
             onPressButton={() => this.createSelectionWindow(data, i, true)}
-            onPressWhole={() => this.navigateTo(data, i, 'Edit', true)}
+            onPressWhole={() => this.navigateTo(data, i, "Edit", true)}
           />
         ));
       }
@@ -289,6 +303,12 @@ export default class InventoryAllFoods extends React.Component {
     }));
   };
 
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -296,56 +316,81 @@ export default class InventoryAllFoods extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>My Inventory</Text>
+            <TextSemiBold style={styles.title} text={"My Inventory"} />
             <TouchableOpacity
               style={styles.infoButton}
-              onPress={() => this.setState({ visibleModal: 2 })}
+              onPress={() => this.createInfoWindow()}
             >
-              <Text style={styles.infoText}>i</Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
           <View
             style={[
               styles.rowContainer,
-              { justifyContent: "center", backgroundColor: "#ffffff" },
+              {
+                justifyContent: "center",
+                backgroundColor: Colours.screenBackground,
+              },
             ]}
           >
             <TouchableOpacity
               style={
                 this.state.allFoods
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
+                  ? [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonSelected },
+                    ]
+                  : [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonNotSelected },
+                    ]
               }
               onPress={this.switchItems}
             >
-              <Text
+              <TextMedium
                 style={
                   this.state.allFoods
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
+                    ? [
+                        styles.navText,
+                        { color: Colours.switchButtonSelectedText },
+                      ]
+                    : [
+                        styles.navText,
+                        { color: Colours.switchButtonNotSelectedText },
+                      ]
                 }
-              >
-                All Foods
-              </Text>
+                text={"All Foods"}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={
                 !this.state.allFoods
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
+                  ? [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonSelected },
+                    ]
+                  : [
+                      styles.navButton,
+                      { backgroundColor: Colours.switchButtonNotSelected },
+                    ]
               }
               onPress={this.switchItems}
             >
-              <Text
+              <TextMedium
                 style={
                   !this.state.allFoods
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
+                    ? [
+                        styles.navText,
+                        { color: Colours.switchButtonSelectedText },
+                      ]
+                    : [
+                        styles.navText,
+                        { color: Colours.switchButtonNotSelectedText },
+                      ]
                 }
-              >
-                Expiring Soon
-              </Text>
+                text={"Expiring Soon"}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
@@ -364,23 +409,13 @@ export default class InventoryAllFoods extends React.Component {
             style={styles.addButton}
             onPress={() => this.props.navigation.navigate("Input")}
           >
-            <Text style={styles.addText}>+</Text>
+            <TextRegular style={styles.addText} text={"+"} />
           </TouchableOpacity>
         </View>
-        <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                setSearchItem={this.setSearchedItem}
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }
@@ -391,14 +426,15 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
     padding: 8,
+    paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -414,19 +450,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
   navText: {
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
     textAlign: "center",
     alignSelf: "center",
   },
   navButton: {
     borderWidth: 1,
-    borderColor: "#5A5A5A",
+    borderColor: Colours.switchButtonSelected,
     justifyContent: "center",
     alignSelf: "center",
     height: 33,
@@ -435,22 +470,24 @@ const styles = StyleSheet.create({
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
     justifyContent: "center",
     alignSelf: "center",
   },
   addText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 24,
+    color: Colours.tint,
   },
   addButton: {
     width: 57,
@@ -460,7 +497,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     marginVertical: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -472,19 +509,5 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    position: "absolute",
-    top: 0,
-  },
-  modal: {
-    backgroundColor: "white",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
   },
 });

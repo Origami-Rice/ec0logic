@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,13 +8,14 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 import QuantityDropdown from "../components/QuantityDropdown";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class ShoppingListInput extends React.Component {
@@ -70,19 +70,20 @@ export default class ShoppingListInput extends React.Component {
   validateItem = () => {
     if (!this.state.name) {
       alert("Please enter item name.");
-      return; 
-    } 
-    
+      return;
+    }
+
     const { inventoryArray } = this.state;
     // Check if item is already in inventory, if so, alert
     for (var i = 0; i < inventoryArray.length; i++) {
-      if (inventoryArray[i].name.toLowerCase() === this.state.name.toLowerCase()) {
+      if (
+        inventoryArray[i].name.toLowerCase() === this.state.name.toLowerCase()
+      ) {
         this.createAlert();
         return;
       }
     }
     this.saveItem();
-    
   };
 
   setQuantity = (value) => {
@@ -104,19 +105,19 @@ export default class ShoppingListInput extends React.Component {
             style={styles.cancelButton}
             onPress={this.props.onCancel}
           >
-            <Text style={styles.cancelText}>x</Text>
+            <TextRegular style={styles.cancelText} text={"x"} />
           </TouchableOpacity>
           <TextInput
             style={styles.inputFormat}
             placeholder="Enter New Food Item"
             onChangeText={(text) => this.setState({ name: text })}
           />
-          <Text style={styles.label}>Quantity:</Text>
+          <TextMedium style={styles.label} text={"Quantity:"} />
           <QuantityDropdown
             setParentQuantity={this.setQuantity}
             setParentUnit={this.setUnit}
           ></QuantityDropdown>
-          <Text style={styles.optional}>Optional</Text>
+          <TextRegular style={styles.optional} text={"Optional"} />
         </View>
         <View
           style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
@@ -125,7 +126,7 @@ export default class ShoppingListInput extends React.Component {
             style={styles.confirmButton}
             onPress={this.validateItem}
           >
-            <Text style={styles.confirmText}>Confirm</Text>
+            <TextMedium style={styles.confirmText} text={"Confirm"} />
           </TouchableOpacity>
         </View>
       </View>
@@ -143,13 +144,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5,
     zIndex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
   },
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
+    color: Colours.tint,
     zIndex: 1,
   },
   cancelButton: {
@@ -157,9 +158,10 @@ const styles = StyleSheet.create({
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     marginVertical: 25,
     zIndex: 1,
     ...Platform.select({
@@ -177,10 +179,11 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.8,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     margin: 10,
@@ -191,8 +194,8 @@ const styles = StyleSheet.create({
   label: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
     marginBottom: 5,
     marginTop: 50,
     zIndex: 1,
@@ -200,17 +203,16 @@ const styles = StyleSheet.create({
   optional: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 11,
     marginVertical: 5,
-    color: "#BDBDBD",
+    color: Colours.notice,
     zIndex: 1,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
     zIndex: 1,
   },
   confirmButton: {
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     marginVertical: 15,
     ...Platform.select({
       ios: {

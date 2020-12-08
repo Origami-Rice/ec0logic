@@ -6,6 +6,7 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
+import { Colours } from "../constants/colours.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
@@ -57,27 +58,39 @@ export default class QualityDropdown extends React.Component {
             <DropDownPicker
               label="Units"
               items={[
-                { label: "units", value: "units"},
+                { label: "units", value: "units" },
                 { label: "lbs", value: "lbs" },
                 { label: "g", value: "g" },
                 { label: "kg", value: "kg" },
                 { label: "oz", value: "oz" },
                 { label: "ml", value: "mL" },
-                { label: "l", value: "L" }
+                { label: "l", value: "L" },
               ]}
-              defaultValue={this.props.defaultUnit || 'units'}
+              defaultValue={this.props.defaultUnit || "units"}
               arrowStyle={styles.dropArrow}
               containerStyle={styles.dropContainer}
               dropDownStyle={{ elevation: 5000 }}
-              style={{ borderColor: "black", borderWidth: 1 }}
+              style={{
+                borderColor: Colours.tint,
+                borderWidth: 1,
+                backgroundColor: Colours.borderedComponentFill,
+              }}
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
               customArrowDown={() => (
-                <MaterialIcons name="expand-less" size={24} color="black" />
+                <MaterialIcons
+                  name="expand-less"
+                  size={24}
+                  color={Colours.tint}
+                />
               )}
               customArrowUp={() => (
-                <MaterialIcons name="expand-more" size={24} color="black" />
+                <MaterialIcons
+                  name="expand-more"
+                  size={24}
+                  color={Colours.tint}
+                />
               )}
               onChangeItem={(item) => this.onSelectUnit(item.value)}
               zIndex={5000}
@@ -102,12 +115,10 @@ const styles = StyleSheet.create({
       zIndex: 5000,
     }),
   },
-
   dropContainer: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
   },
-
   dropArrow: {
     height: 24,
     flexDirection: "row",
@@ -121,17 +132,17 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 11,
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
+    color: Colours.tint,
     ...Platform.select({
       ios: {
         zIndex: 5000,
@@ -141,11 +152,10 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
-    color: "#000000",
+    color: Colours.tint,
     ...Platform.select({
       ios: {
         zIndex: 5000,

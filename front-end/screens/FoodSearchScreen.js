@@ -1,22 +1,21 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
   TextInput,
   TouchableOpacity,
   Platform,
-  Dimensions
+  Dimensions,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import { Colours } from "../constants/colours.js";
 import LibraryListItem from "../components/LibraryListItem";
 
 import send from "../requests/request.js";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class FoodSearchScreen extends React.Component {
@@ -61,10 +60,9 @@ export default class FoodSearchScreen extends React.Component {
   };
 
   populateList = () => {
-
     return this.state.itemsFiltered.map((item) => (
       <LibraryListItem
-        key={item.name + item.days} 
+        key={item.name + item.days}
         item={item.name}
         shelfLife={item.days}
         onPress={() => this.onSelectItem(item)}
@@ -80,7 +78,7 @@ export default class FoodSearchScreen extends React.Component {
             style={styles.cancelButton}
             onPress={this.props.onCancel}
           >
-            <Text style={styles.cancelText}>x</Text>
+            <TextRegular style={styles.cancelText} text={"x"} />
           </TouchableOpacity>
         </View>
         <TextInput
@@ -103,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     padding: 8,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
@@ -113,8 +111,8 @@ const styles = StyleSheet.create({
   },
   inputFormat: {
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
     padding: 5,
@@ -122,6 +120,7 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign: "center",
     fontFamily: "Montserrat_500Medium",
+    color: Colours.tint,
     zIndex: 1,
   },
   topButtonsContainer: {
@@ -131,8 +130,8 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
+    color: Colours.tint,
     zIndex: 1,
   },
   cancelButton: {
@@ -140,9 +139,10 @@ const styles = StyleSheet.create({
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     margin: 25,
     zIndex: 1,
     ...Platform.select({

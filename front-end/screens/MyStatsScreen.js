@@ -1,24 +1,19 @@
 import * as React from "react";
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Alert,
 } from "react-native";
+import TextMedium from "../components/TextMedium";
+import TextSemiBold from "../components/TextSemiBold";
+import { Colours } from "../constants/colours.js";
 import { LineChart } from "react-native-chart-kit";
-import Modal from "react-native-modal";
-import * as Font from "expo-font";
-
-import AboutUsScreen from "./AboutUsScreen";
+import InfoModals from "../constants/InfoModals";
+import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
-
-let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-  Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
-};
 
 const username = "/tester";
 
@@ -26,17 +21,11 @@ export default class MyStatsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontsLoaded: false,
       imperial: false,
       emissionsThisWeek: {},
       emissionsLastWeek: {},
       monthlyBreakdown: { months: [], kg: [], lbs: [] },
     };
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync(customFonts);
-    this.setState({ fontsLoaded: true });
   }
 
   _loadData = () => {
@@ -46,65 +35,87 @@ export default class MyStatsScreen extends React.Component {
     let timePeriod = {
       start: weekAgo,
       end: new Date(),
-    }
+    };
     // Getting the GHG for the last week
-    send('getGHG', timePeriod, username)
-    .then(response => response.json())
-    .then((json) => {
+    send("getGHG", timePeriod, username)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          emissionsThisWeek: json.emissions,
+        });
 
-      this.setState({ 
-        emissionsThisWeek: json.emissions
+        console.log(json);
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
-      console.log(json);
-
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-    send('getGHG', timePeriod, username)
-    .then(response => response.json())
-    .then((json) => {
-
-      this.setState({ 
-        emissionsThisWeek: json.emissions
+    send("getGHG", timePeriod, username)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          emissionsThisWeek: json.emissions,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-    send('getMonthlyGHGBreakdown', {}, username)
-    .then(response => response.json())
-    .then((json) => {
-      this.setState({ monthlyBreakdown: json });
-    })
-    .catch(error => {
-      console.log(error);
-    } )
-  }
+    send("getMonthlyGHGBreakdown", {}, username)
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ monthlyBreakdown: json });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   componentDidMount() {
-    this._loadFontsAsync();
     this._unsubscribe = this.props.navigation.addListener("focus", () => {
       this._loadData();
-    }); 
+    });
   }
+
+  createInfoWindow = () => {
+    Alert.alert(
+      "Information",
+      "Select an option.",
+      [
+        {
+          text: "About Us",
+          onPress: () => this.setState({ visibleModal: 2 }),
+        },
+        {
+          text: "Settings",
+          onPress: () => this.setState({ visibleModal: 4 }),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   displayItems = () => {
     // Dynamically
     if (this.state.imperial) {
       return (
-      <Text style={styles.statsNumber}> 
-        {this.state.emissionsThisWeek.lbs} lbs 
-      </Text> );
+        <TextSemiBold
+          style={styles.statsNumber}
+          text={`${this.state.emissionsThisWeek.lbs} lbs`}
+        />
+      );
     } else {
       return (
-      <Text style={styles.statsNumber}>
-        {this.state.emissionsThisWeek.kg} kg
-      </Text> );
+        <TextSemiBold
+          style={styles.statsNumber}
+          text={`${this.state.emissionsThisWeek.kg} kg`}
+        />
+      );
     }
   };
 
@@ -114,6 +125,12 @@ export default class MyStatsScreen extends React.Component {
     }));
   };
 
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -121,73 +138,46 @@ export default class MyStatsScreen extends React.Component {
           <View
             style={[styles.rowContainer, { justifyContent: "space-between" }]}
           >
-            <Text style={styles.title}>My Stats</Text>
+            <TextSemiBold style={styles.title} text={"My Stats"} />
             <TouchableOpacity
               style={styles.infoButton}
-              onPress={() => this.setState({ visibleModal: 2 })}
+              onPress={() => this.createInfoWindow()}
             >
-              <Text style={styles.infoText}>i</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.divider}></View>
-          <View
-            style={[
-              styles.rowContainer,
-              { justifyContent: "center", backgroundColor: "#ffffff" },
-            ]}
-          >
-            <TouchableOpacity
-              style={
-                this.state.imperial
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
-              }
-              onPress={this.switchItems}
-            >
-              <Text
-                style={
-                  this.state.imperial
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
-                }
-              >
-                Imperial
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                !this.state.imperial
-                  ? [styles.navButton, { backgroundColor: "#5A5A5A" }]
-                  : [styles.navButton, { backgroundColor: "#ffffff" }]
-              }
-              onPress={this.switchItems}
-            >
-              <Text
-                style={
-                  !this.state.imperial
-                    ? [styles.navText, { color: "#ffffff" }]
-                    : [styles.navText, { color: "#000000" }]
-                }
-              >
-                Metric
-              </Text>
+              <TextMedium style={styles.infoText} text={"i"} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
           <ScrollView>
+            <TouchableOpacity
+              style={styles.unitButton}
+              onPress={this.switchItems}
+            >
+              <TextMedium
+                style={styles.unitText}
+                text={this.state.imperial ? "Metric" : "Imperial"}
+              />
+            </TouchableOpacity>
             <View style={{ marginVertical: 10 }}>
-              <Text style={styles.statsDescription}>Your footprint is</Text>
+              <TextMedium
+                style={styles.statsDescription}
+                text={"Your footprint is"}
+              />
               {this.displayItems()}
-              <Text style={styles.statsDescription}>of CO2 this week</Text>
+              <TextMedium
+                style={styles.statsDescription}
+                text={"of CO2 this week"}
+              />
             </View>
             <View style={styles.divider}></View>
-            <Text style={styles.history}>History</Text>
+            <TextSemiBold style={styles.subheading} text={"History"} />
             <LineChart
               data={{
                 labels: this.state.monthlyBreakdown.months,
                 datasets: [
                   {
-                    data: this.state.imperial ? this.state.monthlyBreakdown.kg : this.state.monthlyBreakdown.lbs,
+                    data: this.state.imperial
+                      ? this.state.monthlyBreakdown.kg
+                      : this.state.monthlyBreakdown.lbs,
                   },
                 ],
               }}
@@ -197,39 +187,48 @@ export default class MyStatsScreen extends React.Component {
               withVerticalLines={false}
               withShadow={false}
               chartConfig={{
-                backgroundGradientFrom: "#ffffff",
-                backgroundGradientTo: "#ffffff",
+                backgroundGradientFrom: Colours.screenBackground,
+                backgroundGradientTo: Colours.screenBackground,
                 color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
                 propsForLabels: {
                   fontSize: 10,
                 },
                 propsForBackgroundLines: {
-                  stroke: "#D5D5D5",
+                  stroke: Colours.filledButton,
                 },
               }}
               style={{
                 marginVertical: 10,
                 borderRadius: 16,
                 fontFamily: "Montserrat_400Regular",
+                color: Colours.tint,
               }}
             />
+            <View style={styles.divider}></View>
+            <TextSemiBold style={styles.subheading} text={"Recently Wasted"} />
+            <RecentlyWastedTable
+              items={[
+                {
+                  name: "Pineapple",
+                  dateWasted: "blah",
+                  quantity: 50,
+                  unitsOfMeasure: "g",
+                },
+                {
+                  name: "Blueberries",
+                  dateWasted: "blah",
+                  quantity: 30,
+                  unitsOfMeasure: "g",
+                },
+              ]}
+            ></RecentlyWastedTable>
           </ScrollView>
         </View>
-        <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                setSearchItem={this.setSearchedItem}
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }
@@ -240,14 +239,15 @@ const styles = StyleSheet.create({
     height: 1,
     width: "95%",
     alignSelf: "center",
-    backgroundColor: "#CCC5C5",
+    backgroundColor: Colours.divider,
   },
   container: {
     flex: 1,
     padding: 8,
+    paddingBottom: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -258,69 +258,59 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 34,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
-  history: {
+  subheading: {
     fontSize: 14,
+    color: Colours.tint,
     textAlign: "left",
-    fontFamily: "Montserrat_600SemiBold",
     margin: 5,
     marginTop: 15,
   },
   statsDescription: {
     fontSize: 24,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
   },
   statsNumber: {
     fontSize: 72,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_600SemiBold",
   },
-  navText: {
-    fontFamily: "Montserrat_500Medium",
+  unitText: {
     fontSize: 14,
+    color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
   },
-  navButton: {
-    borderWidth: 1,
-    borderColor: "#5A5A5A",
+  unitButton: {
+    borderRadius: 30,
+    backgroundColor: Colours.filledButton,
     justifyContent: "center",
-    alignSelf: "center",
-    height: 33,
-    width: "40%",
+    alignSelf: "flex-start",
+    height: 28,
+    width: "25%",
+    marginHorizontal: 5,
+    marginTop: 10,
   },
   infoText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 13,
+    color: Colours.tint,
   },
   infoButton: {
     width: 30,
     height: 30,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
     justifyContent: "center",
     alignSelf: "center",
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    position: "absolute",
-    top: 0,
-  },
-  modal: {
-    backgroundColor: "white",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
   },
 });
