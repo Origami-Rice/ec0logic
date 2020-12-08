@@ -67,7 +67,7 @@ export default class IngredientsTable extends React.Component {
 
 const styles = StyleSheet.create({
   viewFormat: {
-    flex: 1,
+    flex: 0,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
