@@ -10,7 +10,7 @@ import {
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
-import { Colours } from "../Constants/colours.js";
+import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 
 let customFonts = {

@@ -17,7 +17,7 @@ import Modal from "react-native-modal";
 import InfoModals from "../constants/InfoModals";
 import ExpandTipScreen from "./ExpandTipScreen";
 import TipItem from "../components/TipItem";
-import { allTips } from "../Constants/AllTips";
+import { allTips } from "../constants/AllTips";
 import send from "../requests/request.js";
 
 let username = "/tester";

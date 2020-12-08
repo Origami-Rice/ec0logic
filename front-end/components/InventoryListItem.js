@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
-import { Colours } from "../Constants/colours.js";
+import { Colours } from "../constants/colours.js";
 
 const InventoryListItem = (props) => {
   return (
