@@ -16,50 +16,84 @@ import IngredientsTable from "../components/IngredientsTable";
 export default class ExpandedRecipeCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      ingredients: [],
+      instructions: [],
+      recipeInfo: this.props,
+      recipeSource: "",
+    };
   }
+
+  componentDidMount() {
+    this.getSource(this.state.recipeInfo.recipeId);
+    this.getIngredients(this.state.recipeInfo.recipeId);
+    this.getInstructions(this.state.recipeInfo.recipeId);
+  }
+
+  getSource = (recipeId) => {
+    this.setState((state) => ({
+      recipeSource: "The Bakery",
+    }));
+  };
+
+  getIngredients = (recipeId) => {
+    this.setState((state) => ({
+      ingredients: [
+        { name: "Apples", amount: "3", unit: "" },
+        { name: "Flour", amount: "500", unit: "g" },
+      ],
+    }));
+  };
+
+  // NOTE: previous group had step numbers
+  getInstructions = (recipeId) => {
+    this.setState((state) => ({
+      instructions: "3.14159265358979323846264338327950288419716939937510",
+    }));
+  };
 
   render() {
     return (
       <ScrollView
-        style={[
-          styles.container,
-          { marginBottom: Dimensions.get("window").width * 0.1 },
-        ]}
+        style={{
+          height: Dimensions.get("window").height,
+          width: Dimensions.get("window").width,
+        }}
       >
-        <View style={styles.topButtonsContainer}>
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={this.props.onCancel}
-          >
-            <TextRegular style={styles.cancelText} text={"x"} />
-          </TouchableOpacity>
-        </View>
-        <View style={{ justifyContent: "center" }}>
-          <Image
-            style={styles.image}
-            source={{
-              uri:
-                "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg",
-            }}
-            resizeMethod={"scale"}
+        <View style={styles.container}>
+          <View style={styles.topButtonsContainer}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={this.props.onCancel}
+            >
+              <TextRegular style={styles.cancelText} text={"x"} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ justifyContent: "center" }}>
+            <Image
+              style={styles.image}
+              source={{
+                uri:
+                  "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg",
+              }}
+              resizeMethod={"scale"}
+            />
+          </View>
+          <TextRegular
+            style={styles.notice}
+            text={"Recipe Credits to " + this.state.recipeSource}
+          />
+          <TextMedium style={styles.header} text={"Pie"} />
+          <View style={styles.divider}></View>
+          <TextMedium style={styles.subheading} text={"Ingredients"} />
+          <IngredientsTable items={this.state.ingredients} />
+          <View style={[styles.divider, { marginTop: 10 }]}></View>
+          <TextMedium style={styles.subheading} text={"Instructions"} />
+          <TextRegular
+            style={[styles.subheading, { marginTop: 0 }]}
+            text={this.state.instructions}
           />
         </View>
-        <TextRegular style={styles.notice} text={"Recipe Credits to"} />
-        <TextMedium style={styles.header} text={"Pie"} />
-        <View style={styles.divider}></View>
-        <TextMedium style={styles.subheading} text={"Ingredients"} />
-        <IngredientsTable
-          items={[
-            { ingredient: "Apples", quantity: "3" },
-            { ingredient: "Flour", quantity: "500 g" },
-          ]}
-        />
-        <View style={[styles.divider, { marginTop: 10 }]}></View>
-        <TextMedium style={styles.subheading} text={"Instructions"} />
-        <TextRegular
-          style={[styles.subheading, { marginTop: 0 }]}
-          text={"3.14159265358979323846264338327950288419716939937510"}
-        />
       </ScrollView>
     );
   }
@@ -128,7 +162,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   header: {
-    width: "100%",
     textAlign: "left",
     fontSize: 24,
     color: Colours.tint,
@@ -141,7 +174,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   notice: {
-    width: "100%",
     textAlign: "right",
     fontSize: 10,
     color: Colours.notice,

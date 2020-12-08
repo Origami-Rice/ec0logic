@@ -19,33 +19,37 @@ export default class RecipeResultsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        { foodName: "Pie", description: "Yummy" },
-        { foodName: "Pie", description: "Yummy" },
-        { foodName: "Pie", description: "Yummy" },
-        { foodName: "Pie", description: "Yummy" },
-      ],
+      recipeArray: this.props.recipeArray,
       selectedItem: {},
+      email: "",
       visibleModal: 0,
     };
   }
 
+  // TODO: Add onPressButton as prop for saving
+  // CHANGES FROM ORIGINAL: Not passing email or resultId as props
   populateList = () => {
-    return this.state.items.map((item) => (
+    return this.state.recipeArray.map((result) => (
       <RecipeCard
-        onPressWhole={(item) => this.expand(item)}
-        foodName={item.foodName}
-        description={item.description}
-        imageURL={
+        onPressWhole={(result) => this.expand(result)}
+        foodName={result.title}
+        description={
+          "Preparation Time: " +
+          result.readyInMinutes +
+          " minutes" +
+          "\nServings: " +
+          result.servings
+        }
+        imageUri={
           "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg"
         }
       />
     ));
   };
 
-  expand = (item) => {
+  expand = (result) => {
     this.setState({
-      selectedItem: item,
+      selectedItem: result,
       visibleModal: 1,
     });
   };
@@ -88,6 +92,11 @@ export default class RecipeResultsScreen extends React.Component {
           {
             <View style={styles.modal}>
               <ExpandedRecipeCard
+                imageUri={
+                  "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg"
+                }
+                title={this.state.selectedItem.title}
+                recipeId={this.state.selectedItem.id}
                 onCancel={this.closeModal}
               ></ExpandedRecipeCard>
             </View>

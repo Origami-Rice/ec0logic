@@ -33,7 +33,13 @@ export default class RecipesScreen extends React.Component {
       isVegan: false,
       isVegetarian: false,
       isGlutenFree: false,
-      ingredient: "",
+      search: "",
+      recipeArray: [
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 1 },
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 2 },
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 3 },
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 4 },
+      ],
       visibleModal: 0,
     };
   }
@@ -94,12 +100,14 @@ export default class RecipesScreen extends React.Component {
     });
   };
 
+  // Set this.state.recipeArray
   getSavedRecipes = () => {
     this.setState({
       visibleModal: 1,
     });
   };
 
+  // Set this.state.recipeArray
   searchForRecipes = () => {
     this.setState({
       visibleModal: 3,
@@ -135,7 +143,15 @@ export default class RecipesScreen extends React.Component {
               style={styles.notice}
               text={"Powered by Spoonacular API"}
             />
-            <TextInput style={styles.inputFormat} placeholder="Ingredient" />
+            <TextInput
+              style={styles.inputFormat}
+              placeholder="Ingredient"
+              onChangeText={(text) => this.setState({ search: text })}
+            />
+            <TextRegular
+              style={[styles.notice, { marginTop: 0 }]}
+              text={"Separate ingredients by commas or spaces"}
+            />
             <View
               style={[
                 styles.rowContainer,
@@ -221,6 +237,7 @@ export default class RecipesScreen extends React.Component {
               <RecipeResultsScreen
                 onCancel={this.closeModal}
                 heading={"Your Saved Recipes"}
+                recipeArray={this.state.recipeArray}
               ></RecipeResultsScreen>
             </View>
           }
@@ -234,7 +251,10 @@ export default class RecipesScreen extends React.Component {
             <View style={styles.modal}>
               <RecipeResultsScreen
                 onCancel={this.closeModal}
-                heading={"We Found 4 Recipes"}
+                heading={
+                  "We Found " + this.state.recipeArray.length + " Recipes"
+                }
+                recipeArray={this.state.recipeArray}
               ></RecipeResultsScreen>
             </View>
           }

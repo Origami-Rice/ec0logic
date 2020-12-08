@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
-import { Colours } from "../Constants/colours.js";
+import { Colours } from "../constants/colours.js";
 
 export default class IngredientsTable extends React.Component {
   constructor(props) {
@@ -11,6 +11,18 @@ export default class IngredientsTable extends React.Component {
       items: [{}].concat(this.props.items),
     };
   }
+
+  componentDidUpdate() {
+    if (this.state.items.length <= 1) {
+      this.loadIngredients();
+    }
+  }
+
+  loadIngredients = () => {
+    this.setState((state) => ({
+      items: [{}].concat(this.props.items),
+    }));
+  };
 
   createRows() {
     return this.state.items.map((item, i) => (
@@ -23,7 +35,10 @@ export default class IngredientsTable extends React.Component {
           }
         >
           {i !== 0 ? (
-            <TextRegular style={styles.infoText} text={item.quantity} />
+            <TextRegular
+              style={styles.infoText}
+              text={`${item.amount} ${item.unit}`}
+            />
           ) : (
             <TextMedium style={styles.infoText} text={"Quantity"} />
           )}
@@ -36,7 +51,7 @@ export default class IngredientsTable extends React.Component {
           }
         >
           {i !== 0 ? (
-            <TextRegular style={styles.infoText} text={item.ingredient} />
+            <TextRegular style={styles.infoText} text={item.name} />
           ) : (
             <TextMedium style={styles.infoText} text={"Ingredient"} />
           )}

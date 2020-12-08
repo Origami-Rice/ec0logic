@@ -9,13 +9,12 @@ const RecipeCard = (props) => {
     <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
       <Image
         style={styles.image}
-        source={{ uri: props.imageURL }}
+        source={{ uri: props.imageUri }}
         resizeMethod={"scale"}
       />
       <View style={styles.rowContainer}>
         <View style={styles.textGroup}>
           <TextMedium style={styles.textItem} text={props.foodName} />
-          <TextRegular style={styles.textInfo} text={props.description} />
           <TextRegular style={styles.textInfo} text={props.description} />
         </View>
         <View style={styles.checkFlex}>
