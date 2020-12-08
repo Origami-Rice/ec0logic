@@ -118,16 +118,15 @@ exports.update_shopping_list = async(username, newList) => {
 };
 
 //////////////////////////// TIP QUERIES ///////////////////////////////
-// THESE NEED TO BE TESTED ????????????????????????????????????????????????????????????????????
 exports.get_tips = async (username) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(
-        {username: username}, {username: 1, fav_tips: 1}
+        {username: username}, {username: 1, saved_tips: 1}
     ));
 };
 
 exports.update_tips = async (username, tips) => {
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        {username: username},  {$set: {tips: tips}}
+        {username: username},  {$set: {saved_tips: tips}}
     ));
 };
 
