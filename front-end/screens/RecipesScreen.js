@@ -16,8 +16,7 @@ import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import InfoModals from "../constants/InfoModals";
 import * as Font from "expo-font";
-import SavedRecipesScreen from "./SavedRecipesScreen";
-import FoundRecipesScreen from "./FoundRecipesScreen";
+import RecipeResultsScreen from "./RecipeResultsScreen";
 import send from "../requests/request.js";
 
 const username = "/tester";
@@ -219,9 +218,10 @@ export default class RecipesScreen extends React.Component {
         >
           {
             <View style={styles.modal}>
-              <SavedRecipesScreen
+              <RecipeResultsScreen
                 onCancel={this.closeModal}
-              ></SavedRecipesScreen>
+                heading={"Your Saved Recipes"}
+              ></RecipeResultsScreen>
             </View>
           }
         </Modal>
@@ -232,9 +232,10 @@ export default class RecipesScreen extends React.Component {
         >
           {
             <View style={styles.modal}>
-              <FoundRecipesScreen
+              <RecipeResultsScreen
                 onCancel={this.closeModal}
-              ></FoundRecipesScreen>
+                heading={"We Found 4 Recipes"}
+              ></RecipeResultsScreen>
             </View>
           }
         </Modal>

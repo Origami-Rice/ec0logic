@@ -11,9 +11,11 @@ import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import RecipeCard from "../components/RecipeCard";
 import { Colours } from "../constants/colours.js";
+import Modal from "react-native-modal";
+import ExpandedRecipeCard from "./ExpandedRecipeCard";
 
 // NOTE: Current items array does not reflect json result from spoonacular
-export default class FoundRecipesScreen extends React.Component {
+export default class RecipeResultsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,12 +25,15 @@ export default class FoundRecipesScreen extends React.Component {
         { foodName: "Pie", description: "Yummy" },
         { foodName: "Pie", description: "Yummy" },
       ],
+      selectedItem: {},
+      visibleModal: 0,
     };
   }
 
   populateList = () => {
     return this.state.items.map((item) => (
       <RecipeCard
+        onPressWhole={(item) => this.expand(item)}
         foodName={item.foodName}
         description={item.description}
         imageURL={
@@ -36,6 +41,19 @@ export default class FoundRecipesScreen extends React.Component {
         }
       />
     ));
+  };
+
+  expand = (item) => {
+    this.setState({
+      selectedItem: item,
+      visibleModal: 1,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
   };
 
   render() {
@@ -49,7 +67,7 @@ export default class FoundRecipesScreen extends React.Component {
             <TextRegular style={styles.cancelText} text={"x"} />
           </TouchableOpacity>
         </View>
-        <TextMedium style={styles.header} text={"We Found 4 Recipes"} />
+        <TextMedium style={styles.header} text={this.props.heading} />
         <View style={styles.divider}></View>
         <ScrollView style={styles.listContainer}>
           {this.populateList()}
@@ -62,6 +80,19 @@ export default class FoundRecipesScreen extends React.Component {
             },
           ]}
         ></View>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <ExpandedRecipeCard
+                onCancel={this.closeModal}
+              ></ExpandedRecipeCard>
+            </View>
+          }
+        </Modal>
       </View>
     );
   }
@@ -127,5 +158,19 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+  },
+  modal: {
+    backgroundColor: "white",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });
