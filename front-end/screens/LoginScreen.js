@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   View,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -18,7 +19,7 @@ let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
 };
 
-// NOTE: show/hide password temporarily resets styling
+// NOTE: Login button currently justified to top
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -48,54 +49,62 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View
-          style={{
-            justifyContent: "flex-start",
-            flex: 1,
-            alignItems: "center",
-          }}
-        >
-          <Image
-            source={require("../assets/wasteless-logo.png")}
-            style={{ height: 83, width: 100, marginTop: 50 }}
-          />
-          <TextSemiBold style={styles.header} text={"Log In Below"} />
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Email"
-              value={this.state.email}
-              onChangeText={(text) => this.setState({ email: text })}
+      <View
+        style={{
+          height: Dimensions.get("window").height,
+          width: Dimensions.get("window").width,
+          flex: 1,
+        }}
+      >
+        <ScrollView style={styles.container}>
+          <View
+            style={{
+              justifyContent: "flex-start",
+              flex: 1,
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../assets/wasteless-logo.png")}
+              style={{ height: 83, width: 100, marginTop: 50 }}
             />
+            <TextSemiBold style={styles.header} text={"Log In Below"} />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholder="Email"
+                value={this.state.email}
+                onChangeText={(text) => this.setState({ email: text })}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholder="Password"
+                value={this.state.password}
+                secureTextEntry={this.state.showPassword}
+                textContentType={"password"}
+                onChangeText={(text) => this.setState({ password: text })}
+              />
+              <TouchableOpacity
+                style={{ width: 24, height: 35, justifyContent: "center" }}
+                onPress={() =>
+                  this.setState({ showPassword: !this.state.showPassword })
+                }
+              >
+                {this.getIcon()}
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Password"
-              value={this.state.password}
-              secureTextEntry={this.state.showPassword}
-              textContentType={"password"}
-              onChangeText={(text) => this.setState({ password: text })}
-            />
+          <View style={{ justifyContent: "flex-end", flex: 1 }}>
             <TouchableOpacity
-              style={{ width: 24, height: 35, justifyContent: "center" }}
-              onPress={() =>
-                this.setState({ showPassword: !this.state.showPassword })
-              }
+              style={styles.confirmButton}
+              onPress={this.props.route.params?.onPress}
             >
-              {this.getIcon()}
+              <TextMedium style={styles.confirmText} text={"Login"} />
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={{ justifyContent: "flex-end", flex: 1, marginBottom: 25 }}>
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={this.props.route.params?.onPress}
-          >
-            <TextMedium style={styles.confirmText} text={"Login"} />
-          </TouchableOpacity>
-        </View>
+        </ScrollView>
       </View>
     );
   }
@@ -159,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: Colours.filledButton,
-    marginVertical: 15,
+    marginVertical: 30,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
