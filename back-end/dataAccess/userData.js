@@ -1,15 +1,14 @@
-// // im testing things
-// const MongoClient = require('mongodb').MongoClient;
-// const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
-// we can change these when we understand how things work i guess
+// Name of the database
 const db = "test_wasteless";
+// Name of the collection in the database
 const users_collection = "test_users";
+// Database query template
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
-//
+// User document schema
 const {User} = require('../models/schemas'); 
 
 //////////////////// USER QUERIES ////////////////////
-exports.add_user = async (username, email, password, salt, firstname, surname) => {
+exports.add_user = async (username, email, password, salt, firstname, lastname) => {
     // if (!(typeof username === 'string' && username != '')) {
     //     return false; 
     // }
@@ -17,14 +16,15 @@ exports.add_user = async (username, email, password, salt, firstname, surname) =
     const newUser = new User({
         username: username,
         firstname: firstname,
-        surname: surname,
+        lastname: lastname,
         email: email,
         password: password,
         salt: salt,
         inventory_list: [], 
         wasted_items: [], 
         shopping_list: [],
-        saved_recipes: []
+        saved_recipes: [],
+        saved_tips: []
     });
     
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
@@ -131,7 +131,6 @@ exports.update_tips = async (username, tips) => {
 };
 
 ////////////////////////////// RECIPE QUERIES ///////////////////////////////////////
-
 exports.get_saved_recipes = async (username) => {
     // gets the user's saved_recipes
     return await executeQuery(db, async (db) => await db.collection(users_collection).findOne(

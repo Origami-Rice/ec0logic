@@ -1,9 +1,6 @@
-// const { Db } = require('mongodb');
-
-// const MongoClient = require('mongodb').MongoClient;
-// const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+
 // These will handle all of our routes
 const inventory = require('./routes/inventory.js');
 const users = require('./routes/users.js');
@@ -13,25 +10,25 @@ const shoppinglist = require('./routes/shoppinglist');
 const tips = require('./routes/tips');
 const recipe = require('./routes/recipes.js');
 const ghg_calculator = require('./routes/ghgcalculator.js');
-// const User = require('./models/schemas');
 
 let cors = require('cors');
 app.use(cors());
 
-// // Using the express-session middleware
-// const session = require('express-session');
-// const MongoStore = require('connect-mongo')(session);
-// // consider using a config.json ?????????????????????????????????????????????????????????????????????????????????????????
+// Using the express-session middleware
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+// consider using a config.json ?????????????????????????????????????????????????????????????????????????????????????????
 // const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
-// app.use(session({
-//   name: 'wasteless.sid',
-//   secret: 'please change this secret',
-//   resave: false,
-//   saveUninitialized: false,
-//   store: new MongoStore({ url: mongodbUrl })
-// }));
+const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/test_wasteless?retryWrites=true&w=majority';
+app.use(session({
+    name: 'wasteless.sid',
+    secret: 'please change this secret',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ url: mongodbUrl })
+}));
 
-// Routes
+// Middleware to handle requests to the routes
 app.use('/api/inventory', inventory);
 app.use('/api/users', users);
 app.use('/api/food-library', food_library);
@@ -43,7 +40,7 @@ app.use('/api/ghgcalculator', ghg_calculator);
 
 // to catch any other path and return 404
 app.use(function (request, response) {
-  response.status(404).send("Sorry, we can't find that in Wasteless App api!");
+    response.status(404).send("Sorry, we can't find that in Wasteless App api!");
 });
 
 // ASK WHAT THIS IS FOR ????????????????????????????????????????????????????????

@@ -62,7 +62,7 @@ const RecipeSchema = new mongoose.Schema({
 const TipsSchema = new mongoose.Schema({
     tipNum: Number
 });
-// MAY NEED TO MODIFY ????????????????????????????????????????
+
 const UserSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -70,7 +70,7 @@ const UserSchema = new mongoose.Schema({
         minlength: 1,
         trim: true
     },
-    surname: {
+    lastname: {
         type: String,
         required: true,
         minlength: 1,
