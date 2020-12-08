@@ -13,9 +13,8 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
+import InfoModals from "../constants/InfoModals";
 import * as Font from "expo-font";
-import AboutUsScreen from "./AboutUsScreen";
-import SettingsScreen from "./SettingsScreen";
 import SavedRecipesScreen from "./SavedRecipesScreen";
 import send from "../requests/request.js";
 
@@ -86,6 +85,12 @@ export default class RecipesScreen extends React.Component {
     this.setState((state) => ({
       isGlutenFree: !state.isGlutenFree,
     }));
+  };
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
   };
 
   render() {
@@ -187,19 +192,6 @@ export default class RecipesScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
-            </View>
-          }
-        </Modal>
-        <Modal
           isVisible={this.state.visibleModal === 3}
           style={styles.bottomModal}
           avoidKeyboard={false}
@@ -207,24 +199,15 @@ export default class RecipesScreen extends React.Component {
           {
             <View style={styles.modal}>
               <SavedRecipesScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
+                onCancel={this.closeModal}
               ></SavedRecipesScreen>
             </View>
           }
         </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 4}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <SettingsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></SettingsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }

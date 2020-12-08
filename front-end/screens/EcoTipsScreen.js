@@ -14,8 +14,7 @@ import { Colours } from "../constants/colours.js";
 import { ActivityIndicator } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import AboutUsScreen from "./AboutUsScreen";
-import SettingsScreen from "./SettingsScreen";
+import InfoModals from "../constants/InfoModals";
 import ExpandTipScreen from "./ExpandTipScreen";
 import TipItem from "../components/TipItem";
 import { allTips } from "../Constants/AllTips";
@@ -98,6 +97,12 @@ export default class EcoTipsScreen extends React.Component {
 
   save = () => {
     //TODO: Save tip
+  };
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
   };
 
   switchItems = (state) => {
@@ -239,19 +244,6 @@ export default class EcoTipsScreen extends React.Component {
         </ScrollView>
         {this.showRefresh()}
         <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
-            </View>
-          }
-        </Modal>
-        <Modal
           isVisible={this.state.visibleModal === 3}
           style={styles.bottomModal}
           avoidKeyboard={false}
@@ -260,25 +252,16 @@ export default class EcoTipsScreen extends React.Component {
             <View style={styles.modal}>
               <ExpandTipScreen
                 tip={this.state.tipSelected.tip}
-                onCancel={() => this.setState({ visibleModal: 0 })}
+                onCancel={this.closeModal}
                 onSave={() => this.save(this.state.tipSelected)}
               ></ExpandTipScreen>
             </View>
           }
         </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 4}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <SettingsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></SettingsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }

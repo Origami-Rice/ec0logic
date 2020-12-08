@@ -13,10 +13,8 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import { ActivityIndicator } from "react-native-paper";
-import Modal from "react-native-modal";
+import InfoModals from "../constants/InfoModals";
 import InventoryListItem from "../components/InventoryListItem";
-import AboutUsScreen from "./AboutUsScreen";
-import SettingsScreen from "./SettingsScreen";
 import send from "../requests/request.js";
 
 let username = "/tester";
@@ -305,6 +303,12 @@ export default class InventoryAllFoods extends React.Component {
     }));
   };
 
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -408,32 +412,10 @@ export default class InventoryAllFoods extends React.Component {
             <TextRegular style={styles.addText} text={"+"} />
           </TouchableOpacity>
         </View>
-        <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
-            </View>
-          }
-        </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 4}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <SettingsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></SettingsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }
@@ -527,19 +509,5 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    position: "absolute",
-    top: 0,
-  },
-  modal: {
-    backgroundColor: Colours.screenBackground,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
   },
 });

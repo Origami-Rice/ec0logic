@@ -14,11 +14,10 @@ import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import { ActivityIndicator } from "react-native-paper";
 import Modal from "react-native-modal";
+import InfoModals from "../constants/InfoModals";
 import ShoppingListItem from "../components/ShoppingListItem";
 import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import ShoppingListEditScreen from "./ShoppingListEditScreen";
-import AboutUsScreen from "./AboutUsScreen";
-import SettingsScreen from "./SettingsScreen";
 import send from "../requests/request";
 
 let username = "/tester";
@@ -236,6 +235,12 @@ export default class ShoppingListScreen extends React.Component {
     this.updateInventory(currInventory);
   };
 
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
+  };
+
   render() {
     // if (!this.state.fontsLoaded) {
     //   return <AppLoading />;
@@ -301,21 +306,8 @@ export default class ShoppingListScreen extends React.Component {
               <ShoppingListInputScreen
                 addNewItem={this.addNewItem}
                 inventoryArray={this.state.inventoryArray}
-                onCancel={() => this.setState({ visibleModal: 0 })}
+                onCancel={this.closeModal}
               ></ShoppingListInputScreen>
-            </View>
-          }
-        </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
             </View>
           }
         </Modal>
@@ -329,25 +321,16 @@ export default class ShoppingListScreen extends React.Component {
               <ShoppingListEditScreen
                 addNewItem={this.addNewItem}
                 item={this.state.itemSelected}
-                onCancel={() => this.setState({ visibleModal: 0 })}
-                onDelete={() => this.setState({ visibleModal: 0 })}
+                onCancel={this.closeModal}
+                onDelete={this.closeModal}
               ></ShoppingListEditScreen>
             </View>
           }
         </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 4}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <SettingsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></SettingsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }

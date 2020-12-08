@@ -11,9 +11,7 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import { LineChart } from "react-native-chart-kit";
-import Modal from "react-native-modal";
-import AboutUsScreen from "./AboutUsScreen";
-import SettingsScreen from "./SettingsScreen";
+import InfoModals from "../constants/InfoModals";
 import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
 
@@ -127,6 +125,12 @@ export default class MyStatsScreen extends React.Component {
     }));
   };
 
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -202,7 +206,7 @@ export default class MyStatsScreen extends React.Component {
               }}
             />
             <View style={styles.divider}></View>
-            <TextSemiBold style={styles.subheading} text={"Recently Expired"} />
+            <TextSemiBold style={styles.subheading} text={"Recently Wasted"} />
             <RecentlyWastedTable
               items={[
                 {
@@ -221,32 +225,10 @@ export default class MyStatsScreen extends React.Component {
             ></RecentlyWastedTable>
           </ScrollView>
         </View>
-        <Modal
-          isVisible={this.state.visibleModal === 2}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <AboutUsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></AboutUsScreen>
-            </View>
-          }
-        </Modal>
-        <Modal
-          isVisible={this.state.visibleModal === 4}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <SettingsScreen
-                onCancel={() => this.setState({ visibleModal: 0 })}
-              ></SettingsScreen>
-            </View>
-          }
-        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }
@@ -330,19 +312,5 @@ const styles = StyleSheet.create({
     backgroundColor: Colours.borderedComponentFill,
     justifyContent: "center",
     alignSelf: "center",
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    position: "absolute",
-    top: 0,
-  },
-  modal: {
-    backgroundColor: Colours.screenBackground,
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
   },
 });
