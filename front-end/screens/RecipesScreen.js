@@ -117,27 +117,21 @@ export default class RecipesScreen extends React.Component {
 
   render() {
     return (
-      <View
-        style={{
-          height: Dimensions.get("window").height,
-          width: Dimensions.get("window").width,
-          flex: 1,
-        }}
-      >
-        <ScrollView style={styles.container}>
-          <View style={{ justifyContent: "flex-start", flex: 1, marginTop: 5 }}>
-            <View
-              style={[styles.rowContainer, { justifyContent: "space-between" }]}
+      <View style={styles.container}>
+        <View style={{ justifyContent: "flex-start", flex: 1, marginTop: 5 }}>
+          <View
+            style={[styles.rowContainer, { justifyContent: "space-between" }]}
+          >
+            <TextSemiBold style={styles.title} text={"Recipes"} />
+            <TouchableOpacity
+              style={styles.infoButton}
+              onPress={() => this.createInfoWindow()}
             >
-              <TextSemiBold style={styles.title} text={"Recipes"} />
-              <TouchableOpacity
-                style={styles.infoButton}
-                onPress={() => this.createInfoWindow()}
-              >
-                <TextMedium style={styles.infoText} text={"i"} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.divider}></View>
+              <TextMedium style={styles.infoText} text={"i"} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider}></View>
+          <ScrollView>
             <View>
               <TouchableOpacity
                 style={styles.unitButton}
@@ -224,58 +218,58 @@ export default class RecipesScreen extends React.Component {
                 />
               </View>
             </View>
-          </View>
-          <View
-            style={{
-              justifyContent: "flex-end",
-              zIndex: -1,
-              marginBottom: 25,
-            }}
-          >
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={this.searchForRecipes}
+            <View
+              style={{
+                justifyContent: "flex-end",
+                zIndex: -1,
+                marginBottom: 25,
+              }}
             >
-              <TextMedium style={styles.confirmText} text={"Find Recipes"} />
-            </TouchableOpacity>
-          </View>
-          <Modal
-            isVisible={this.state.visibleModal === 1}
-            style={styles.bottomModal}
-            avoidKeyboard={false}
-          >
-            {
-              <View style={styles.modal}>
-                <RecipeResultsScreen
-                  onCancel={this.closeModal}
-                  heading={"Your Saved Recipes"}
-                  recipeArray={this.state.recipeArray}
-                ></RecipeResultsScreen>
-              </View>
-            }
-          </Modal>
-          <Modal
-            isVisible={this.state.visibleModal === 3}
-            style={styles.bottomModal}
-            avoidKeyboard={false}
-          >
-            {
-              <View style={styles.modal}>
-                <RecipeResultsScreen
-                  onCancel={this.closeModal}
-                  heading={
-                    "We Found " + this.state.recipeArray.length + " Recipes"
-                  }
-                  recipeArray={this.state.recipeArray}
-                ></RecipeResultsScreen>
-              </View>
-            }
-          </Modal>
-          <InfoModals
-            visibleModal={this.state.visibleModal}
-            closeModal={this.closeModal}
-          />
-        </ScrollView>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={this.searchForRecipes}
+              >
+                <TextMedium style={styles.confirmText} text={"Find Recipes"} />
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <RecipeResultsScreen
+                onCancel={this.closeModal}
+                heading={"Your Saved Recipes"}
+                recipeArray={this.state.recipeArray}
+              ></RecipeResultsScreen>
+            </View>
+          }
+        </Modal>
+        <Modal
+          isVisible={this.state.visibleModal === 3}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <RecipeResultsScreen
+                onCancel={this.closeModal}
+                heading={
+                  "We Found " + this.state.recipeArray.length + " Recipes"
+                }
+                recipeArray={this.state.recipeArray}
+              ></RecipeResultsScreen>
+            </View>
+          }
+        </Modal>
+        <InfoModals
+          visibleModal={this.state.visibleModal}
+          closeModal={this.closeModal}
+        />
       </View>
     );
   }
