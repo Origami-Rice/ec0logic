@@ -16,6 +16,7 @@ const Stack = createStackNavigator();
 export default function App (props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [user, setUser] = React.useState("");
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -47,6 +48,7 @@ export default function App (props) {
     .then(session => {
       if (session.isauth) {
         setIsLoggedIn(true);
+        setUser(session.username);
       }
       console.log('AUTH SESSION:', session)
     }).catch(err => console.log('Error getting session:', err));
@@ -66,10 +68,11 @@ export default function App (props) {
         .then(result => {
           if (result.status === 200) {
             result.json().then(json => {
-              console.log(json)
-              console.log('Logged in as', json.username)
-              setIsLoggedIn(true)
-              console.log("SIGN_IN auth:", isLoggedIn)
+              console.log(json);
+              console.log('Logged in as', json.username);
+              setIsLoggedIn(true);
+              setUser(json.username);
+              console.log("SIGN_IN auth:", isLoggedIn);
             }).catch(err => {
               console.log('JSON parse error');
             });
@@ -129,8 +132,9 @@ export default function App (props) {
             if (res.error === "User with this username already exists") {
               alert("Email already in use")
             } else {
-              setIsLoggedIn(true)
-              console.log("SIGN_UP auth:", isLoggedIn)
+              setIsLoggedIn(true);
+              setUser(username);
+              console.log("SIGN_UP auth:", isLoggedIn);
             }
           })
         }
@@ -142,7 +146,7 @@ export default function App (props) {
     return null;
   } else {
     return (
-      <AuthContext.Provider value={authContext} style={styles.container}>
+      <AuthContext.Provider value={{authContext, user: user}} style={styles.container}>
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <NavigationContainer>
@@ -163,7 +167,7 @@ export default function App (props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 0,
     backgroundColor: '#fff',
   },
 });

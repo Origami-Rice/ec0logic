@@ -17,9 +17,11 @@ import InfoModals from "../constants/InfoModals";
 import InventoryListItem from "../components/InventoryListItem";
 import send from "../requests/request.js";
 
-let username = "/tester";
+import { AuthContext } from '../AuthContext';
 
 export default class InventoryAllFoods extends React.Component {
+
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
@@ -35,7 +37,7 @@ export default class InventoryAllFoods extends React.Component {
   _loadData = () => {
     this.setState({ isLoaded: false });
     // Load the list of user's inventory items from server
-    send("getInventory", {}, username)
+    send("getInventory", {}, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         const inventory = this.deserializeItems(json);
@@ -47,7 +49,7 @@ export default class InventoryAllFoods extends React.Component {
       });
 
     // Load the list of user's expiring items
-    send("getExpiring", {}, username)
+    send("getExpiring", {}, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         const expiring = this.deserializeItems(json);
@@ -92,9 +94,12 @@ export default class InventoryAllFoods extends React.Component {
         this.props.navigation.setParams({ update: null });
       } else {
         console.log("[Inventory] Nothing changed");
+        console.log(this.context.user);
         this._loadData();
       }
     });
+
+    console.log(this.context.user);
   }
 
   componentWillUnmount() {
@@ -136,10 +141,10 @@ export default class InventoryAllFoods extends React.Component {
     };
 
     // Send updated list to server
-    send("addToInventory", data, username)
+    send("addToInventory", data, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
-        console.log(json.error);
+        console.log(json);
       })
       .catch((error) => {
         console.log("Error adding new item to inventory");

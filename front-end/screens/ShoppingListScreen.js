@@ -20,9 +20,12 @@ import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import ShoppingListEditScreen from "./ShoppingListEditScreen";
 import send from "../requests/request";
 
+import {AuthContext} from "../AuthContext";
+
 let username = "/tester";
 
 export default class ShoppingListScreen extends React.Component {
+  static contextType = AuthContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +40,7 @@ export default class ShoppingListScreen extends React.Component {
   _loadData = () => {
     this.setState({ isLoaded: false });
     // get user's shopping list from server
-    send("getShoppingList", {}, username)
+    send("getShoppingList", {},  "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         this.setState({ shoppingList: json, isLoaded: true });
@@ -48,7 +51,7 @@ export default class ShoppingListScreen extends React.Component {
       });
 
     // get the user's inventory list
-    send("getInventory", {}, username)
+    send("getInventory", {}, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         this.setState({ inventoryArray: json });
@@ -148,7 +151,7 @@ export default class ShoppingListScreen extends React.Component {
   };
 
   updateList = (updatedList) => {
-    send("updateShoppingList", updatedList, username)
+    send("updateShoppingList", updatedList, "/" + this.context.user)
       .then((response) => response.json())
       .catch((error) => {
         console.log(error);
@@ -163,7 +166,7 @@ export default class ShoppingListScreen extends React.Component {
     this.setState({ shoppingList: currlist });
 
     // add item to server
-    send("addToShoppingList", item, username)
+    send("addToShoppingList", item, "/" + this.context.user)
       .then((response) => response.json())
       .catch((error) => {
         console.log(error);
@@ -180,7 +183,7 @@ export default class ShoppingListScreen extends React.Component {
     };
 
     // Send updated list to server
-    send("addToInventory", data, username)
+    send("addToInventory", data, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         console.log(json.error);

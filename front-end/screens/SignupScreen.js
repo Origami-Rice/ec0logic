@@ -27,7 +27,7 @@ export default function SignupScreen(props) {
   const [securityQuestion, setSecurityQuestion] = React.useState("");
   const [securityAnswer, setSecurityAnswer] = React.useState("");
 
-  const { signUp } = React.useContext(AuthContext);
+  const { authContext } = React.useContext(AuthContext);
 
   const getIcon = (flag) => {
     if (flag) {
@@ -147,7 +147,7 @@ export default function SignupScreen(props) {
         <View style={{ justifyContent: "flex-end", flex: 1 }}>
           <TouchableOpacity
             style={styles.confirmButton}
-            onPress={() => signUp (
+            onPress={() => authContext.signUp (
               { email, firstName, lastName, password, confirmPassword }
             )}
           >

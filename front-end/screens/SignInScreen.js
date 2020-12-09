@@ -59,7 +59,8 @@ export default class LoginScreen extends React.Component {
   signIn = () => {
     // TODO: Remove after testing
     console.log("Signin with" + this.state.email.toLowerCase());
-    this.context.signIn({ email: this.state.email, password: this.state.password});
+    console.log(this.context);
+    this.context.authContext.signIn({ email: this.state.email, password: this.state.password});
   }
 
   render() {

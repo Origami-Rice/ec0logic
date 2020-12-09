@@ -14,10 +14,10 @@ import { LineChart } from "react-native-chart-kit";
 import InfoModals from "../constants/InfoModals";
 import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
-
-const username = "/tester";
+import { AuthContext } from "../AuthContext";
 
 export default class MyStatsScreen extends React.Component {
+  static contextType = AuthContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +37,7 @@ export default class MyStatsScreen extends React.Component {
       end: new Date(),
     };
     // Getting the GHG for the last week
-    send("getGHG", timePeriod, username)
+    send("getGHG", timePeriod, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         this.setState({
@@ -50,7 +50,7 @@ export default class MyStatsScreen extends React.Component {
         console.log(error);
       });
 
-    send("getGHG", timePeriod, username)
+    send("getGHG", timePeriod, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         this.setState({
@@ -61,7 +61,7 @@ export default class MyStatsScreen extends React.Component {
         console.log(error);
       });
 
-    send("getMonthlyGHGBreakdown", {}, username)
+    send("getMonthlyGHGBreakdown", {}, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         this.setState({ monthlyBreakdown: json });
@@ -176,8 +176,8 @@ export default class MyStatsScreen extends React.Component {
                 datasets: [
                   {
                     data: this.state.imperial
-                      ? this.state.monthlyBreakdown.kg
-                      : this.state.monthlyBreakdown.lbs,
+                      ? this.state.monthlyBreakdown.lbs
+                      : this.state.monthlyBreakdown.kg,
                   },
                 ],
               }}

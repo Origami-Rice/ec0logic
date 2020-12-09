@@ -69,7 +69,7 @@ export default class SettingsScreen extends React.Component {
 
   signOut = () => {
     console.log("signout pressed");
-    this.context.signOut();
+    this.context.authContext.signOut();
 
   }
 

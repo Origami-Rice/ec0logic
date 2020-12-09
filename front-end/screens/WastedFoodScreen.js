@@ -12,14 +12,15 @@ import TextMedium from "../components/TextMedium";
 import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 import send from "../requests/request";
+import { AuthContext } from "../AuthContext";
 
 let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
 };
 
-let username = "/tester";
-
 export default class WastedFoodScreen extends React.Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     const item = this.props.route.params.item;
@@ -62,7 +63,7 @@ export default class WastedFoodScreen extends React.Component {
 
       console.log(wastedData);
 
-      send("addWastedItem", wastedData, username)
+      send("addWastedItem", wastedData, "/" + this.context.user)
         .then((response) => response.json)
         .then((json) => {
           console.log(json);
@@ -90,7 +91,7 @@ export default class WastedFoodScreen extends React.Component {
 
       console.log(wastedData);
 
-      send("addWastedItem", wastedData, username)
+      send("addWastedItem", wastedData, "/" + this.context.user)
         .then((response) => response.json)
         .then((json) => {
           console.log(json);
