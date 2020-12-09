@@ -1,27 +1,18 @@
 import * as React from 'react';
 
-import { Platform, StatusBar, StyleSheet, View, LogBox } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from "@react-navigation/stack";
-// import TabBarIcon from './components/TabBarIcon';
 import { Colours } from "./constants/colours.js";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import RecipeScreen from './screens/RecipeScreen';
-// import ProfileScreen from './screens/ProfileScreen';
-// import TipsScreen from './screens/TipsScreen';
-// import SavedRecipesScreen from './screens/SavedRecipesScreen';
-// import AboutUsScreen from './screens/AboutUsScreen';
-// import SavedTipsScreen from './screens/SavedTipsScreen';
-
 
 import InventoryAllFoods from "./screens/InventoryAllFoods";
 import InventoryInputScreen from "./screens/InventoryInputScreen";
-import ShoppingListScreen from "./screens/ShoppingListScreen";
 import FinishedFoodScreen from "./screens/FinishedFoodScreen";
 import WastedFoodScreen from "./screens/WastedFoodScreen";
-import MyStatsScreen from "./screens/MyStatsScreen";
 
+import ShoppingListScreen from "./screens/ShoppingListScreen";
+import MyStatsScreen from "./screens/MyStatsScreen";
 import EcoTipsScreen from "./screens/EcoTipsScreen";
 import RecipesScreen from "./screens/RecipesScreen";
 import EditInventoryItemScreen from "./screens/EditInventoryItemScreen";
@@ -32,6 +23,7 @@ function MainNavigation() {
   return (
     <Tab.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         activeTintColor: Colours.navActiveTint,
         inactiveTintColor: Colours.navInactiveTint,
         activeBackgroundColor: Colours.navActiveBackground,
@@ -119,7 +111,7 @@ function MainNavigation() {
 }
 const InventoryStack = createStackNavigator();
 
-export default function InventoryStackScreen() {
+export default function InventoryStackNavigator () {
   return (
     <InventoryStack.Navigator
       screenOptions={{

@@ -23,6 +23,7 @@ import send from "../requests/request.js";
 let username = "/tester";
 
 export default class EcoTipsScreen extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {

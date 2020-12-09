@@ -14,8 +14,7 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Ionicons } from "@expo/vector-icons";
 import { Colours } from "../constants/colours.js";
-import * as Font from "expo-font";
-//import { AuthContext } from '../AuthContext';
+import { AuthContext } from '../AuthContext';
 
 export default function SignupScreen(props) {
   const [email, setEmail] = React.useState("");
@@ -28,7 +27,7 @@ export default function SignupScreen(props) {
   const [securityQuestion, setSecurityQuestion] = React.useState("");
   const [securityAnswer, setSecurityAnswer] = React.useState("");
 
-  //const { signUp } = React.useContext(AuthContext);
+  const { signUp } = React.useContext(AuthContext);
 
   const getIcon = (flag) => {
     if (flag) {
@@ -46,7 +45,7 @@ export default function SignupScreen(props) {
         flex: 1,
       }}
     >
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View
           style={{
             justifyContent: "flex-start",
@@ -148,9 +147,13 @@ export default function SignupScreen(props) {
         <View style={{ justifyContent: "flex-end", flex: 1 }}>
           <TouchableOpacity
             style={styles.confirmButton}
-            onPress={props.route.params?.onPress}
+            onPress={() => signUp (
+              { email, firstName, lastName, password, confirmPassword }
+            )}
           >
-            <TextMedium style={styles.confirmText} text={"Sign In"} />
+            {// TODO: Add security question + answer, validation. 
+            }
+            <TextMedium style={styles.confirmText} text={"Sign Up"} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -170,10 +173,12 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     flex: 1,
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
     zIndex: 1,
     backgroundColor: Colours.screenBackground,
+  },
+  contentContainer: {
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   header: {
     textAlign: "center",

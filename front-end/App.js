@@ -5,25 +5,13 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AuthContext } from './AuthContext';
-// import RecipeScreen from './screens/RecipeScreen';
-// import ProfileScreen from './screens/ProfileScreen';
-// import ResultsScreen from './screens/ResultsScreen';
-// import SingleRecipeScreen from './screens/SingleRecipeScreen';
-// import ShoppingListScreen from './screens/ShoppingListScreen';
-// import TipsScreen from './screens/TipsScreen';
-// import SavedRecipesScreen from './screens/SavedRecipesScreen';
-// import AboutUsScreen from './screens/ContactUsScreen';
-// import SavedTipsScreen from './screens/SavedTipsScreen';
+import send from './requests/request';
+import LoggedInNavigator from './LoggedIn';
+import LoggedOutNavigator from './LoggedOut';
 
 const RootStack = createStackNavigator();
 const Stack = createStackNavigator();
-
-import LoggedIn from './LoggedIn';
-import LoggedOut from './LoggedOut';
-
-
 
 export default function App (props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -38,8 +26,7 @@ export default function App (props) {
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
-          'space-mono': require('./fonts/Montserrat-SemiBold.ttf'),
-          'roboto-regular': require('./fonts/Montserrat-SemiBold.ttf'),
+          Montserrat_500Medium: require('./fonts/Montserrat-SemiBold.ttf'),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
@@ -53,8 +40,9 @@ export default function App (props) {
     loadResourcesAndDataAsync();
 
   }, []);
-  
-  fetch('https://serene-ocean-02429.herokuapp.com/api/user/isauthenticated')
+
+
+  send("getAuthenticated", {})
     .then(response => response.json())
     .then(session => {
       if (session.isauth) {
@@ -66,15 +54,16 @@ export default function App (props) {
   const authContext = React.useMemo(() => {
     return {
 
-      signIn: ({ username, password }) => {
-        fetch('https://serene-ocean-02429.herokuapp.com/api/user/signin', {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: username.toLowerCase(),
-            password: password.toLowerCase(),
-          })
-        }).then(result => {
+      signIn: ({ email, password }) => {
+
+        console.log(email, password);
+        const data = {
+          username: email.toLowerCase(),
+          password: password.toLowerCase(),
+        };
+
+        send("signinUser", data)
+        .then(result => {
           if (result.status === 200) {
             result.json().then(json => {
               console.log(json)
@@ -94,10 +83,8 @@ export default function App (props) {
       },
 
       signOut: () => {
-        fetch('https://serene-ocean-02429.herokuapp.com/api/user/signout', {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        }).then(result => {
+        send("signoutUser", {})
+        .then(result => {
           if (result.status === 200) {
             result.json().then(json => {
               console.log(json)
@@ -115,8 +102,7 @@ export default function App (props) {
         })
       },
 
-      signUp: ({ email, firstName, lastName, password, confirmPassword, checked, experience }) => {
-        console.log("EXPERIENCE:", experience)
+      signUp: ({ email, firstName, lastName, password, confirmPassword }) => {
         if (email.length < 5 || !email.includes('@') || !email.includes('.')) {
           alert('Please enter a valid email')
         } else if (firstName.length < 2 || lastName.length < 2) {
@@ -126,18 +112,17 @@ export default function App (props) {
         } else if (password !== confirmPassword) {
           alert('Passwords do not match')
         } else {
-          fetch('https://serene-ocean-02429.herokuapp.com/api/user/signup', {
-            method: 'POST',
-            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              firstname: firstName,
-              lastname: lastName,
-              email: email.toLowerCase(),
-              username: email.toLowerCase(),
-              password: password,
-              experience: experience,
-            })
-          }).then(res => {
+
+          const data = {
+            firstname: firstName,
+            lastname: lastName,
+            email: email.toLowerCase(),
+            username: email.toLowerCase(),
+            password: password
+          };
+
+          send("signupUser", data)
+          .then(res => {
             return res.json()
           }).then(res => {
             console.log(res)
@@ -163,16 +148,10 @@ export default function App (props) {
           <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>
               {isLoggedIn ? (
-                <RootStack.Screen name="LoggedIn" component={LoggedIn} />
+                <RootStack.Screen name="LoggedIn" component={LoggedInNavigator} />
               ) : (
-                <RootStack.Screen name="LoggedOut" component={LoggedOut} />
+                <RootStack.Screen name="LoggedOut" component={LoggedOutNavigator} />
               )}
-        {/* <Stack.Screen name="Recipe" component={RecipeScreen} />
-        <Stack.Screen name="SavedRecipes" component={SavedRecipesScreen} />
-         <Stack.Screen name="SingleRecipe" component={SingleRecipeScreen} />
-         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-    <Stack.Screen name="SavedTips" component={SavedTipsScreen} />
-      <Stack.Screen name="Results" component={ResultsScreen} /> */}
             </Stack.Navigator>
           </NavigationContainer>
          </View>

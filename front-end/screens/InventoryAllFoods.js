@@ -20,6 +20,7 @@ import send from "../requests/request.js";
 let username = "/tester";
 
 export default class InventoryAllFoods extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +28,7 @@ export default class InventoryAllFoods extends React.Component {
       expiringArray: [],
       allFoods: true,
       isLoaded: false,
+      visibleModal: 0,
     };
   }
 

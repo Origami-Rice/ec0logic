@@ -13,11 +13,15 @@ import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 
+import { AuthContext } from '../AuthContext';
+
 let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
 };
 
 export default class SettingsScreen extends React.Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -62,6 +66,12 @@ export default class SettingsScreen extends React.Component {
       );
     }
   };
+
+  signOut = () => {
+    console.log("signout pressed");
+    this.context.signOut();
+
+  }
 
   render() {
     return (
@@ -115,6 +125,7 @@ export default class SettingsScreen extends React.Component {
               styles.confirmButton,
               { marginBottom: Dimensions.get("window").height * 0.1 },
             ]}
+            onPress={this.signOut}
           >
             <TextMedium style={styles.confirmText} text={"Log Out"} />
           </TouchableOpacity>
