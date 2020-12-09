@@ -19,8 +19,8 @@ import ExpandTipScreen from "./ExpandTipScreen";
 import TipItem from "../components/TipItem";
 import { allTips } from "../constants/AllTips";
 import send from "../requests/request.js";
+import { response } from "express";
 
-let username = "/tester";
 
 export default class EcoTipsScreen extends React.Component {
 
@@ -34,6 +34,23 @@ export default class EcoTipsScreen extends React.Component {
       tipSelected: {},
       visibleModal: 0,
     };
+  }
+  
+  getSavedTips = () => {
+    send("getSavedTips")
+    .then((response) => (response.json()))
+    .then((json) => {
+      // Returned data is a list of indices into the tips list
+      var saved = [];
+      for (let i = 0; i < json.length; i++) {
+        saved.push(allTips[json[i]]);
+      }
+      this.setState( { savedTips: saved, isLoaded: true })
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log("Error getting saved tips");
+    })
   }
 
   getRandomTipList = () => {
@@ -85,7 +102,22 @@ export default class EcoTipsScreen extends React.Component {
         <TipItem tip={data.tip} onPressWhole={() => this.expand(data)} />
       ));
     } else {
-      return this.state.savedTips.map((data) => <TipItem tip={data.tip} />);
+      if (!this.state.isLoaded) {
+        return (
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 24,
+            }}
+          >
+            <ActivityIndicator animating={true} colour={Colours.notice} />
+          </View>
+        );
+      } else {
+        return this.state.savedTips.map((data) => <TipItem tip={data.tip} />);
+      }
     }
   };
 
@@ -107,9 +139,16 @@ export default class EcoTipsScreen extends React.Component {
   };
 
   switchItems = (state) => {
+    const prev = this.state.generateTips;
+
     this.setState((state) => ({
       generateTips: !state.generateTips,
     }));
+
+    if (prev && !this.state.isLoaded ) {
+      this.getSavedTips();
+    }
+
   };
 
   showRefresh = () => {
