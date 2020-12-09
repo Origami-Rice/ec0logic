@@ -11,31 +11,53 @@ import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import RecipeCard from "../components/RecipeCard";
 import { Colours } from "../constants/colours.js";
+import Modal from "react-native-modal";
+import ExpandedRecipeCard from "./ExpandedRecipeCard";
 
 // NOTE: Current items array does not reflect json result from spoonacular
-export default class FoundRecipesScreen extends React.Component {
+export default class RecipeResultsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        { foodName: "Pie", description: "Yummy" },
-        { foodName: "Pie", description: "Yummy" },
-        { foodName: "Pie", description: "Yummy" },
-        { foodName: "Pie", description: "Yummy" },
-      ],
+      recipeArray: this.props.recipeArray,
+      selectedItem: {},
+      email: "",
+      visibleModal: 0,
     };
   }
 
+  // TODO: Add onPressButton as prop for saving
+  // CHANGES FROM ORIGINAL: Not passing email or resultId as props
   populateList = () => {
-    return this.state.items.map((item) => (
+    return this.state.recipeArray.map((result) => (
       <RecipeCard
-        foodName={item.foodName}
-        description={item.description}
-        imageURL={
+        onPressWhole={(result) => this.expand(result)}
+        foodName={result.title}
+        description={
+          "Preparation Time: " +
+          result.readyInMinutes +
+          " minutes" +
+          "\nServings: " +
+          result.servings
+        }
+        imageUri={
           "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg"
         }
       />
     ));
+  };
+
+  expand = (result) => {
+    this.setState({
+      selectedItem: result,
+      visibleModal: 1,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
   };
 
   render() {
@@ -49,7 +71,7 @@ export default class FoundRecipesScreen extends React.Component {
             <TextRegular style={styles.cancelText} text={"x"} />
           </TouchableOpacity>
         </View>
-        <TextMedium style={styles.header} text={"We Found 4 Recipes"} />
+        <TextMedium style={styles.header} text={this.props.heading} />
         <View style={styles.divider}></View>
         <ScrollView style={styles.listContainer}>
           {this.populateList()}
@@ -62,6 +84,24 @@ export default class FoundRecipesScreen extends React.Component {
             },
           ]}
         ></View>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <ExpandedRecipeCard
+                imageUri={
+                  "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg"
+                }
+                title={this.state.selectedItem.title}
+                recipeId={this.state.selectedItem.id}
+                onCancel={this.closeModal}
+              ></ExpandedRecipeCard>
+            </View>
+          }
+        </Modal>
       </View>
     );
   }
@@ -113,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "flex-end",
     backgroundColor: Colours.screenBackground,
-    margin: 25,
+    margin: 10,
     marginBottom: 5,
     zIndex: 1,
     ...Platform.select({
@@ -127,5 +167,19 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
+  },
+  bottomModal: {
+    justifyContent: "flex-end",
+    margin: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+  },
+  modal: {
+    backgroundColor: "white",
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
   },
 });

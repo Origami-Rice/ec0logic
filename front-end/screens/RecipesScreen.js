@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   View,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   Switch,
@@ -16,8 +17,7 @@ import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import InfoModals from "../constants/InfoModals";
 import * as Font from "expo-font";
-import SavedRecipesScreen from "./SavedRecipesScreen";
-import FoundRecipesScreen from "./FoundRecipesScreen";
+import RecipeResultsScreen from "./RecipeResultsScreen";
 import send from "../requests/request.js";
 
 const username = "/tester";
@@ -34,7 +34,13 @@ export default class RecipesScreen extends React.Component {
       isVegan: false,
       isVegetarian: false,
       isGlutenFree: false,
-      ingredient: "",
+      search: "",
+      recipeArray: [
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 1 },
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 2 },
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 3 },
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 4 },
+      ],
       visibleModal: 0,
     };
   }
@@ -95,12 +101,14 @@ export default class RecipesScreen extends React.Component {
     });
   };
 
+  // Set this.state.recipeArray
   getSavedRecipes = () => {
     this.setState({
       visibleModal: 1,
     });
   };
 
+  // Set this.state.recipeArray
   searchForRecipes = () => {
     this.setState({
       visibleModal: 3,
@@ -123,94 +131,108 @@ export default class RecipesScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.divider}></View>
-          <View>
-            <TouchableOpacity
-              style={styles.unitButton}
-              onPress={this.getSavedRecipes}
-            >
-              <TextMedium style={styles.unitText} text={"Saved Recipes"} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextRegular
-              style={styles.notice}
-              text={"Powered by Spoonacular API"}
-            />
-            <TextInput style={styles.inputFormat} placeholder="Ingredient" />
-            <View
-              style={[
-                styles.rowContainer,
-                {
-                  width: Dimensions.get("window").width * 0.8,
-                  paddingHorizontal: 0,
-                },
-              ]}
-            >
-              <TextMedium style={styles.switchText} text={"Vegan"} />
-              <Switch
-                trackColor={{
-                  false: Colours.navActiveTint,
-                  true: Colours.navInactiveTint,
-                }}
-                thumbColor={Colours.borderedComponentFill}
-                style={{ marginRight: 10, alignSelf: "center" }}
-                value={this.state.isVegan}
-                onValueChange={this.toggleVegan}
+          <ScrollView>
+            <View>
+              <TouchableOpacity
+                style={styles.unitButton}
+                onPress={this.getSavedRecipes}
+              >
+                <TextMedium style={styles.unitText} text={"Saved Recipes"} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextRegular
+                style={styles.notice}
+                text={"Powered by Spoonacular API"}
               />
+              <TextInput
+                style={styles.inputFormat}
+                placeholder="Ingredient"
+                onChangeText={(text) => this.setState({ search: text })}
+              />
+              <TextRegular
+                style={[styles.notice, { marginTop: 0 }]}
+                text={"Separate ingredients by commas or spaces"}
+              />
+              <View
+                style={[
+                  styles.rowContainer,
+                  {
+                    width: Dimensions.get("window").width * 0.8,
+                    paddingHorizontal: 0,
+                  },
+                ]}
+              >
+                <TextMedium style={styles.switchText} text={"Vegan"} />
+                <Switch
+                  trackColor={{
+                    false: Colours.navActiveTint,
+                    true: Colours.navInactiveTint,
+                  }}
+                  thumbColor={Colours.borderedComponentFill}
+                  style={{ marginRight: 10, alignSelf: "center" }}
+                  value={this.state.isVegan}
+                  onValueChange={this.toggleVegan}
+                />
+              </View>
+              <View
+                style={[
+                  styles.rowContainer,
+                  {
+                    width: Dimensions.get("window").width * 0.8,
+                    paddingHorizontal: 0,
+                  },
+                ]}
+              >
+                <TextMedium style={styles.switchText} text={"Vegetarian"} />
+                <Switch
+                  trackColor={{
+                    false: Colours.navActiveTint,
+                    true: Colours.navInactiveTint,
+                  }}
+                  thumbColor={Colours.borderedComponentFill}
+                  style={{ marginRight: 10, alignSelf: "center" }}
+                  value={this.state.isVegetarian}
+                  onValueChange={this.toggleVegetarian}
+                />
+              </View>
+              <View
+                style={[
+                  styles.rowContainer,
+                  {
+                    width: Dimensions.get("window").width * 0.8,
+                    paddingHorizontal: 0,
+                  },
+                ]}
+              >
+                <TextMedium style={styles.switchText} text={"Gluten-Free"} />
+                <Switch
+                  trackColor={{
+                    false: Colours.navActiveTint,
+                    true: Colours.navInactiveTint,
+                  }}
+                  thumbColor={Colours.borderedComponentFill}
+                  style={{ marginRight: 10, alignSelf: "center" }}
+                  value={this.state.isGlutenFree}
+                  onValueChange={this.toggleGlutenFree}
+                />
+              </View>
             </View>
             <View
-              style={[
-                styles.rowContainer,
-                {
-                  width: Dimensions.get("window").width * 0.8,
-                  paddingHorizontal: 0,
-                },
-              ]}
+              style={{
+                justifyContent: "flex-end",
+                zIndex: -1,
+                marginBottom: 25,
+              }}
             >
-              <TextMedium style={styles.switchText} text={"Vegetarian"} />
-              <Switch
-                trackColor={{
-                  false: Colours.navActiveTint,
-                  true: Colours.navInactiveTint,
-                }}
-                thumbColor={Colours.borderedComponentFill}
-                style={{ marginRight: 10, alignSelf: "center" }}
-                value={this.state.isVegetarian}
-                onValueChange={this.toggleVegetarian}
-              />
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={this.searchForRecipes}
+              >
+                <TextMedium style={styles.confirmText} text={"Find Recipes"} />
+              </TouchableOpacity>
             </View>
-            <View
-              style={[
-                styles.rowContainer,
-                {
-                  width: Dimensions.get("window").width * 0.8,
-                  paddingHorizontal: 0,
-                },
-              ]}
-            >
-              <TextMedium style={styles.switchText} text={"Gluten-Free"} />
-              <Switch
-                trackColor={{
-                  false: Colours.navActiveTint,
-                  true: Colours.navInactiveTint,
-                }}
-                thumbColor={Colours.borderedComponentFill}
-                style={{ marginRight: 10, alignSelf: "center" }}
-                value={this.state.isGlutenFree}
-                onValueChange={this.toggleGlutenFree}
-              />
-            </View>
-          </View>
-        </View>
-        <View
-          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
-        >
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={this.searchForRecipes}
-          >
-            <TextMedium style={styles.confirmText} text={"Find Recipes"} />
-          </TouchableOpacity>
+          </ScrollView>
         </View>
         <Modal
           isVisible={this.state.visibleModal === 1}
@@ -219,9 +241,11 @@ export default class RecipesScreen extends React.Component {
         >
           {
             <View style={styles.modal}>
-              <SavedRecipesScreen
+              <RecipeResultsScreen
                 onCancel={this.closeModal}
-              ></SavedRecipesScreen>
+                heading={"Your Saved Recipes"}
+                recipeArray={this.state.recipeArray}
+              ></RecipeResultsScreen>
             </View>
           }
         </Modal>
@@ -232,9 +256,13 @@ export default class RecipesScreen extends React.Component {
         >
           {
             <View style={styles.modal}>
-              <FoundRecipesScreen
+              <RecipeResultsScreen
                 onCancel={this.closeModal}
-              ></FoundRecipesScreen>
+                heading={
+                  "We Found " + this.state.recipeArray.length + " Recipes"
+                }
+                recipeArray={this.state.recipeArray}
+              ></RecipeResultsScreen>
             </View>
           }
         </Modal>
