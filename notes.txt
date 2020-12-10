@@ -104,3 +104,9 @@ TO DO:
 - create .env file for session secret???
 - figure out what the final database will be for the sessions
   and how to use the sessions and cookies
+
+
+Dec. 4th:
+- make names consistent, change anything that says login to signin
+- choose either one of lastname or surname and make the naming of
+  the variables consistent

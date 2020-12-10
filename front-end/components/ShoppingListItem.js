@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useFonts } from "expo-font";
-import { AppLoading } from "expo";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import TextRegular from "./TextRegular";
+import TextMedium from "./TextMedium";
+import { Colours } from "../constants/colours.js";
 
 const ShoppingListItem = (props) => {
-  // Note: if test = "" the empty string, "Bananas" will be centered
-  let test = "Quantity: 5";
-  let [fontsLoaded] = useFonts({
-    Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
-    Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  });
   const [checked, setChecked] = useState(props.checkedOff || false);
   const index = props.index;
   const quantity = props.quantity;
@@ -23,47 +19,43 @@ const ShoppingListItem = (props) => {
 
   const displayQuantity = () => {
     if (quantity !== 0) {
-      return ("Quantity: " + quantity + " " + units);
-    } else {
-      return "";
+      return (
+        <TextRegular
+          style={
+            checked
+              ? [styles.textInfo, { color: Colours.navInactiveTint }]
+              : [styles.textInfo, { color: Colours.tint }]
+          }
+          text={`Quantity: ${quantity} ${units}`}
+        />
+      );
     }
-  }
+  };
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <View style={styles.listItem}>
-        <View style={styles.checkFlex}>
-          <TouchableOpacity
-            style={styles.checkbox}
-            onPress={handlePress}
-          ></TouchableOpacity>
-        </View>
-        <View style={styles.textGroup}>
-          <Text
-            style={
-              checked
-                ? [styles.textItem, { color: "#BDBDBD" }]
-                : [styles.textItem, { color: "#000000" }]
-            }
-          >
-            {props.item}
-          </Text>
-          {/* TODO: check if props.quantity is a certain value, change to "" if no quantity */}
-          <Text
-            style={
-              checked
-                ? [styles.textInfo, { color: "#BDBDBD" }]
-                : [styles.textInfo, { color: "#000000" }]
-            }
-          >
-            {displayQuantity()}
-          </Text>
-        </View>
+  return (
+    <TouchableOpacity style={styles.listItem} onPress={props.onPress}>
+      <View style={styles.checkFlex}>
+        <TouchableOpacity style={styles.checkbox} onPress={handlePress}>
+          <MaterialIcons
+            name="check"
+            size={24}
+            color={checked ? Colours.tint : Colours.filledButton}
+          />
+        </TouchableOpacity>
       </View>
-    );
-  }
+      <View style={styles.textGroup}>
+        <TextMedium
+          style={
+            checked
+              ? [styles.textItem, { color: Colours.navInactiveTint }]
+              : [styles.textItem, { color: Colours.tint }]
+          }
+          text={props.item}
+        />
+        {displayQuantity()}
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -75,10 +67,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     borderWidth: 1,
+    borderColor: Colours.tint,
+    backgroundColor: Colours.borderedComponentFill,
     alignSelf: "center",
     marginVertical: 8.5,
   },
-
   textGroup: {
     flexDirection: "column",
     alignItems: "flex-start",
@@ -86,25 +79,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 10,
   },
-
   checkFlex: {
     flexDirection: "column",
     justifyContent: "center",
     marginLeft: 10,
   },
-
   textInfo: {
     marginLeft: 10,
     fontSize: 11,
-    fontFamily: "Montserrat_400Regular",
   },
-
   textItem: {
     marginLeft: 10,
     fontSize: 14,
-    fontFamily: "Montserrat_500Medium",
   },
-
   checkbox: {
     width: 25,
     height: 25,
@@ -113,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignSelf: "flex-end",
-    backgroundColor: "#DDDDDD",
+    backgroundColor: Colours.filledButton,
   },
 });
 

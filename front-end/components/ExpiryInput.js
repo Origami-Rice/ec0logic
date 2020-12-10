@@ -1,5 +1,6 @@
 import React from "react";
 import { TextInput, View, StyleSheet, Dimensions } from "react-native";
+import { Colours } from "../constants/colours.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
@@ -9,16 +10,16 @@ let customFonts = {
 };
 
 let months = {
-  'January': 0,
-  'February': 1,
-  'March': 2,
-  'April': 3,
-  'May': 4,
-  'June': 5,
-  'July': 6,
-  'August': 7,
-  'September': 8,
-  'October': 9,
+  January: 0,
+  February: 1,
+  March: 2,
+  April: 3,
+  May: 4,
+  June: 5,
+  July: 6,
+  August: 7,
+  September: 8,
+  October: 9,
   November: 10,
   December: 11,
 };
@@ -62,10 +63,11 @@ export default class ExpiryInput extends React.Component {
     const newDate = new Date(
       this.state.expiryDate.getFullYear(),
       this.state.expiryDate.getMonth(),
-      parseInt(text));
+      parseInt(text)
+    );
 
     this.setState({
-      expiryDate: newDate
+      expiryDate: newDate,
     });
     // Send info back to parent
     const { setParentExpiry } = this.props;
@@ -80,13 +82,12 @@ export default class ExpiryInput extends React.Component {
     );
 
     this.setState({
-      expiryDate: newDate
+      expiryDate: newDate,
     });
 
     // Send info back to parent
     const { setParentExpiry } = this.props;
     setParentExpiry(newDate);
-
   };
 
   render() {
@@ -121,14 +122,14 @@ export default class ExpiryInput extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Day"
-            keyboardType='number-pad'
+            keyboardType="number-pad"
             value={this.state.expiryDate.getDate().toString()}
             onChangeText={(text) => this.onChangeDay(text)}
           />
           <TextInput
             style={styles.inputFormat}
             placeholder="Year"
-            keyboardType='number-pad'
+            keyboardType="number-pad"
             onChangeText={(text) => this.onChangeYear(text)}
             value={this.state.expiryDate.getFullYear().toString()}
           />
@@ -149,39 +150,36 @@ const styles = StyleSheet.create({
     margin: 5,
     zIndex: 2500,
   },
-
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 11,
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
+    color: Colours.tint,
     zIndex: 2500,
   },
-
   dropContainer: {
     width: Dimensions.get("window").width * 0.3,
     height: 31,
-    borderColor: "black",
+    borderColor: Colours.tint,
     borderWidth: 1,
     zIndex: 2500,
   },
-
   dropArrow: {
     height: 19,
     flexDirection: "row",
     justifyContent: "flex-start",
     zIndex: 2500,
   },
-
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
-    color: "#000000",
+    color: Colours.tint,
     zIndex: 2500,
   },
 });

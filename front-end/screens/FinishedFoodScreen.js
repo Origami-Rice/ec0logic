@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Text,
   View,
   ScrollView,
   StyleSheet,
@@ -9,14 +8,12 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import Constants from "expo-constants";
+import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class FinishedFoodScreen extends React.Component {
@@ -30,6 +27,7 @@ export default class FinishedFoodScreen extends React.Component {
       unitsOfMeasure: item.unitsOfMeasure,
       expiryDate: item.expiryDate,
       quantityToRemove: "0",
+      fontsLoaded: false,
     };
   }
 
@@ -68,7 +66,7 @@ export default class FinishedFoodScreen extends React.Component {
       this.props.navigation.navigate("List", {
         screen: "Inventory",
         params: { new_item: newItem },
-      }); 
+      });
     }
   };
 
@@ -90,17 +88,18 @@ export default class FinishedFoodScreen extends React.Component {
       >
         <View style={styles.container}>
           <View style={{ justifyContent: "flex-start" }}>
-            <Text style={styles.header}>{this.state.name}</Text>
-            <Text style={styles.label}>
-              Enter the amount that you finished:
-            </Text>
+            <TextMedium style={styles.header} text={this.state.name} />
+            <TextMedium
+              style={styles.label}
+              text={"Enter the amount that you finished:"}
+            />
             <View style={styles.inputWithDetails}>
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.inputFormat}
                   placeholder="Amount"
                   keyboardType="decimal-pad"
-                  returnKeyType='done'
+                  returnKeyType="done"
                   onChangeText={(text) =>
                     this.setState({ quantityToRemove: text })
                   }
@@ -111,15 +110,18 @@ export default class FinishedFoodScreen extends React.Component {
                     justifyContent: "center",
                   }}
                 >
-                  <Text style={styles.unitText}>
-                    {this.state.unitsOfMeasure}
-                  </Text>
+                  <TextMedium
+                    style={styles.unitText}
+                    text={this.state.unitsOfMeasure}
+                  />
                 </View>
               </View>
-              <Text style={[styles.notice, { color: "#BDBDBD" }]}>
-                You had {this.state.quantity} {this.state.unitsOfMeasure}{" "}
-                remaining.
-              </Text>
+              <TextMedium
+                style={[styles.notice, { color: Colours.notice }]}
+                text={`You had ${this.state.quantity} ${
+                  this.state.unitsOfMeasure
+                }${" "}remaining.`}
+              />
             </View>
           </View>
           <View style={{ justifyContent: "flex-end", flex: 1 }}>
@@ -127,13 +129,13 @@ export default class FinishedFoodScreen extends React.Component {
               style={styles.confirmButton}
               onPress={this.updateQuantity}
             >
-              <Text style={styles.confirmText}>Confirm Update</Text>
+              <TextMedium style={styles.confirmText} text={"Confirm Update"} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.confirmButton, { marginBottom: 25 }]}
               onPress={this.handleCancel}
             >
-              <Text style={styles.confirmText}>Cancel</Text>
+              <TextMedium style={styles.confirmText} text={"Cancel"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
   },
@@ -166,31 +168,31 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 24,
+    color: Colours.tint,
     marginTop: 40,
   },
   label: {
     textAlign: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
     marginBottom: 5,
     marginTop: 40,
   },
   notice: {
     width: Dimensions.get("window").width * 0.8,
     textAlign: "left",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 10,
     marginHorizontal: 10,
   },
   inputFormat: {
     width: Dimensions.get("window").width * 0.4,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     marginHorizontal: 10,
@@ -199,13 +201,13 @@ const styles = StyleSheet.create({
   },
   unitText: {
     textAlign: "left",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 12,
+    color: Colours.tint,
   },
   confirmText: {
     textAlign: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
   },
   confirmButton: {
     width: 148,
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     marginVertical: 15,
     ...Platform.select({
       ios: {

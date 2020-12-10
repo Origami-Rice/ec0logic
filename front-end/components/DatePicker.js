@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, Platform, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Platform, TouchableOpacity, Dimensions } from "react-native";
+import TextRegular from "./TextRegular";
+import { Colours } from "../constants/colours.js";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function DatePicker(props) {
-  const [date, setDate] = useState(props.default || new Date());
+  const [date, setDate] = useState(props.defaultDate || new Date());
   const [show, setShow] = useState(Platform.OS === "ios");
 
   const onChange = (event, selectedDate) => {
@@ -25,12 +27,15 @@ export default function DatePicker(props) {
           <TouchableOpacity
             style={{
               alignItems: "center",
-              backgroundColor: "#DDDDDD",
+              backgroundColor: Colours.listButton,
               padding: 10,
             }}
             onPress={showDatepicker}
           >
-            <Text>{date.toDateString()}</Text>
+            <TextRegular
+              style={{ colour: Colours.tint }}
+              text={date.toDateString()}
+            ></TextRegular>
           </TouchableOpacity>
         )}
       </View>
@@ -39,18 +44,11 @@ export default function DatePicker(props) {
           testID="dateTimePicker"
           value={date}
           mode="date"
-          minimumDate={new Date()}
           display="default"
           onChange={onChange}
           style={{ width: Dimensions.get("window").width }}
         />
       )}
-      {Platform.OS === "ios" && (
-        <Text style={{ textAlign: "center" }}>{date.toString()}</Text>
-      )}
-      {
-        //TODO: Remove after styling
-      }
     </View>
   );
 }

@@ -1,8 +1,8 @@
-// Temporary file used to create simple user documents in the database for testing
-// Will be replaced with the file from the code provided by our partner.
+// Contains the routes for authenticating and creating users.
 const bodyParser = require("body-parser");
 const crypto = require("crypto");
 const express = require("express");
+const cookie = require("cookie");
 const router = express.Router();
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -14,6 +14,9 @@ const {
     update_email,
     update_password
 } = require('../dataAccess/userData')
+
+// How long to save the session cookie in days
+const cookieDays = 2; 
 
 router
     .route("/signup")
@@ -40,8 +43,7 @@ router
         let password = request.body.password;
         let email = request.body.email;
         let firstname = request.body.firstname;
-        let surname = request.body.surname;
-        console.log(request.body); // ????????????????????????????????????????????????
+        let lastname = request.body.lastname;
 
         // Salt and hash the password
         let salt = crypto.randomBytes(16).toString("base64");
@@ -52,17 +54,17 @@ router
 
         // Add a new user to the database
         try {
-            const user = await add_user(username, email, password, salt, firstname, surname);
+            const user = await add_user(username, email, password, salt, firstname, lastname);
 
             if (user) {
                 // Store the user's username in the session
                 request.session.username = username;
-                // Attach the cookie to the response
+                // Attach a cookie to the response
                 response.setHeader(
                     "Set-Cookie",
                     cookie.serialize("username", username, {
                         path: "/",
-                        maxAge: 60 * 60 * 24 * 0.1 // 0.1 days  ????????????????????????????????????????????????????????????????????????????
+                        maxAge: 60 * 60 * 24 * cookieDays // days in seconds
                     })
                 );
                 // Return the response
@@ -80,26 +82,6 @@ router
         }
     });
 
-
-// router
-//     .route('/newuser')
-//     .post(async (request, response) => {
-//         console.log('POST request to path /api/users/newuser');
-//         const username = request.body.username;
-//         try {
-//             const user = await add_user(username);
-
-//             if (user) {
-//                 return response
-//                     .status(200)
-//                     .json({ success: "user " + username + " added" });
-//             }
-//             return response.status(500).json({ error: "Internal server error" });
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     })
-
 router
     .route("/signin")
     .post(async (request, response) => {
@@ -116,7 +98,7 @@ router
             if (!user) { // Could not find the user in the database
                return response
                    .status(409)
-                   .json({ error: "Username or password is incorrect." });
+                   .json({ error: "User with this username does not exist." });
             }
 
             // A user with the given username exists
@@ -139,12 +121,13 @@ router
             
             // Store the user's username in the session
             request.session.username = username;
-            // Attach the cookie to the response
+            console.log(request.session);
+            // Attach a cookie to the response
             response.setHeader(
                 "Set-Cookie",
                 cookie.serialize("username", username, {
                     path: "/",
-                    maxAge: 60 * 60 * 24 * 0.1 // 0.1 days ????????????????????????????????????????????????????????????????????????????
+                    maxAge: 60 * 60 * 24 * cookieDays // days in seconds
                 })
             );
 
@@ -156,11 +139,11 @@ router
         }
     });
 
-// MAY BE NEEDED LATER ONCE THE SESSION STUFF IS FIGURED OUT ?????????????????????????????????????????
 router
     .route("/isauthenticated")
     .get(async (request, response) => {
-        // Description: 
+        // Description: Checks whether there is a valid user session active
+        console.log("GET request to path /api/users/isauthenticated");
         if (request.session.username) {
             try {
                 const user = await find_user_by_username(request.session.username);
@@ -175,29 +158,20 @@ router
             .json({ isauth: false, username: null, firstname: null });
     });
 
-    // router.get("/isauthenticated", async function(req, res) {
-//     if (req.session.username) {
-//         const user = await find_user_by_username(req.session.username);
-//         console.log(user);
-//         return res.json({isauth: true, username: req.session.username, firstname: user.name, experience: user.experience});
-//     }
-//     return res.json({ isauth: false, username: null, firstname: null });
-// });
-
 router
     .route("/signout")
     .post(async (request, response) => {
-        // Description: Destroys the user's current session
+        // Description: Destroys the user's current session.
         console.log("POST request to path /api/users/signout");
         
         // Destroys the current session
         request.session.destroy();
-        // Set a cookie / why ??????????????????????????????????????????????????????????????????
+        // Set a cookie / why / idk if this is needed tbh ??????????????????????????????????????????????????????????????????
         response.setHeader(
             "Set-Cookie",
             cookie.serialize("username", "", {
                 path: "/",
-                maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+                maxAge: 60 * 60 * 24 * cookieDays // days in seconds
             })
         );
         console.log("Latest session", request.session);
@@ -210,7 +184,8 @@ router
 router
     .route("/email/:username")
     .patch(async (request, response) => {
-        // Description:
+        // Description: Update the user's email with the new email passed
+        // in the body of the request.
         console.log("PATCH request to path /api/users/email/:username");
         
         // assign the username passed to the endpoint to a variable
@@ -237,7 +212,8 @@ router
 router
     .route("/password/:username")
     .patch(async (request, response) => {
-        // Description: 
+        // Description: Update the user's password with the new password
+        // provided in the body of the request.
         console.log("PATCH request to path /api/users/password/:username");
 
         // Salt and hash the new password
@@ -248,9 +224,10 @@ router
         let saltedHash = hash.digest("base64");
         password = saltedHash;
 
-        // Update the password
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
+        
+        // Update the password
         try {
             const result = await update_password(username, password, salt);
             if (result && result.modifiedCount) { // Maybe remove modifiedCount check??????????????????
@@ -265,7 +242,6 @@ router
             console.log(error);
         }
     });
-
 
 router
     .route('/deleteuser')

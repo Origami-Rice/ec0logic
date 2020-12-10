@@ -1,0 +1,6 @@
+{
+    "mongo": {
+        "user": "wasteless_admin",
+        "password": "csc301"
+    }
+}

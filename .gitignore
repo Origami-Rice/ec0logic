@@ -1,0 +1,17 @@
+front-end/node_modules/**/*
+node_modules
+front-end/.expo/*
+front-end/npm-debug.*
+front-end/*.jks
+front-end/*.p8
+front-end/*.p12
+front-end/*.key
+front-end/*.mobileprovision
+front-end/*.orig.*
+front-end/web-build/
+
+# macOS
+front-end/.DS_Store
+
+# misc
+yarn.lock
