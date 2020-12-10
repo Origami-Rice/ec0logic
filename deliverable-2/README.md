@@ -125,9 +125,9 @@ The specific steps that we took to set this up are as follows:
 1. In Git repository:
    - Make a new file called “Procfile” with line <ins>web: node ./back-end/start.js</ins>
    - In package.json add <ins>"heroku-postbuild": "npm install"</ins> to “scripts”
-1. Create a new app on Heroku.
-1. Set our Heroku deployment method as GitHub.
-1. Connect to Github repository and set up automatic deployment for the master branch.
+2. Create a new app on Heroku.
+3. Set our Heroku deployment method as GitHub.
+4. Connect to Github repository and set up automatic deployment for the master branch.
 
 Heroku will redeploy the backend application every time someone pushes to master. This way, we can interact with our database without having to create a local server on our computers. This also makes it more straightforward to make API requests from the frontend.
 
