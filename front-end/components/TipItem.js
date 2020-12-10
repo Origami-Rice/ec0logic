@@ -8,7 +8,7 @@ const TipItem = (props) => {
     <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
       <TextRegular style={styles.textInfo} text={props.tip} numberOfLines={2} />
       <View style={styles.checkFlex}>
-        <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+        <TouchableOpacity style={styles.checkbox} onPress={props.onPressCheck}></TouchableOpacity>
       </View>
     </TouchableOpacity>
   );

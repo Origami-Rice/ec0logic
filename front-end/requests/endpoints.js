@@ -88,17 +88,17 @@ const endpoints = {
 
     // Tips
     addTip: {
-        endpoint: 'api/tips/add',
+        endpoint: '/api/tips/add',
         method: 'POST',
     },
 
     deleteTip: {
-        endpoint: 'api/tips/delete',
+        endpoint: '/api/tips/delete',
         method: 'POST',
     },
     
     getSavedTips: {
-        endpoint: 'api/tips',
+        endpoint: '/api/tips',
         method: 'GET',
     },
 }

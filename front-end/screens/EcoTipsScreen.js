@@ -19,10 +19,13 @@ import ExpandTipScreen from "./ExpandTipScreen";
 import TipItem from "../components/TipItem";
 import { allTips } from "../constants/AllTips";
 import send from "../requests/request.js";
-import { response } from "express";
+
+import { AuthContext } from '../AuthContext';
 
 
 export default class EcoTipsScreen extends React.Component {
+
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
@@ -37,13 +40,14 @@ export default class EcoTipsScreen extends React.Component {
   }
   
   getSavedTips = () => {
-    send("getSavedTips")
-    .then((response) => (response.json()))
+    console.log(this.context.user);
+    send("getSavedTips", {}, "/" + this.context.user)
+    .then((response) => response.json())
     .then((json) => {
       // Returned data is a list of indices into the tips list
       var saved = [];
       for (let i = 0; i < json.length; i++) {
-        saved.push(allTips[json[i]]);
+        saved.push(allTips[json[i] - 1]); // Subtract since their indices start at 1
       }
       this.setState( { savedTips: saved, isLoaded: true })
     })
@@ -99,7 +103,10 @@ export default class EcoTipsScreen extends React.Component {
     // Dynamically
     if (this.state.generateTips) {
       return this.state.tipList.map((data) => (
-        <TipItem tip={data.tip} onPressWhole={() => this.expand(data)} />
+        <TipItem 
+          key={data.num} tip={data.tip} 
+          onPressWhole={() => this.expand(data)}
+          onPressCheck={() => this.save(data.num) } />
       ));
     } else {
       if (!this.state.isLoaded) {
@@ -128,8 +135,13 @@ export default class EcoTipsScreen extends React.Component {
     });
   };
 
-  save = () => {
-    //TODO: Save tip
+  save = (tipNum) => {
+    send("addTip", {}, `/${this.context.user}/${tipNum}`)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+    })
+
   };
 
   closeModal = () => {
@@ -141,13 +153,14 @@ export default class EcoTipsScreen extends React.Component {
   switchItems = (state) => {
     const prev = this.state.generateTips;
 
+    if (prev && !this.state.isLoaded ) {
+      this.getSavedTips();
+      console.log("getting saved tips");
+    }
+
     this.setState((state) => ({
       generateTips: !state.generateTips,
     }));
-
-    if (prev && !this.state.isLoaded ) {
-      this.getSavedTips();
-    }
 
   };
 
@@ -293,7 +306,7 @@ export default class EcoTipsScreen extends React.Component {
               <ExpandTipScreen
                 tip={this.state.tipSelected.tip}
                 onCancel={this.closeModal}
-                onSave={() => this.save(this.state.tipSelected)}
+                onSave={() => this.save(this.state.tipSelected.num)}
               ></ExpandTipScreen>
             </View>
           }
