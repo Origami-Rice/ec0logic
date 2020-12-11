@@ -20,6 +20,8 @@ import * as Font from "expo-font";
 import RecipeResultsScreen from "./RecipeResultsScreen";
 import send from "../requests/request.js";
 
+import { AuthContext } from '../AuthContext';
+
 const username = "/tester";
 
 let customFonts = {
@@ -27,6 +29,8 @@ let customFonts = {
 };
 
 export default class RecipesScreen extends React.Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,12 +39,18 @@ export default class RecipesScreen extends React.Component {
       isVegetarian: false,
       isGlutenFree: false,
       search: "",
-      recipeArray: [
+      recipeSearchResult: [
         { title: "Pie", readyInMinutes: "5", servings: "6", id: 1 },
         { title: "Pie", readyInMinutes: "5", servings: "6", id: 2 },
         { title: "Pie", readyInMinutes: "5", servings: "6", id: 3 },
         { title: "Pie", readyInMinutes: "5", servings: "6", id: 4 },
       ],
+      savedRecipes: [
+        { title: "Pie", readyInMinutes: "5", servings: "6", id: 1, 
+          image: "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg" 
+        }
+      ],
+      imageSourceBase: "",
       visibleModal: 0,
     };
   }
@@ -108,11 +118,46 @@ export default class RecipesScreen extends React.Component {
     });
   };
 
+  search = () => {
+    if (this.state.search.trim() == "") {
+      alert("Enter at least 1 ingredient to start searching.");
+      return;
+    }
+    // Separating search 
+    let searchQuery = this.state.search.trim();
+    console.log("[Recipe Search]", searchQuery);
+
+    const diet = this.state.isVegan? "vegan" : this.state.isVegetarian? "vegetarian" : "";
+    const intolerances = this.state.isGlutenFree? "gluten" : "";
+
+    const data = {
+      query: searchQuery,
+      diet: diet,
+      intolerances: intolerances,
+    }
+
+    send("searchRecipes", data)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({ 
+        recipeSearchResult: json.results, 
+        imageSourceBase: json.baseUri,
+        visibleModal: 3, 
+      });
+      // TODO: activitiy indicator for loading
+      console.log("[Search Results]", json.results);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
   // Set this.state.recipeArray
   searchForRecipes = () => {
-    this.setState({
-      visibleModal: 3,
-    });
+    this.search();
+    // this.setState({
+    //   visibleModal: 3,
+    // });
   };
 
   render() {
@@ -244,7 +289,7 @@ export default class RecipesScreen extends React.Component {
               <RecipeResultsScreen
                 onCancel={this.closeModal}
                 heading={"Your Saved Recipes"}
-                recipeArray={this.state.recipeArray}
+                recipeArray={this.state.savedRecipes}
               ></RecipeResultsScreen>
             </View>
           }
@@ -259,9 +304,11 @@ export default class RecipesScreen extends React.Component {
               <RecipeResultsScreen
                 onCancel={this.closeModal}
                 heading={
-                  "We Found " + this.state.recipeArray.length + " Recipes"
+                  "We Found " + this.state.recipeSearchResult.length + " Recipes"
                 }
-                recipeArray={this.state.recipeArray}
+                recipeArray={this.state.recipeSearchResult}
+                imageSource={this.state.imageSourceBase}
+                username={this.context.user}
               ></RecipeResultsScreen>
             </View>
           }

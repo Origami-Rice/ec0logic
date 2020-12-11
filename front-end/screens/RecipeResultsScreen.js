@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
+  Linking
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
@@ -13,6 +14,8 @@ import RecipeCard from "../components/RecipeCard";
 import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import ExpandedRecipeCard from "./ExpandedRecipeCard";
+import * as WebBrowser from 'expo-web-browser';
+import { json } from "body-parser";
 
 // NOTE: Current items array does not reflect json result from spoonacular
 export default class RecipeResultsScreen extends React.Component {
@@ -21,8 +24,9 @@ export default class RecipeResultsScreen extends React.Component {
     this.state = {
       recipeArray: this.props.recipeArray,
       selectedItem: {},
-      email: "",
+      // email: "",
       visibleModal: 0,
+      imageSource: this.props.imageSource,
     };
   }
 
@@ -31,7 +35,9 @@ export default class RecipeResultsScreen extends React.Component {
   populateList = () => {
     return this.state.recipeArray.map((result) => (
       <RecipeCard
-        onPressWhole={(result) => this.expand(result)}
+        key={result.id}
+        onPressWhole={() => this.expand(result)}
+        onPressButton={() => this.save(result)}
         foodName={result.title}
         description={
           "Preparation Time: " +
@@ -41,18 +47,32 @@ export default class RecipeResultsScreen extends React.Component {
           result.servings
         }
         imageUri={
-          "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg"
+          this.state.imageSource + result.image
         }
       />
     ));
   };
 
   expand = (result) => {
-    this.setState({
-      selectedItem: result,
-      visibleModal: 1,
-    });
+    console.log("Opening external link...", result.sourceUrl);
+    // this.setState({
+    //   selectedItem: result,
+    //   visibleModal: 1,
+    // });
+    WebBrowser.openBrowserAsync(result.sourceUrl);
+    // Linking.openURL(result.sourceUrl);
   };
+
+  save = (recipe) => {
+    // TODO: save recipe to user's saved
+    send("addRecipe", recipe, '/' + this.props.username)
+    .then(response => response.json())
+    .then(json => {
+      alert("Recipe has been saved.");
+      console.log(json);
+    })
+    .catch(error => console.log(error));
+  }
 
   closeModal = () => {
     this.setState({
@@ -93,10 +113,12 @@ export default class RecipeResultsScreen extends React.Component {
             <View style={styles.modal}>
               <ExpandedRecipeCard
                 imageUri={
-                  "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg"
+                  this.state.imageSource + this.state.selectedItem.image
                 }
-                title={this.state.selectedItem.title}
-                recipeId={this.state.selectedItem.id}
+                // title={this.state.selectedItem.title}
+                // recipeId={this.state.selectedItem.id}
+                // recipeSource={this.state.selectedItem.sourceUrl}
+                recipeInfo={this.state.selectedItem}
                 onCancel={this.closeModal}
               ></ExpandedRecipeCard>
             </View>

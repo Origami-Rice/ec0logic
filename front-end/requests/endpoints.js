@@ -101,6 +101,17 @@ const endpoints = {
         endpoint: '/api/tips',
         method: 'GET',
     },
+
+    // Recipes
+    searchRecipes: {
+        endpoint: '/api/recipe/search',
+        method: 'POST',
+    },
+
+    addRecipe: {
+        endpoint: '',
+        method: 'POST',
+    }
 }
 
 export default endpoints;

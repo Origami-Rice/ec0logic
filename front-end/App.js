@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, LogBox } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -69,9 +69,9 @@ export default function App (props) {
           if (result.status === 200) {
             result.json().then(json => {
               console.log(json);
-              console.log('Logged in as', json.username);
+              console.log('Logged in as', data.username);
               setIsLoggedIn(true);
-              setUser(json.username);
+              setUser(data.username);
               console.log("SIGN_IN auth:", isLoggedIn);
             }).catch(err => {
               console.log('JSON parse error');
@@ -148,6 +148,7 @@ export default function App (props) {
     return (
       <AuthContext.Provider value={{authContext, user: user}} style={styles.container}>
         <View style={styles.container}>
+        {/* {LogBox.ignoreAllLogs() } */}
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>

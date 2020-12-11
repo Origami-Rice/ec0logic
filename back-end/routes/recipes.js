@@ -7,7 +7,7 @@ router.use(bodyParser.json());
 const fetch = require("node-fetch");
 
 
-const api_key = "1beca095b4c44b54b6861b16e89a2f63";
+const api_key = "df34cd7a9a35436caa66b3c8e81457fe";
 
 const {
     get_saved_recipes, add_recipe_to_saved_recipes
@@ -15,7 +15,7 @@ const {
 
 router
     .route('/search')
-    .get(async (request, response) => {
+    .post(async (request, response) => {
         console.log('GET request to path /api/recipe/search');
         const query = request.body.query;
         const diet = request.body.diet;
@@ -33,6 +33,7 @@ router
         fetch(url)
         .then((response) => {
             return response.json();
+            
         })
         .then((data) => {
             response.status(200).send(data);
