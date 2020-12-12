@@ -16,7 +16,7 @@ const test_food_1 = {
 
 // Setup and Teardown 
 beforeAll(async () => {
-    return await add_user(name);
+    return await add_user(name, "password", "anEmail@gmail.com", "", "firstName", "lastName");
 });
 
 afterAll(async () => {
@@ -33,7 +33,7 @@ describe("access and update food library", () => {
         expect(response.body).not.toEqual([]);
     });
 
-    test("successfully added item to food-library", async () => {
+    /*test("successfully added item to food-library", async () => {
         url = "/api/food-library";
         const response = await request
             .post(url)
@@ -42,6 +42,6 @@ describe("access and update food library", () => {
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "test_food_1 added with shelf life: 18 days"});
-    });
+    });*/
     
 }); 

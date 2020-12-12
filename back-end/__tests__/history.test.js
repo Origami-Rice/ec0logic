@@ -37,7 +37,7 @@ const item2 = { // will be added twice to wasted items history
 /////////////////// Setup and Teardown ///////////////////
 beforeAll(async () => {
     // create a test user in the database
-    return await add_user(name);
+    return await add_user(name, "password", "anEmail@gmail.com", "", "firstName", "lastName");
 });
 
 afterAll(async () => {

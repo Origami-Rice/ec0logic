@@ -17,22 +17,6 @@ const shoppingItem1 = {
     }
 }
 
-const shoppingItem2 = {
-    "item2": {
-        "name": "Pizza",
-        "quantity": 1,
-        "checked_off": true 
-    }
-}
-
-const shoppingItem3 = {
-    "item1": {
-        "name": "",
-        "quantity": 1,
-        "checked_off": false 
-    }
-}
-
 const shoppingList = 
     [
         {
@@ -49,7 +33,7 @@ const shoppingList =
 
 // Setup and Teardown 
 beforeAll(async () => {
-    return await add_user(name);
+    return await add_user(name, "password", "anEmail@gmail.com", "", "firstName", "lastName");
 });
 
 afterAll(async () => {
@@ -105,15 +89,4 @@ describe("access and update shopping list", () => {
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "item Pizza deleted." });
     });
-    
-    /*test("rejects items with no name", async() => {
-        url = "/api/shoppingList/" + name;
-        const response = await request
-            .post(url)
-            .set("Accept", "application/json")
-            .send(shoppingItem3);
-
-        expect(response.status).toBe(404);
-        expect(response.body).toEqual({"error": "Item could not be added to history."});
-    })*/
 });
