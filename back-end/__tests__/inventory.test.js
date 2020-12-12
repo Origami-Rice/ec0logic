@@ -10,37 +10,38 @@ const {
 
 /////////////////// Test Variables ///////////////////
 const name = "inventory_test_user";
-const date = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000);
+const tomorrow = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000);
+const yesterday = new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);
 const list = {
     "list": [
         {
             "name": "Chocolate",
-            "expiryDate": "2020-09-17T04:34:58.887Z",
+            "expiryDate": yesterday.toISOString(),
             "quantity": 89,
-            "weight": 7
+            "unitsOfMeasure": "kg"
         },
         {
             "name": "Apple",
-            "expiryDate": date.toISOString(),
+            "expiryDate": tomorrow.toISOString(),
             "quantity": 10,
-            "weight": 1
+            "unitsOfMeasure": "kg"
         }
     ]
 }
 const expiring = [ // contains all items in list that soon expire
     {
         "name": "Apple",
-        "expiryDate": date.toISOString(),
+        "expiryDate": tomorrow.toISOString(),
         "quantity": 10,
-        "weight": 1
+        "unitsOfMeasure": "kg"
     }
 ];
 const expired = [
     {
         "name": "Chocolate",
-        "expiryDate": "2020-09-17T04:34:58.887Z",
+        "expiryDate": yesterday.toISOString(),
         "quantity": 89,
-        "weight": 7
+        "unitsOfMeasure": "kg"
     }
 ];
 
@@ -103,6 +104,12 @@ describe("access and update user's inventory", () => {
 describe("filter expired and expiring items", () => {
     test("retrieve single item that expires within the week", async () => {
         url = "/api/inventory/expiring/" + name;
+
+        //initialize inventory 
+        await request
+            .post("/api/inventory/" + name)
+            .set("Accept", "application/json")
+            .send(list);
         // send a get request
         const response = await request.get(url);
         
@@ -115,6 +122,11 @@ describe("filter expired and expiring items", () => {
 
     test("retrieve single item that already expired", async () => {
         url = "/api/inventory/expired/" + name;
+        //initialize inventory 
+        await request
+            .post("/api/inventory" + name )
+            .set("Accept", "application/json")
+            .send(list);
         // send a get request
         const response = await request.get(url);
 
