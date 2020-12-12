@@ -152,6 +152,6 @@ exports.remove_recipe_from_saved_recipes = async (username, recipe) => {
     // removes a existing item from the user's saved_recipes
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
         {username: username},
-        {$pull: { saved_recipes: {name: recipe}} }
+        {$pull: { saved_recipes: {recipe}} }
     ));
 };

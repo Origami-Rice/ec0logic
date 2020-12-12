@@ -10,7 +10,9 @@ const fetch = require("node-fetch");
 const api_key = "df34cd7a9a35436caa66b3c8e81457fe";
 
 const {
-    get_saved_recipes, add_recipe_to_saved_recipes
+    get_saved_recipes, 
+    add_recipe_to_saved_recipes, 
+    remove_recipe_from_saved_recipes
 } = require('../dataAccess/userData');
 
 router
@@ -129,10 +131,21 @@ router
         .post(async (request, response) => {
             // assign the username passed to the endpoint to a variable
             const username = request.params.username;
-            
             const recipe = request.body;
+            // console.log(recipe);
+            if (!("id" in recipe)){ //no id in body
+                return response
+                        .status(404)
+                        .json({"error": "Item is missing id."});
+            }
+            // Format: {id: recipe details}
+            const id = recipe.id;
+            var dict = {}
+            delete recipe.id;
+            dict[id] = recipe;
+            console.log(dict);
             try{
-                const result = await add_recipe_to_saved_recipes(username, recipe);
+                const result = await add_recipe_to_saved_recipes(username, dict);
                 if (result){
                     return response
                         .status(200)
@@ -141,7 +154,7 @@ router
                 }else{
                     return response
                         .status(404)
-                        .json({"error": "Item could not be added to history."});
+                        .json({"error": "Item could not be added to saved recipes."});
     
                 }
                 
@@ -150,6 +163,27 @@ router
             }
         })
 
+router
+    .route('/:username/:recipe')
+    .get(async (request, response) => {
+        console.log('GET request to path for deleting recipe');
+        // delete recipe in user's saved recipes list
+        const username = request.params.username;
+        const recipeid = request.params.recipe;
+        try{
+            const result = await remove_recipe_from_saved_recipes(username, recipeid);
+            // console.log(result)
+            if(result && result.saved_recipes){
+                return response
+                .status(200)
+                .json({"success": "Recipe was successfully deleted."});
+            }else{
+                return response.status(500).json({ error: "error occurred when deleting recipe" });
+            }
+        }catch (error) {
+                console.log(error);
+            }
+        })
 module.exports = router;
 /*
 GET REQUEST:
