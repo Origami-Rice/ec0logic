@@ -55,7 +55,7 @@ describe("user creation", () => {
             .set("Accept", "application/json")
             .send(invalidUser1);
         expect(response.status).toBe(422);
-        expect(response.body).toEqual({"error": "One of user's information fields is an invalid input"})
+        expect(response.body).toEqual({"error": "One of the required fields is missing or invalid"})
     });
 
     test("does not create user with missing fields", async () => {
@@ -64,7 +64,7 @@ describe("user creation", () => {
             .set("Accept", "application/json")
             .send(invalidUser2);
         expect(response.status).toBe(422);
-        expect(response.body).toEqual({"error": "One of user's information fields is an invalid input"})
+        expect(response.body).toEqual({"error": "One of the required fields is missing or invalid"})
     });
 
     test("does not create user if their desired username already exists in the database", async () => {

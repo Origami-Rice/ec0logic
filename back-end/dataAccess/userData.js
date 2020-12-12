@@ -8,7 +8,7 @@ const executeQuery = require('../utilities/mongoConnect').executeQuery;
 const {User} = require('../models/schemas'); 
 
 ////////////////////////////// USER QUERIES //////////////////////////////
-exports.add_user = async (username, email, password, salt, firstname, lastname) => {
+exports.add_user = async (username, email, password, salt, firstname, lastname, question, answer) => {
     // create a new document and save it in the collection of users
     const newUser = new User({
         username: username,
@@ -17,12 +17,15 @@ exports.add_user = async (username, email, password, salt, firstname, lastname) 
         email: email,
         password: password,
         salt: salt,
+        question: question,
+        answer: answer, 
         inventory_list: [], 
         wasted_items: [], 
         shopping_list: [],
         saved_recipes: [],
         saved_tips: []
     });
+    console.log(newUser); 
     
     return await executeQuery(db, async (db) => await db.collection(users_collection).insertOne(
         newUser));
