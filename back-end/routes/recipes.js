@@ -138,14 +138,8 @@ router
                         .status(404)
                         .json({"error": "Item is missing id."});
             }
-            // Format: {id: recipe details}
-            const id = recipe.id;
-            var dict = {}
-            delete recipe.id;
-            dict[id] = recipe;
-            console.log(dict);
             try{
-                const result = await add_recipe_to_saved_recipes(username, dict);
+                const result = await add_recipe_to_saved_recipes(username, recipe);
                 if (result){
                     return response
                         .status(200)
@@ -169,11 +163,11 @@ router
         console.log('GET request to path for deleting recipe');
         // delete recipe in user's saved recipes list
         const username = request.params.username;
-        const recipeid = request.params.recipe;
+        const recipeid = Number(request.params.recipe);
+        console.log(recipeid);  //Note that it's a number and not a string in the database
         try{
             const result = await remove_recipe_from_saved_recipes(username, recipeid);
-            // console.log(result)
-            if(result && result.saved_recipes){
+            if(result){
                 return response
                 .status(200)
                 .json({"success": "Recipe was successfully deleted."});
