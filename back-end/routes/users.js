@@ -12,11 +12,24 @@ const {
     add_user,
     find_user_by_username,
     update_email,
-    update_password
+    update_password, 
+    remove_user 
 } = require('../dataAccess/userData')
 
 // How long to save the session cookie in days
 const cookieDays = 2; 
+
+//Checks all information fields of a user attempting to sign up 
+function fieldsAreValid(username, email, password, firstname, lastname){
+    const fields = [username, email, password, firstname, lastname]; 
+    var i; var valid = true;  
+    for (i = 0; i < fields.length && valid; i++){
+        if (!(typeof fields[i] == 'string' && fields[i] != "")){
+            valid = false; 
+        }
+    }
+    return valid; 
+}
 
 router
     .route("/signup")
@@ -44,6 +57,13 @@ router
         let email = request.body.email;
         let firstname = request.body.firstname;
         let lastname = request.body.lastname;
+
+        //basic check that fields are nonempty strings 
+        if (!fieldsAreValid(username, password, email, firstname, lastname)){
+            return response
+                .status(422)
+                .json({ error: "One of user's information fields is an invalid input"});
+        }    
 
         // Salt and hash the password
         let salt = crypto.randomBytes(16).toString("base64");
@@ -261,10 +281,5 @@ router
             console.log(error);
         }
     });
-
-// router.delete("/all", async function(req, res) {
-//    let result = await delete_users();
-//    res.send(result);
-// });
 
 module.exports = router;
