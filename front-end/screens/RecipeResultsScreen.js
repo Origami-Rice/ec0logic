@@ -15,7 +15,6 @@ import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
 import ExpandedRecipeCard from "./ExpandedRecipeCard";
 import * as WebBrowser from 'expo-web-browser';
-import { json } from "body-parser";
 
 // NOTE: Current items array does not reflect json result from spoonacular
 export default class RecipeResultsScreen extends React.Component {
@@ -33,11 +32,11 @@ export default class RecipeResultsScreen extends React.Component {
   // TODO: Add onPressButton as prop for saving
   // CHANGES FROM ORIGINAL: Not passing email or resultId as props
   populateList = () => {
-    return this.state.recipeArray.map((result) => (
+    return this.state.recipeArray.map((result, i) => (
       <RecipeCard
         key={result.id}
         onPressWhole={() => this.expand(result)}
-        onPressButton={() => this.save(result)}
+        onPressButton={() => this.props.clickAction(result, i)}
         foodName={result.title}
         description={
           "Preparation Time: " +
@@ -63,22 +62,11 @@ export default class RecipeResultsScreen extends React.Component {
     // Linking.openURL(result.sourceUrl);
   };
 
-  save = (recipe) => {
-    // TODO: save recipe to user's saved
-    send("addRecipe", recipe, '/' + this.props.username)
-    .then(response => response.json())
-    .then(json => {
-      alert("Recipe has been saved.");
-      console.log(json);
-    })
-    .catch(error => console.log(error));
-  }
-
-  closeModal = () => {
-    this.setState({
-      visibleModal: 0,
-    });
-  };
+  // closeModal = () => {
+  //   this.setState({
+  //     visibleModal: 0,
+  //   });
+  // };
 
   render() {
     return (
@@ -110,18 +98,18 @@ export default class RecipeResultsScreen extends React.Component {
           avoidKeyboard={false}
         >
           {
-            <View style={styles.modal}>
-              <ExpandedRecipeCard
-                imageUri={
-                  this.state.imageSource + this.state.selectedItem.image
-                }
-                // title={this.state.selectedItem.title}
-                // recipeId={this.state.selectedItem.id}
-                // recipeSource={this.state.selectedItem.sourceUrl}
-                recipeInfo={this.state.selectedItem}
-                onCancel={this.closeModal}
-              ></ExpandedRecipeCard>
-            </View>
+            // <View style={styles.modal}>
+            //   <ExpandedRecipeCard
+            //     imageUri={
+            //       this.state.imageSource + this.state.selectedItem.image
+            //     }
+            //     // title={this.state.selectedItem.title}
+            //     // recipeId={this.state.selectedItem.id}
+            //     // recipeSource={this.state.selectedItem.sourceUrl}
+            //     recipeInfo={this.state.selectedItem}
+            //     onCancel={this.closeModal}
+            //   ></ExpandedRecipeCard>
+            // </View>
           }
         </Modal>
       </View>

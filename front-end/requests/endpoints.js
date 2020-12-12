@@ -111,6 +111,16 @@ const endpoints = {
     addRecipe: {
         endpoint: '',
         method: 'POST',
+    },
+
+    removeRecipe: {
+        endpoint: '',
+        method: 'DELETE',
+    },
+
+    getSavedRecipes: {
+        endpoint: '',
+        method: 'GET'
     }
 }
 

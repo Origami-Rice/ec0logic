@@ -34,8 +34,9 @@ export default class ExpandTipScreen extends React.Component {
             <TextRegular style={styles.label} text={this.state.tip} />
           </View>
         </View>
-        <View
-          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 25 }}
+        {this.props.savable && 
+        (<View
+          style={{ justifyContent: "flex-end", zIndex: -1, marginBottom: 50 }}
         >
           <TouchableOpacity
             style={styles.confirmButton}
@@ -43,7 +44,7 @@ export default class ExpandTipScreen extends React.Component {
           >
             <TextMedium style={styles.confirmText} text={"Save Tip"} />
           </TouchableOpacity>
-        </View>
+        </View>) }
       </View>
     );
   }

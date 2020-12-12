@@ -36,6 +36,7 @@ export default class EcoTipsScreen extends React.Component {
       isLoaded: false,
       tipSelected: {},
       visibleModal: 0,
+      savable: true
     };
   }
   
@@ -106,7 +107,7 @@ export default class EcoTipsScreen extends React.Component {
         <TipItem 
           key={data.num} tip={data.tip} 
           onPressWhole={() => this.expand(data)}
-          onPressCheck={() => this.save(data.num) } />
+          onPressCheck={() => this.saveTip(data.num) } />
       ));
     } else {
       if (!this.state.isLoaded) {
@@ -123,7 +124,12 @@ export default class EcoTipsScreen extends React.Component {
           </View>
         );
       } else {
-        return this.state.savedTips.map((data) => <TipItem tip={data.tip} />);
+        return this.state.savedTips.map((data, i) => 
+        <TipItem 
+          key={data.num} tip={data.tip}
+          onPressWhole={() => this.expand(data)}
+          onPressCheck={() => this.deleteTip(data.num, i)}
+           />);
       }
     }
   };
@@ -135,14 +141,30 @@ export default class EcoTipsScreen extends React.Component {
     });
   };
 
-  save = (tipNum) => {
+  saveTip = (tipNum) => {
     send("addTip", {}, `/${this.context.user}/${tipNum}`)
     .then(response => response.json())
     .then(response => {
       console.log(response);
+      alert("Tip successfully added.")
+      this.setState({ visibleModal: 0, isLoaded: false });
     })
 
   };
+
+  deleteTip = (tipNum, i) => {
+    send("deleteTip", {}, `/${this.context.user}/${tipNum}`)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+      alert("Tip successfully removed.")
+      let prev = this.state.savedTips;
+      prev.splice(i, 1);
+      this.setState({
+        savedTips: prev
+      })
+    })
+  }
 
   closeModal = () => {
     this.setState({
@@ -160,6 +182,7 @@ export default class EcoTipsScreen extends React.Component {
 
     this.setState((state) => ({
       generateTips: !state.generateTips,
+      savable: !state.savable
     }));
 
   };
@@ -306,7 +329,8 @@ export default class EcoTipsScreen extends React.Component {
               <ExpandTipScreen
                 tip={this.state.tipSelected.tip}
                 onCancel={this.closeModal}
-                onSave={() => this.save(this.state.tipSelected.num)}
+                onSave={() => this.saveTip(this.state.tipSelected.num)}
+                savable={this.state.savable}
               ></ExpandTipScreen>
             </View>
           }
