@@ -52,19 +52,12 @@ const ShoppingListSchema = new mongoose.Schema({
 });
 
 const RecipeSchema = new mongoose.Schema({
-    name: {
-        title: String,
-        readyInMinutes: Number,
-        servings: Number,
-        sourceUrl: String,
-        image: String,
-    }
-    // id: Number,
-    // title: String,
-    // readyInMinutes: Number,
-    // servings: Number,
-    // sourceUrl: String,
-    // image: String,
+    id: Number,
+    title: String,
+    readyInMinutes: Number,
+    servings: Number,
+    sourceUrl: String,
+    image: String,
 });
 // MAY NEED TO MODIFY ????????????????????????????????????????
 const TipsSchema = new mongoose.Schema({
