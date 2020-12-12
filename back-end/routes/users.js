@@ -223,6 +223,12 @@ router
 
         // Update the email
         try {
+            const attemptedUsernameChange = await (find_user_by_username(email)); 
+            if (attemptedUsernameChange){
+                return response 
+                    .status(409)
+                    .json({"error": "This email is already in use"}); 
+            }
             const result = await update_email(username, email);
             const user = await find_user_by_username(email);
             console.log(user)
