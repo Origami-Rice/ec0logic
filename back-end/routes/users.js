@@ -272,8 +272,28 @@ router
         }
     });
 
+
 router 
     .route('/security/:username')
+    .get(async (request, response) => {
+        console.log('GET request to path /api/users/security/:username')
+        const username = request.params.username;
+        
+        try{
+            const user = await find_user_by_username(username); 
+            if (!user){
+                return response
+                   .status(404)
+                   .json({ "error": "User not found" });
+            } else {
+                return response
+                    .status(200)
+                    .json({"question": user.question})
+            }
+        } catch (error){
+            console.log(error); 
+        }
+    })
     .post(async (request, response) => {
         console.log('POST request to path /api/users/security/:username');
         const username = request.params.username;
@@ -284,8 +304,8 @@ router
             console.log(user);
             if (!user) { // Could not find the user in the database
                return response
-                   .status(409)
-                   .json({ error: "User with this username does not exist." });
+                   .status(404)
+                   .json({ error: "User not found" });
             }
 
             // A user with the given username exists
