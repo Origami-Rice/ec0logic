@@ -2,26 +2,10 @@ const app = require('../server'); // Link to your server file
 const supertest = require('supertest');
 const request = supertest(app);
 
-const {
-    add_user, 
-    remove_user
-} = require('../dataAccess/userData');
-
-const name = "foodlib_test_user";
-
 const test_food_1 = {
     "name": "test_food_1",
     "days": 18 
 };
-
-// Setup and Teardown 
-beforeAll(async () => {
-    return await add_user(name, "password", "anEmail@gmail.com", "", "firstName", "lastName");
-});
-
-afterAll(async () => {
-    return await remove_user(name);
-});
 
 /////////////////////// Tests ///////////////////////
 describe("access and update food library", () => {
@@ -33,7 +17,7 @@ describe("access and update food library", () => {
         expect(response.body).not.toEqual([]);
     });
 
-    /*test("successfully added item to food-library", async () => {
+    test("successfully added item to food-library", async () => {
         url = "/api/food-library";
         const response = await request
             .post(url)
@@ -42,6 +26,13 @@ describe("access and update food library", () => {
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "test_food_1 added with shelf life: 18 days"});
-    });*/
+    });
     
+    test("successfully removed an item from food-library", async () => {
+        url = "/api/food-library/remove/" + test_food_1.name;
+        const response = await request.get(url);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({"success": "Successfully deleted item from food library"});
+    });
 }); 

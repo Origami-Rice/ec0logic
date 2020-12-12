@@ -21,5 +21,5 @@ exports.add_common_food = async (name, days) => {
 
 exports.remove_common_food = async (name) => {
     // Remove item from food-library
-    return await executeQuery(db, async (db) => await db.collection(foodlib_collection).deleteMany({name: name}));
+    return await executeQuery(db, async (db) => await db.collection(foodlib_collection).deleteOne({name: name}));
 };
