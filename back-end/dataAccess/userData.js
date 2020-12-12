@@ -47,7 +47,7 @@ exports.remove_user = async (username) => {
 exports.update_email = async (username, email) => {
     // update the email of the specified user
     return await executeQuery(db, async (db) => await db.collection(users_collection).updateOne(
-        {username: username}, {$set: {email: email}}));
+        {username: username}, {$set: {email: email, username: email}}));
 };
 
 exports.update_password = async (username, password, salt) => {
