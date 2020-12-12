@@ -20,7 +20,8 @@ const item1 = {
         "name": "Chocolate",
         "date": twoWeeksAgoDate.toISOString(),
         "quantity": 89,
-        "weight": 7
+        "unitsOfMeasure": "kg",
+        "kilograms": "89.00"
     }
 };
 const item2 = { // will be added twice to wasted items history
@@ -28,7 +29,8 @@ const item2 = { // will be added twice to wasted items history
         "name": "Banana",
         "date": twoMonthsAgoDate.toISOString(),
         "quantity": 5,
-        "weight": 40
+        "unitsOfMeasure": "lbs",
+        "kilograms": "11.02"
     }
 };
 
@@ -105,7 +107,7 @@ describe("access the wasted items history", () => {
         const response = await request.get(url);
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({"error": "No history of wasted item detected."});
+        expect(response.body).toEqual({"error": "Could not find user or no history of wasted items detected."});
     });
 });
 
