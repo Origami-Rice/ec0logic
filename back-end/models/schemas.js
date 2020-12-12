@@ -101,6 +101,14 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    question: {
+        type: String, 
+        required: true 
+    }, 
+    answer: {
+        type: String, 
+        required: true 
+    },
     inventory_list: [InventoryItemSchema],
     wasted_items: [WastedItemSchema],
     shopping_list: [ShoppingListSchema],
