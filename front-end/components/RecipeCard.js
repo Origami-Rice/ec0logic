@@ -13,12 +13,12 @@ const RecipeCard = (props) => {
         <MaterialCommunityIcons
           name="trash-can-outline"
           size={25}
-          color={Colours.filledButton}
+          color={Colours.recipeCardButton}
         />
       );
     } else {
       return (
-        <Ionicons name="md-heart" size={25} color={Colours.filledButton} />
+        <Ionicons name="md-heart" size={25} color={Colours.recipeCardButton} />
       );
     }
   };

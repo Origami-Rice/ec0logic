@@ -33,7 +33,7 @@ export default class LoginScreen extends React.Component {
       fontsLoaded: false,
       email: "",
       password: "",
-      showPassword: false,
+      hidePassword: true,
       visibleModal: 0,
     };
   }
@@ -50,7 +50,7 @@ export default class LoginScreen extends React.Component {
   }
 
   getIcon = () => {
-    if (this.state.showPassword) {
+    if (this.state.hidePassword) {
       return <Ionicons name="md-eye-off" size={24} color={Colours.tint} />;
     } else {
       return <Ionicons name="md-eye" size={24} color={Colours.tint} />;
@@ -119,14 +119,14 @@ export default class LoginScreen extends React.Component {
                 style={styles.inputFormat}
                 placeholder="Password"
                 value={this.state.password}
-                secureTextEntry={this.state.showPassword}
+                secureTextEntry={this.state.hidePassword}
                 textContentType={"password"}
                 onChangeText={(text) => this.setState({ password: text })}
               />
               <TouchableOpacity
                 style={{ width: 24, height: 35, justifyContent: "center" }}
                 onPress={() =>
-                  this.setState({ showPassword: !this.state.showPassword })
+                  this.setState({ hidePassword: !this.state.hidePassword })
                 }
               >
                 {this.getIcon()}

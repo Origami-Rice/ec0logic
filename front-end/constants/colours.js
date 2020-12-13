@@ -18,6 +18,7 @@ export const Colours = {
   toggleSliderNotSelected: "#ffffff",
   toggleThumbSelected: "#009688",
   toggleThumbNotSelected: "#fafafa",
+  recipeCardButton: "#A5A5A5",
   tint: "#60646D",
   notice: "#BDBDBD",
 };
