@@ -140,22 +140,36 @@ router
                     .status(404)
                     .json({"error": "Item is missing id."});
         }
-        try{
-            const result = await add_recipe_to_saved_recipes(username, recipe);
-            if (result) {
-                return response
-                    .status(200)
-                    .json({"success": "Recipe was successfully added."});
-
-            }else{
-                return response
-                    .status(404)
-                    .json({"error": "Item could not be added to saved recipes."});
-
+        const saved_recipes = await get_saved_recipes(username);
+        var duplicate = false;
+        saved_recipes.saved_recipes.map(item=> {
+            if (recipe.id == item.id){
+                duplicate = true;   // Iterate through saved recipes to check if there is a duplicate id
             }
-            
-        } catch (error) {
-            console.log(error);
+            return item;
+        });
+        if (duplicate == true){
+            return response
+            .status(404)
+            .json({"error": "Recipe is already saved. Invalid"});
+        }else{
+            try{
+                const result = await add_recipe_to_saved_recipes(username, recipe);
+                if (result) {
+                    return response
+                        .status(200)
+                        .json({"success": "Recipe was successfully added."});
+    
+                }else{
+                    return response
+                        .status(404)
+                        .json({"error": "Item could not be added to saved recipes."});
+    
+                }
+                
+            } catch (error) {
+                console.log(error);
+            }
         }
     });
 
