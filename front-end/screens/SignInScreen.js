@@ -14,8 +14,10 @@ import TextSemiBold from "../components/TextSemiBold";
 import { Ionicons } from "@expo/vector-icons";
 import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
+import Modal from "react-native-modal";
+import VerifyForForgotScreen from "./VerifyForForgotScreen";
 
-import { AuthContext } from '../AuthContext';
+import { AuthContext } from "../AuthContext";
 
 let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
@@ -32,10 +34,9 @@ export default class LoginScreen extends React.Component {
       email: "",
       password: "",
       showPassword: false,
-      visibleModal: 0
+      visibleModal: 0,
     };
   }
-
 
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
@@ -46,7 +47,6 @@ export default class LoginScreen extends React.Component {
     this._loadFontsAsync();
 
     console.log(this.context);
-    
   }
 
   getIcon = () => {
@@ -61,15 +61,23 @@ export default class LoginScreen extends React.Component {
     // TODO: Remove after testing
     console.log("Signin with" + this.state.email.toLowerCase());
     console.log(this.context);
-    this.context.authContext.signIn({ email: this.state.email, password: this.state.password});
-  }
+    this.context.authContext.signIn({
+      email: this.state.email,
+      password: this.state.password,
+    });
+  };
 
-  // TODO: add resetPasswordScreen as modal
   onClickForget = () => {
     this.setState({
-      visibleModal: 1, 
+      visibleModal: 1,
     });
-  }
+  };
+
+  closeModal = () => {
+    this.setState({
+      visibleModal: 0,
+    });
+  };
 
   render() {
     return (
@@ -81,7 +89,10 @@ export default class LoginScreen extends React.Component {
           backgroundColor: Colours.screenBackground,
         }}
       >
-        <ScrollView styles={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView
+          styles={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
           <View
             style={{
               justifyContent: "flex-start",
@@ -128,8 +139,25 @@ export default class LoginScreen extends React.Component {
             >
               <TextMedium style={styles.confirmText} text={"Sign In"} />
             </TouchableOpacity>
+            <TouchableOpacity onPress={this.onClickForget}>
+              <TextMedium
+                style={[styles.confirmText, { color: Colours.notice }]}
+                text={"Forgot your password?"}
+              />
+            </TouchableOpacity>
           </View>
         </ScrollView>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <VerifyForForgotScreen onCancel={this.closeModal} />
+            </View>
+          }
+        </Modal>
       </View>
     );
   }
@@ -208,5 +236,18 @@ const styles = StyleSheet.create({
       },
     }),
     zIndex: 1,
+  },
+  modal: {
+    backgroundColor: Colours.screenBackground,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+  },
+  bottomModal: {
+    margin: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
   },
 });
