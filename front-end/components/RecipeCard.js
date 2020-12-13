@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const RecipeCard = (props) => {
   const getIcon = () => {
-    if (props.isSaved) {
+    if (props.isDeletable) {
       return (
         <MaterialCommunityIcons
           name="trash-can-outline"

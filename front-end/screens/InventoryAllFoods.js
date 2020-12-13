@@ -396,7 +396,7 @@ export default class InventoryAllFoods extends React.Component {
                         { color: Colours.switchButtonNotSelectedText },
                       ]
                 }
-                text={"Expiring Soon"}
+                text={"Priority"}
               />
             </TouchableOpacity>
           </View>

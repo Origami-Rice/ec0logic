@@ -48,6 +48,7 @@ export default class RecipeResultsScreen extends React.Component {
         imageUri={
           this.state.imageSource + result.image
         }
+        isDeletable={this.props.isDeletable}
       />
     ));
   };

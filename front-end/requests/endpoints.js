@@ -9,7 +9,7 @@ const endpoints = {
         method: 'POST',
     }, 
     getExpiring: {
-        endpoint: '/api/inventory/expiring', 
+        endpoint: '/api/inventory/priority', 
         method: 'GET',
     }, 
     getExpired: {
@@ -129,17 +129,17 @@ const endpoints = {
     },
 
     addRecipe: {
-        endpoint: '',
+        endpoint: '/api/recipe',
         method: 'POST',
     },
 
     removeRecipe: {
-        endpoint: '',
+        endpoint: '/api/recipe',
         method: 'DELETE',
     },
 
     getSavedRecipes: {
-        endpoint: '',
+        endpoint: '/api/recipe',
         method: 'GET'
     }
 }

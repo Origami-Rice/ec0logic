@@ -40,12 +40,7 @@ export default class RecipesScreen extends React.Component {
       isGlutenFree: false,
       search: "",
       lastSearch: "",
-      recipeSearchResult: [
-        { title: "Pie", readyInMinutes: "5", servings: "6", id: 1 },
-        { title: "Pie", readyInMinutes: "5", servings: "6", id: 2 },
-        { title: "Pie", readyInMinutes: "5", servings: "6", id: 3 },
-        { title: "Pie", readyInMinutes: "5", servings: "6", id: 4 },
-      ],
+      recipeSearchResult: [],
       savedRecipes: [
         { title: "Pie", readyInMinutes: "5", servings: "6", id: 1, 
           image: "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg",
@@ -115,19 +110,19 @@ export default class RecipesScreen extends React.Component {
 
   // Set this.state.recipeArray
   getSavedRecipes = () => {
-    this.setState({
-      visibleModal: 1,
-    });
-    // send("getSavedRecipes", {}, '/' + this.context.user)
-    // .then(response => response.json())
-    // .then(json => {
-    //   this.setState({
-    //     savedRecipes: json.results,
-    //     imageSourceBase: json.baseUri,
-    //     visibleModal: 1,
-    //   })
-    // })
-    // .catch(error => console.log(error)); 
+  
+    send("getSavedRecipes", {}, '/' + this.context.user)
+    .then(response => response.json())
+    .then(json => {
+      console.log(json.results);
+
+      this.setState({
+        savedRecipes: json.results,
+        imageSourceBase: json.baseUri,
+        visibleModal: 1,
+      })
+    })
+    .catch(error => console.log(error)); 
   };
 
   // Set this.state.recipeArray
@@ -169,7 +164,7 @@ export default class RecipesScreen extends React.Component {
         lastSearch: searchQuery+diet+intolerances
       });
       // TODO: activitiy indicator for loading
-      console.log("[Search Results]", json.results);
+      
     })
     .catch(error => {
       console.log(error);
@@ -177,46 +172,38 @@ export default class RecipesScreen extends React.Component {
   };
 
   deleteRecipe = (recipe, i) => {
-    let prev = this.state.savedRecipes;
-    prev.splice(i, 1);
-    this.setState({
-      savedRecipes: prev
-    });
-    alert("Recipe has been removed.")
 
-    // send("removeRecipe", recipe.id, '/' + this.props.username)
-    // .then(response => response.json())
-    // .then(json => {
-    //   alert("Recipe has been removed.");
-    //   console.log(json);
+    send("removeRecipe", {}, '/' + this.context.user + '/' + recipe.id)
+    .then(response => response.json())
+    .then(json => {
+      if (json.success) {
+        alert("Recipe has been removed.");
+        console.log(json);
 
-    //   // Update the list
-    //   let prev = this.state.recipeArray;
-    //   prev.splice(i, 1); // Removing the deleted recipe
-    //   this.setState({
-    //     recipeArray: prev
-    //   });
-
-    // })
-    // .catch(error => console.log(error));
+        // Update the list
+        let prev = this.state.savedRecipes;
+        prev.splice(i, 1); // Removing the deleted recipe
+        this.setState({
+          savedRecipes: prev
+        });
+      }
+    })
+    .catch(error => console.log(error));
   }
 
   saveRecipe = (recipe, i) => {
+    console.log(recipe);
     // TODO: save recipe to user's saved
-    // send("addRecipe", recipe, '/' + this.props.username)
-    // .then(response => response.json())
-    // .then(json => {
-    //   alert("Recipe has been saved.");
-    //   console.log(json);
-    // })
-    // .catch(error => console.log(error));
-    let prev = this.state.savedRecipes;
-    prev.push(recipe);
-    this.setState({
-      savedRecipes: prev
-    });
+    send("addRecipe", recipe, '/' + this.context.user)
+    .then(response => response.json())
+    .then(json => {
+      console.log(json);
+      if (json.success) {
+        alert("Recipe has been saved.");
+      }
 
-    alert("Recipe saved");
+    })
+    .catch(error => console.log(error));
   }
 
   render() {
@@ -352,6 +339,7 @@ export default class RecipesScreen extends React.Component {
                 imageSource={this.state.imageSourceBase}
                 username={this.context.user}
                 clickAction={this.deleteRecipe}
+                isDeletable={true}
               ></RecipeResultsScreen>
             </View>
           }
@@ -372,6 +360,7 @@ export default class RecipesScreen extends React.Component {
                 imageSource={this.state.imageSourceBase}
                 username={this.context.user}
                 clickAction={this.saveRecipe}
+                isDeletable={false}
               ></RecipeResultsScreen>
             </View>
           }

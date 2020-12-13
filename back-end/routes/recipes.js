@@ -8,6 +8,7 @@ const fetch = require("node-fetch");
 
 
 const api_key = "df34cd7a9a35436caa66b3c8e81457fe";
+const baseImageSource = "https://spoonacular.com/recipeImages/";
 
 const {
     get_saved_recipes, 
@@ -120,7 +121,7 @@ router
             if(result && result.saved_recipes){
                 return response
                     .status(200)
-                    .json(result.saved_recipes);
+                    .json({"results": result.saved_recipes, "baseUri": baseImageSource});
             }else{
                 return response.status(500).json({ error: "Internal server error" });
             }
@@ -128,38 +129,39 @@ router
                 console.log(error);
             }
         })
-        .post(async (request, response) => {
-            // assign the username passed to the endpoint to a variable
-            const username = request.params.username;
-            const recipe = request.body;
-            // console.log(recipe);
-            if (!("id" in recipe)){ //no id in body
+    .post(async (request, response) => {
+        console.log('POST request to path /api/recipe/:username');
+        // assign the username passed to the endpoint to a variable
+        const username = request.params.username;
+        const recipe = request.body;
+        // console.log(recipe);
+        if (!("id" in recipe)) { //no id in body
+            return response
+                    .status(404)
+                    .json({"error": "Item is missing id."});
+        }
+        try{
+            const result = await add_recipe_to_saved_recipes(username, recipe);
+            if (result) {
                 return response
-                        .status(404)
-                        .json({"error": "Item is missing id."});
+                    .status(200)
+                    .json({"success": "Recipe was successfully added."});
+
+            }else{
+                return response
+                    .status(404)
+                    .json({"error": "Item could not be added to saved recipes."});
+
             }
-            try{
-                const result = await add_recipe_to_saved_recipes(username, recipe);
-                if (result){
-                    return response
-                        .status(200)
-                        .json({"success": "Recipe was successfully added."});
-    
-                }else{
-                    return response
-                        .status(404)
-                        .json({"error": "Item could not be added to saved recipes."});
-    
-                }
-                
-            }catch (error) {
-                console.log(error);
-            }
-        })
+            
+        } catch (error) {
+            console.log(error);
+        }
+    });
 
 router
     .route('/:username/:recipe')
-    .get(async (request, response) => {
+    .delete(async (request, response) => {
         console.log('GET request to path for deleting recipe');
         // delete recipe in user's saved recipes list
         const username = request.params.username;
