@@ -11,12 +11,15 @@ exports.get_common_food = async () => {
 };
 
 exports.add_common_food = async (name, days) => {
-    //return await executeQuery(db, async (db) => await db.collection(foodlib_collection).insertOne(
-    //    {name: name, days: days}));
     const newCommonFood = new CommonFood({
         name: name,
         days: days
     });
     return await executeQuery(db, async (db) => await db.collection(foodlib_collection).insertOne(
         newCommonFood));
+};
+
+exports.remove_common_food = async (name) => {
+    // Remove item from food-library
+    return await executeQuery(db, async (db) => await db.collection(foodlib_collection).deleteOne({name: name}));
 };

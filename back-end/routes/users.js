@@ -31,6 +31,18 @@ function fieldsAreValid(username, email, password, firstname, lastname, question
     return valid; 
 }
 
+function verifyPassword(salt, password, userPassword){
+    // A user with the given username exists
+    // Salt and hash the password given by the user
+    console.log(salt);
+    var hash = crypto.createHmac("sha512", salt);
+    hash.update(password);
+    var saltedHash = hash.digest("base64");
+    password = saltedHash;
+
+    return password === userPassword;
+}
+
 router
     .route("/signup")
     .post(async (request, response) => {
@@ -130,19 +142,9 @@ router
                    .json({ error: "User with this username does not exist." });
             }
 
-            // A user with the given username exists
-            // Salt and hash the password given by the user
-            let salt = user.salt;
-            console.log(salt);
-            var hash = crypto.createHmac("sha512", salt);
-            hash.update(password);
-            var saltedHash = hash.digest("base64");
-            password = saltedHash;
-
-            // Compare it with the one in the database
             console.log(user.password);
             console.log(password);
-            if (user.password !== password) {
+            if (!verifyPassword(user.salt, password, user.password)) {
                 return response
                     .status(401)
                     .json({ error: "Username or password is incorrect." });
@@ -223,6 +225,12 @@ router
 
         // Update the email
         try {
+            const attemptedUsernameChange = await (find_user_by_username(email)); 
+            if (attemptedUsernameChange){
+                return response 
+                    .status(409)
+                    .json({"error": "This email is already in use"}); 
+            }
             const result = await update_email(username, email);
             const user = await find_user_by_username(email);
             console.log(user)
@@ -260,28 +268,44 @@ router
         // provided in the body of the request.
         console.log("PATCH request to path /api/users/password/:username");
 
-        // Salt and hash the new password
-        let password = request.body.password;
-        let salt = crypto.randomBytes(16).toString("base64");
-        let hash = crypto.createHmac("sha512", salt);
-        hash.update(password);
-        let saltedHash = hash.digest("base64");
-        password = saltedHash;
-
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
+        let password = request.body.password; 
+        let newPassword = request.body.newPassword;
+        try {
+            const user = await find_user_by_username(username);
+            if (!user){
+                return response
+                .status(404)
+                .json({error: "User with the given username not found or password unchanged."});
+            }
+            if (!verifyPassword(user.salt, password, user.password)){
+                return response
+                    .status(401)
+                    .json({"error": "old password doesn't match existing password"}); 
+            }
+        } catch (error){
+            console.log(error); 
+        }
+        
+        // Salt and hash the new password
+        let salt = crypto.randomBytes(16).toString("base64");
+        let hash = crypto.createHmac("sha512", salt);
+        hash.update(newPassword);
+        let saltedHash = hash.digest("base64");
+        newPassword = saltedHash;
         
         // Update the password
         try {
-            const result = await update_password(username, password, salt);
+            const result = await update_password(username, newPassword, salt);
             if (result && result.modifiedCount) { // Maybe remove modifiedCount check??????????????????
                 return response
                     .status(200)
                     .json({message: `Updated the password of the user ${username}` });
             }
-            return response
+            return response 
                 .status(404)
-                .json({error: "User with the given username not found or password unchanged."});
+                .json({"error": "update failed"})
         } catch (error) {
             console.log(error);
         }
@@ -323,8 +347,6 @@ router
                    .json({ error: "User not found" });
             }
 
-            // A user with the given username exists
-            // Salt and hash the password given by the user
             let salt = user.salt;
             console.log(salt);
             var hash = crypto.createHmac("sha512", salt);
