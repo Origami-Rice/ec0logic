@@ -15,7 +15,7 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
-import InfoModals from "../Constants/InfoModals";
+import InfoModals from "../constants/InfoModals";
 import * as Font from "expo-font";
 import RecipeResultsScreen from "./RecipeResultsScreen";
 import send from "../requests/request.js";

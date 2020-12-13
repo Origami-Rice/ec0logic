@@ -31,7 +31,11 @@ export default class RecentlyWastedTable extends React.Component {
           )}
         </View>
         <View
-          style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
+          style={
+            i !== 0
+              ? [styles.cell, { justifyContent: "flex-start" }]
+              : [styles.cell, { borderTopWidth: 1 }]
+          }
         >
           {i !== 0 ? (
             <TextRegular
@@ -46,7 +50,11 @@ export default class RecentlyWastedTable extends React.Component {
           )}
         </View>
         <View
-          style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
+          style={
+            i !== 0
+              ? [styles.cell, { justifyContent: "flex-start" }]
+              : [styles.cell, { borderTopWidth: 1 }]
+          }
         >
           {i !== 0 ? (
             <TextRegular
@@ -83,11 +91,11 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    height: 30,
+    height: "auto",
     width: Dimensions.get("window").width * 0.3,
     justifyContent: "center",
     alignItems: "flex-start",
-    padding: 5,
+    padding: 8,
     borderBottomWidth: 1,
     borderColor: Colours.divider,
     backgroundColor: Colours.borderedComponentFill,
