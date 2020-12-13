@@ -105,24 +105,19 @@ export default function App (props) {
         })
       },
 
-      signUp: ({ email, firstName, lastName, password, confirmPassword }) => {
-        if (email.length < 5 || !email.includes('@') || !email.includes('.')) {
-          alert('Please enter a valid email')
-        } else if (firstName.length < 2 || lastName.length < 2) {
-          alert('Please enter a valid name')
-        } else if (password.length < 6) {
-          alert('Password must be at least 6 characters')
-        } else if (password !== confirmPassword) {
-          alert('Passwords do not match')
-        } else {
-
-          const data = {
-            firstname: firstName,
-            lastname: lastName,
-            email: email.toLowerCase(),
-            username: email.toLowerCase(),
-            password: password
-          };
+      signUp: ({ email, firstName, 
+        lastName, password, 
+        securityQuestion, securityAnswer }) => {
+        
+        const data = {
+          firstname: firstName,
+          lastname: lastName,
+          email: email.toLowerCase(),
+          username: email.toLowerCase(),
+          password: password,
+          question: securityQuestion,
+          answer: securityAnswer
+        };
 
           send("signupUser", data)
           .then(res => {
@@ -137,8 +132,30 @@ export default function App (props) {
               console.log("SIGN_UP auth:", isLoggedIn);
             }
           })
-        }
       },
+      
+      updateUser: ({ newEmail, prev }) => {
+
+        const data = {
+          email: newEmail.toLowerCase(), 
+        }
+        console.log("About to", prev)
+        send("updateEmail", data, "/" + prev)
+        .then(response => response.json())
+        .then(json => {
+          if (json.message) {
+            console.log("Username changed", newEmail.toLowerCase());
+            setUser(newEmail.toLowerCase());
+            return true;
+          } else {
+            console.log(json);
+            return false; 
+          } 
+        })
+        .catch(err => console.log(err))
+
+      },
+
     };
   }, []);
 

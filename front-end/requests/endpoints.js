@@ -86,6 +86,26 @@ const endpoints = {
         method: 'GET',
     },
 
+    updateEmail: {
+        endpoint: '/api/users/email',
+        method: 'PATCH',
+    },
+
+    updatePassword: {
+        endpoint: '/api/users/password',
+        method: 'PATCH',
+    },
+
+    getSecurityQuestion: {
+        endpoint: '/api/users/security',
+        method: 'GET',
+    },
+
+    verifySecurityAnswer: {
+        endpoint: '/api/users/security',
+        method: 'POST',
+    },
+
     // Tips
     addTip: {
         endpoint: '/api/tips/add',

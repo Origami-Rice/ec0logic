@@ -37,6 +37,26 @@ export default function SignupScreen(props) {
     }
   };
 
+  const verifyInfo = () => {
+    if (email.length < 5 || !email.includes('@') || !email.includes('.')) {
+      alert('Please enter a valid email');
+    } else if (firstName.length < 2 || lastName.length < 2) {
+      alert('Please enter a valid name');
+    } else if (password.length < 6) {
+      alert('Password must be at least 6 characters')
+    } else if (password !== confirmPassword) {
+      alert('Passwords do not match')
+    } else if (securityQuestion.trim().length < 1) {
+      alert('Security Question cannot be blank');
+    } else if (securityAnswer.trim().length < 6) {
+      alert('Security answer must be at least 6 characters.')
+    } else {
+      authContext.signUp({ 
+        email, firstName, lastName, password, 
+        securityQuestion, securityAnswer });
+    }
+  }
+
   return (
     <View
       style={{
@@ -125,7 +145,12 @@ export default function SignupScreen(props) {
               {getIcon(showConfirmPassword)}
             </TouchableOpacity>
           </View>
-          <View style={styles.inputContainer}>
+          <TextRegular
+            style={styles.terms}
+            text={"The security question and answer will be used" 
+            + "\n to reset your password if you ever forget it."}
+          />
+          <View style={styles.inputContainer}> 
             <TextInput
               style={styles.inputFormat}
               placeholder="Security Question"
@@ -147,12 +172,8 @@ export default function SignupScreen(props) {
         <View style={{ justifyContent: "flex-end", flex: 1 }}>
           <TouchableOpacity
             style={styles.confirmButton}
-            onPress={() => authContext.signUp (
-              { email, firstName, lastName, password, confirmPassword }
-            )}
+            onPress={() => verifyInfo()}
           >
-            {// TODO: Add security question + answer, validation. 
-            }
             <TextMedium style={styles.confirmText} text={"Sign Up"} />
           </TouchableOpacity>
         </View>

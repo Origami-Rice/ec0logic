@@ -32,6 +32,7 @@ export default class LoginScreen extends React.Component {
       email: "",
       password: "",
       showPassword: false,
+      visibleModal: 0
     };
   }
 
@@ -61,6 +62,13 @@ export default class LoginScreen extends React.Component {
     console.log("Signin with" + this.state.email.toLowerCase());
     console.log(this.context);
     this.context.authContext.signIn({ email: this.state.email, password: this.state.password});
+  }
+
+  // TODO: add resetPasswordScreen as modal
+  onClickForget = () => {
+    this.setState({
+      visibleModal: 1, 
+    });
   }
 
   render() {

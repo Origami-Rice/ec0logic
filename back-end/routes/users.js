@@ -227,7 +227,19 @@ router
             const user = await find_user_by_username(email);
             console.log(user)
             if (result && result.modifiedCount) { // Maybe remove modifiedCount check??????????????????
-                await remove_user(String(username)); 
+                // await remove_user(String(username)); 
+
+                // Store the user's username in the session
+                request.session.username = email;
+                console.log(request.session);
+                // Attach a cookie to the response
+                response.setHeader(
+                    "Set-Cookie",
+                    cookie.serialize("username", email, {
+                        path: "/",
+                        maxAge: 60 * 60 * 24 * cookieDays // days in seconds
+                    })
+                );
                 return response
                     .status(200)
                     .json({message: `Updated the email of the user ${username} to ` + email});

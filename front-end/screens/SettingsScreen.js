@@ -60,7 +60,7 @@ export default class SettingsScreen extends React.Component {
   confirmChangesButton = () => {
     if (this.state.newEmail || this.state.newPassword) {
       return (
-        <TouchableOpacity style={styles.confirmButton}>
+        <TouchableOpacity style={styles.confirmButton} onPress={this.changeEmail}>
           <TextMedium style={styles.confirmText} text={"Confirm Changes"} />
         </TouchableOpacity>
       );
@@ -71,10 +71,33 @@ export default class SettingsScreen extends React.Component {
     console.log("signout pressed");
     this.context.authContext.signOut();
 
+  } 
+
+  changeEmail = () => {
+    console.log("Curr:", this.context.user);
+    const { newEmail } = this.state; 
+    const prev = this.context.user; 
+    if (this.context.authContext.updateUser({ newEmail, prev })) {
+      console.log("Email changed");
+      console.log("NEW:", this.context.user)
+    };
+  }
+
+  changePassword = () => {
+
+    send("updatePassword", {}, '/' + this.context.user)
+    .then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        alert("Sorry, you've entered the incorrect password. Please try again.");
+      } else if (json.success) {
+        alert("Password successfully changed."); 
+      }
+    })
   }
 
   render() {
-    return (
+    return ( 
       <View style={styles.container}>
         <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
           <View style={[styles.rowContainer, { justifyContent: "flex-start" }]}>
