@@ -2,6 +2,7 @@ import React from "react";
 import {
   View,
   ScrollView,
+  KeyboardAvoidingView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -77,12 +78,14 @@ export default function SignupScreen(props) {
   };
 
   return (
-    <View
+    <KeyboardAvoidingView
       style={{
         height: Dimensions.get("window").height,
         width: Dimensions.get("window").width,
         flex: 1,
       }}
+      behavior={Platform.OS == "ios" ? "padding" : null}
+      enabled={true}
     >
       <ScrollView
         style={styles.container}
@@ -210,7 +213,7 @@ export default function SignupScreen(props) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
