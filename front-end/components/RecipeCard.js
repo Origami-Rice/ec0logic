@@ -3,8 +3,25 @@ import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import TextRegular from "./TextRegular";
 import TextMedium from "./TextMedium";
 import { Colours } from "../constants/colours.js";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const RecipeCard = (props) => {
+  const getIcon = () => {
+    if (props.isSaved) {
+      return (
+        <MaterialCommunityIcons
+          name="trash-can-outline"
+          size={25}
+          color={Colours.filledButton}
+        />
+      );
+    } else {
+      return (
+        <Ionicons name="md-heart" size={25} color={Colours.filledButton} />
+      );
+    }
+  };
   return (
     <TouchableOpacity style={styles.listItem} onPress={props.onPressWhole}>
       <Image
@@ -19,9 +36,11 @@ const RecipeCard = (props) => {
         </View>
         <View style={styles.checkFlex}>
           <TouchableOpacity
-            style={styles.checkbox}
+            style={styles.iconTouch}
             onPress={props.onPressButton}
-          ></TouchableOpacity>
+          >
+            {getIcon()}
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
@@ -31,7 +50,7 @@ const RecipeCard = (props) => {
 const styles = StyleSheet.create({
   listItem: {
     width: "85%",
-    height: 200,
+    height: "auto",
     flex: 0,
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -67,6 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
+    marginRight: 10,
   },
   textInfo: {
     marginLeft: 10,
@@ -75,20 +95,19 @@ const styles = StyleSheet.create({
   },
   textItem: {
     marginLeft: 10,
+    width: "85%",
     fontSize: 14,
     color: Colours.tint,
   },
-  checkbox: {
+  iconTouch: {
     width: 25,
     height: 25,
     borderRadius: 25,
-    borderWidth: 1,
-    borderColor: Colours.tint,
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "flex-end",
-    backgroundColor: Colours.filledButton,
+    backgroundColor: Colours.screenBackground,
   },
 });
 
