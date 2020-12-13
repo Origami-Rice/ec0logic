@@ -12,7 +12,7 @@ import {
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Colours } from "../constants/colours.js";
 import { AuthContext } from "../AuthContext";
 
@@ -31,9 +31,23 @@ export default function SignupScreen(props) {
 
   const getIcon = (flag) => {
     if (flag) {
-      return <Ionicons name="md-eye-off" size={24} color={Colours.tint} />;
+      return (
+        <Ionicons
+          name="md-eye-off"
+          size={24}
+          color={Colours.tint}
+          style={{ alignSelf: "center" }}
+        />
+      );
     } else {
-      return <Ionicons name="md-eye" size={24} color={Colours.tint} />;
+      return (
+        <Ionicons
+          name="md-eye"
+          size={24}
+          color={Colours.tint}
+          style={{ alignSelf: "center" }}
+        />
+      );
     }
   };
 
@@ -153,19 +167,27 @@ export default function SignupScreen(props) {
               {getIcon(hideConfirmPassword)}
             </TouchableOpacity>
           </View>
-          <TextRegular
-            style={styles.terms}
-            text={
-              "The security question and answer will be used" +
-              "\n to reset your password if you ever forget it."
-            }
-          />
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputFormat}
               placeholder="Security Question"
               onChangeText={setSecurityQuestion}
             />
+            <TouchableOpacity
+              style={{ width: 24, height: 35, justifyContent: "center" }}
+              onPress={() =>
+                alert(
+                  "The security question and answer will be used to reset your password if you ever forget it."
+                )
+              }
+            >
+              <MaterialIcons
+                name="info-outline"
+                size={24}
+                color={Colours.tint}
+                style={{ alignSelf: "center" }}
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
             <TextInput
