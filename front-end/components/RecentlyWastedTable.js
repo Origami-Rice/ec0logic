@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import TextRegular from "./TextRegular";
-import TextMedium from "./TextMedium";
+import TextSemiBold from "./TextSemiBold";
 import { Colours } from "../constants/colours.js";
 
 export default class RecentlyWastedTable extends React.Component {
@@ -16,45 +16,48 @@ export default class RecentlyWastedTable extends React.Component {
     return this.state.items.map((item, i) => (
       <View style={styles.row}>
         <View
-          style={
-            i !== 0
-              ? styles.cell
-              : [styles.cell, { backgroundColor: Colours.filledButton }]
-          }
+          style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
         >
           {i !== 0 ? (
-            <TextRegular style={styles.infoText} text={item.name} />
+            <TextSemiBold
+              style={[styles.infoText, { textAlign: "left" }]}
+              text={item.name}
+            />
           ) : (
-            <TextMedium style={styles.infoText} text={"Item"} />
+            <TextSemiBold
+              style={[styles.infoText, { textAlign: "left" }]}
+              text={"Item"}
+            />
           )}
         </View>
         <View
-          style={
-            i !== 0
-              ? styles.cell
-              : [styles.cell, { backgroundColor: Colours.filledButton }]
-          }
-        >
-          {i !== 0 ? (
-            <TextRegular style={styles.infoText} text={item.dateWasted} />
-          ) : (
-            <TextMedium style={styles.infoText} text={"Date Wasted"} />
-          )}
-        </View>
-        <View
-          style={
-            i !== 0
-              ? styles.cell
-              : [styles.cell, { backgroundColor: Colours.filledButton }]
-          }
+          style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
         >
           {i !== 0 ? (
             <TextRegular
-              style={styles.infoText}
+              style={[styles.infoText, { textAlign: "right" }]}
+              text={item.dateWasted}
+            />
+          ) : (
+            <TextSemiBold
+              style={[styles.infoText, { textAlign: "right" }]}
+              text={"Date Wasted"}
+            />
+          )}
+        </View>
+        <View
+          style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
+        >
+          {i !== 0 ? (
+            <TextRegular
+              style={[styles.infoText, { textAlign: "right" }]}
               text={`${item.quantity} ${item.unitsOfMeasure}`}
             />
           ) : (
-            <TextMedium style={styles.infoText} text={"Quantity"} />
+            <TextSemiBold
+              style={[styles.infoText, { textAlign: "right" }]}
+              text={"Quantity"}
+            />
           )}
         </View>
       </View>
@@ -85,13 +88,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     padding: 5,
-    borderWidth: 1,
-    borderColor: Colours.tint,
+    borderBottomWidth: 1,
+    borderColor: Colours.divider,
     backgroundColor: Colours.borderedComponentFill,
   },
   infoText: {
+    width: "100%",
     fontSize: 11,
     color: Colours.tint,
-    textAlign: "left",
   },
 });

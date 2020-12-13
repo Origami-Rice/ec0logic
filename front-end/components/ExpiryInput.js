@@ -122,6 +122,7 @@ export default class ExpiryInput extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Day"
+            placeholderTextColor={Colours.textInputPlaceholder}
             keyboardType="number-pad"
             value={this.state.expiryDate.getDate().toString()}
             onChangeText={(text) => this.onChangeDay(text)}
@@ -129,6 +130,7 @@ export default class ExpiryInput extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Year"
+            placeholderTextColor={Colours.textInputPlaceholder}
             keyboardType="number-pad"
             onChangeText={(text) => this.onChangeYear(text)}
             value={this.state.expiryDate.getFullYear().toString()}
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    backgroundColor: Colours.borderedComponentFill,
+    backgroundColor: Colours.textInputBackground,
     borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 11,

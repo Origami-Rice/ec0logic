@@ -74,7 +74,7 @@ export default class ResetPasswordScreen extends React.Component {
               style={styles.inputFormat}
               placeholder="********"
               secureTextEntry={true}
-              placeholderTextColor="#C7C7CD"
+              placeholderTextColor={Colours.placeholderTextColor}
               onChangeText={(text) => this.setState({ newPassword: text })}
             />
             <TextRegular
@@ -85,7 +85,7 @@ export default class ResetPasswordScreen extends React.Component {
               style={styles.inputFormat}
               placeholder="********"
               secureTextEntry={true}
-              placeholderTextColor="#C7C7CD"
+              placeholderTextColor={Colours.placeholderTextColor}
               onChangeText={(text) =>
                 this.setState({ confirmedPassword: text })
               }
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 45,
-    backgroundColor: Colours.borderedComponentFill,
+    backgroundColor: Colours.textInputBackground,
     borderColor: Colours.tint,
     borderWidth: 1,
     borderRadius: 10,
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
   },
   confirmButton: {
     width: 148,

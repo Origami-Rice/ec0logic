@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   optional: {
     textAlign: "center",
     alignSelf: "center",
-    fontSize: 11,
+    fontSize: 12,
     marginVertical: 5,
     color: Colours.notice,
     zIndex: 1,

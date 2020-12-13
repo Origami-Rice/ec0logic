@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   notice: {
     width: Dimensions.get("window").width * 0.8,
     textAlign: "left",
-    fontSize: 10,
+    fontSize: 12,
     color: Colours.tint,
     marginHorizontal: 10,
   },

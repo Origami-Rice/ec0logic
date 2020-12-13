@@ -17,10 +17,9 @@ import InfoModals from "../constants/InfoModals";
 import InventoryListItem from "../components/InventoryListItem";
 import send from "../requests/request.js";
 
-import { AuthContext } from '../AuthContext';
+import { AuthContext } from "../AuthContext";
 
 export default class InventoryAllFoods extends React.Component {
-
   static contextType = AuthContext;
 
   constructor(props) {
@@ -501,6 +500,7 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 30,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "center",
     marginVertical: 20,

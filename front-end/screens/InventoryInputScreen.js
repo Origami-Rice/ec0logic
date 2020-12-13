@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   note: {
     textAlign: "center",
     alignSelf: "center",
-    fontSize: 11,
+    fontSize: 12,
     marginVertical: 5,
     color: Colours.notice,
   },
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
   },
   confirmButton: {
     width: 148,

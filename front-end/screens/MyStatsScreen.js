@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   },
   unitText: {
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
     textAlign: "center",
     alignSelf: "center",
   },
