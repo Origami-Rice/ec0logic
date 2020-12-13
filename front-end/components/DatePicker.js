@@ -27,13 +27,13 @@ export default function DatePicker(props) {
           <TouchableOpacity
             style={{
               alignItems: "center",
-              backgroundColor: Colours.listButton,
+              backgroundColor: Colours.filledButton,
               padding: 10,
             }}
             onPress={showDatepicker}
           >
             <TextRegular
-              style={{ colour: Colours.tint }}
+              style={{ colour: Colours.filledButtonText }}
               text={date.toDateString()}
             ></TextRegular>
           </TouchableOpacity>

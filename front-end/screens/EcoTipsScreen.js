@@ -20,11 +20,9 @@ import TipItem from "../components/TipItem";
 import { allTips } from "../constants/AllTips";
 import send from "../requests/request.js";
 
-import { AuthContext } from '../AuthContext';
-
+import { AuthContext } from "../AuthContext";
 
 export default class EcoTipsScreen extends React.Component {
-
   static contextType = AuthContext;
 
   constructor(props) {
@@ -36,27 +34,27 @@ export default class EcoTipsScreen extends React.Component {
       isLoaded: false,
       tipSelected: {},
       visibleModal: 0,
-      savable: true
+      savable: true,
     };
   }
-  
+
   getSavedTips = () => {
     console.log(this.context.user);
     send("getSavedTips", {}, "/" + this.context.user)
-    .then((response) => response.json())
-    .then((json) => {
-      // Returned data is a list of indices into the tips list
-      var saved = [];
-      for (let i = 0; i < json.length; i++) {
-        saved.push(allTips[json[i] - 1]); // Subtract since their indices start at 1
-      }
-      this.setState( { savedTips: saved, isLoaded: true })
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log("Error getting saved tips");
-    })
-  }
+      .then((response) => response.json())
+      .then((json) => {
+        // Returned data is a list of indices into the tips list
+        var saved = [];
+        for (let i = 0; i < json.length; i++) {
+          saved.push(allTips[json[i] - 1]); // Subtract since their indices start at 1
+        }
+        this.setState({ savedTips: saved, isLoaded: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Error getting saved tips");
+      });
+  };
 
   getRandomTipList = () => {
     let randomNums = [];
@@ -104,10 +102,12 @@ export default class EcoTipsScreen extends React.Component {
     // Dynamically
     if (this.state.generateTips) {
       return this.state.tipList.map((data) => (
-        <TipItem 
-          key={data.num} tip={data.tip} 
+        <TipItem
+          key={data.num}
+          tip={data.tip}
           onPressWhole={() => this.expand(data)}
-          onPressCheck={() => this.saveTip(data.num) } />
+          onPressCheck={() => this.saveTip(data.num)}
+        />
       ));
     } else {
       if (!this.state.isLoaded) {
@@ -124,12 +124,14 @@ export default class EcoTipsScreen extends React.Component {
           </View>
         );
       } else {
-        return this.state.savedTips.map((data, i) => 
-        <TipItem 
-          key={data.num} tip={data.tip}
-          onPressWhole={() => this.expand(data)}
-          onPressCheck={() => this.deleteTip(data.num, i)}
-           />);
+        return this.state.savedTips.map((data, i) => (
+          <TipItem
+            key={data.num}
+            tip={data.tip}
+            onPressWhole={() => this.expand(data)}
+            onPressCheck={() => this.deleteTip(data.num, i)}
+          />
+        ));
       }
     }
   };
@@ -143,28 +145,27 @@ export default class EcoTipsScreen extends React.Component {
 
   saveTip = (tipNum) => {
     send("addTip", {}, `/${this.context.user}/${tipNum}`)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-      alert("Tip successfully added.")
-      this.setState({ visibleModal: 0, isLoaded: false });
-    })
-
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        alert("Tip successfully added.");
+        this.setState({ visibleModal: 0, isLoaded: false });
+      });
   };
 
   deleteTip = (tipNum, i) => {
     send("deleteTip", {}, `/${this.context.user}/${tipNum}`)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-      alert("Tip successfully removed.")
-      let prev = this.state.savedTips;
-      prev.splice(i, 1);
-      this.setState({
-        savedTips: prev
-      })
-    })
-  }
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        alert("Tip successfully removed.");
+        let prev = this.state.savedTips;
+        prev.splice(i, 1);
+        this.setState({
+          savedTips: prev,
+        });
+      });
+  };
 
   closeModal = () => {
     this.setState({
@@ -175,16 +176,15 @@ export default class EcoTipsScreen extends React.Component {
   switchItems = (state) => {
     const prev = this.state.generateTips;
 
-    if (prev && !this.state.isLoaded ) {
+    if (prev && !this.state.isLoaded) {
       this.getSavedTips();
       console.log("getting saved tips");
     }
 
     this.setState((state) => ({
       generateTips: !state.generateTips,
-      savable: !state.savable
+      savable: !state.savable,
     }));
-
   };
 
   showRefresh = () => {
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   refreshButtonLabel: {
     textAlign: "center",
     alignSelf: "center",
-    fontSize: 8,
+    fontSize: 10,
     color: Colours.notice,
   },
   bottomModal: {

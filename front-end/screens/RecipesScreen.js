@@ -15,12 +15,12 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
-import InfoModals from "../constants/InfoModals";
+import InfoModals from "../Constants/InfoModals";
 import * as Font from "expo-font";
 import RecipeResultsScreen from "./RecipeResultsScreen";
 import send from "../requests/request.js";
 
-import { AuthContext } from '../AuthContext';
+import { AuthContext } from "../AuthContext";
 
 const username = "/tester";
 
@@ -42,10 +42,15 @@ export default class RecipesScreen extends React.Component {
       lastSearch: "",
       recipeSearchResult: [],
       savedRecipes: [
-        { title: "Pie", readyInMinutes: "5", servings: "6", id: 1, 
-          image: "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg",
-          sourceUrl: "https://google.com" 
-        }
+        {
+          title: "Pie",
+          readyInMinutes: "5",
+          servings: "6",
+          id: 1,
+          image:
+            "https://images-gmi-pmc.edge-generalmills.com/94323808-18ab-4d37-a1ef-d6e1ff5fc7ae.jpg",
+          sourceUrl: "https://google.com",
+        },
       ],
       imageSourceBase: "",
       visibleModal: 0,
@@ -110,19 +115,18 @@ export default class RecipesScreen extends React.Component {
 
   // Set this.state.recipeArray
   getSavedRecipes = () => {
-  
-    send("getSavedRecipes", {}, '/' + this.context.user)
-    .then(response => response.json())
-    .then(json => {
-      console.log(json.results);
+    send("getSavedRecipes", {}, "/" + this.context.user)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.results);
 
-      this.setState({
-        savedRecipes: json.results,
-        imageSourceBase: json.baseUri,
-        visibleModal: 1,
+        this.setState({
+          savedRecipes: json.results,
+          imageSourceBase: json.baseUri,
+          visibleModal: 1,
+        });
       })
-    })
-    .catch(error => console.log(error)); 
+      .catch((error) => console.log(error));
   };
 
   // Set this.state.recipeArray
@@ -132,18 +136,22 @@ export default class RecipesScreen extends React.Component {
       return;
     }
 
-    // Separating search 
+    // Separating search
     let searchQuery = this.state.search.trim();
     console.log("[Recipe Search]", searchQuery);
 
-    const diet = this.state.isVegan? "vegan" : this.state.isVegetarian? "vegetarian" : "";
-    const intolerances = this.state.isGlutenFree? "gluten" : "";
+    const diet = this.state.isVegan
+      ? "vegan"
+      : this.state.isVegetarian
+      ? "vegetarian"
+      : "";
+    const intolerances = this.state.isGlutenFree ? "gluten" : "";
 
     // if same search, we do not need to re-query
-    if (searchQuery+diet+intolerances == this.state.lastSearch) {
+    if (searchQuery + diet + intolerances == this.state.lastSearch) {
       console.log("[Recipe Search] last search");
-      this.setState({ 
-        visibleModal: 3, 
+      this.setState({
+        visibleModal: 3,
       });
       return;
     }
@@ -152,59 +160,56 @@ export default class RecipesScreen extends React.Component {
       query: searchQuery,
       diet: diet,
       intolerances: intolerances,
-    }
+    };
 
     send("searchRecipes", data)
-    .then(response => response.json())
-    .then(json => {
-      this.setState({ 
-        recipeSearchResult: json.results, 
-        imageSourceBase: json.baseUri,
-        visibleModal: 3, 
-        lastSearch: searchQuery+diet+intolerances
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          recipeSearchResult: json.results,
+          imageSourceBase: json.baseUri,
+          visibleModal: 3,
+          lastSearch: searchQuery + diet + intolerances,
+        });
+        // TODO: activitiy indicator for loading
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      // TODO: activitiy indicator for loading
-      
-    })
-    .catch(error => {
-      console.log(error);
-    })
   };
 
   deleteRecipe = (recipe, i) => {
+    send("removeRecipe", {}, "/" + this.context.user + "/" + recipe.id)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.success) {
+          alert("Recipe has been removed.");
+          console.log(json);
 
-    send("removeRecipe", {}, '/' + this.context.user + '/' + recipe.id)
-    .then(response => response.json())
-    .then(json => {
-      if (json.success) {
-        alert("Recipe has been removed.");
-        console.log(json);
-
-        // Update the list
-        let prev = this.state.savedRecipes;
-        prev.splice(i, 1); // Removing the deleted recipe
-        this.setState({
-          savedRecipes: prev
-        });
-      }
-    })
-    .catch(error => console.log(error));
-  }
+          // Update the list
+          let prev = this.state.savedRecipes;
+          prev.splice(i, 1); // Removing the deleted recipe
+          this.setState({
+            savedRecipes: prev,
+          });
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   saveRecipe = (recipe, i) => {
     console.log(recipe);
     // TODO: save recipe to user's saved
-    send("addRecipe", recipe, '/' + this.context.user)
-    .then(response => response.json())
-    .then(json => {
-      console.log(json);
-      if (json.success) {
-        alert("Recipe has been saved.");
-      }
-
-    })
-    .catch(error => console.log(error));
-  }
+    send("addRecipe", recipe, "/" + this.context.user)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          alert("Recipe has been saved.");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   render() {
     return (
@@ -242,7 +247,7 @@ export default class RecipesScreen extends React.Component {
                 onChangeText={(text) => this.setState({ search: text })}
               />
               <TextRegular
-                style={[styles.notice, { marginTop: 0 }]}
+                style={[styles.notice, { marginTop: 0, fontSize: 12 }]}
                 text={"Separate ingredients by commas or spaces"}
               />
               <View
@@ -257,8 +262,8 @@ export default class RecipesScreen extends React.Component {
                 <TextMedium style={styles.switchText} text={"Vegan"} />
                 <Switch
                   trackColor={{
-                    false: Colours.navActiveTint,
-                    true: Colours.navInactiveTint,
+                    false: Colours.toggleSliderNotSelected,
+                    true: Colours.toggleSliderSelected,
                   }}
                   thumbColor={Colours.borderedComponentFill}
                   style={{ marginRight: 10, alignSelf: "center" }}
@@ -278,8 +283,8 @@ export default class RecipesScreen extends React.Component {
                 <TextMedium style={styles.switchText} text={"Vegetarian"} />
                 <Switch
                   trackColor={{
-                    false: Colours.navActiveTint,
-                    true: Colours.navInactiveTint,
+                    false: Colours.toggleSliderNotSelected,
+                    true: Colours.toggleSliderSelected,
                   }}
                   thumbColor={Colours.borderedComponentFill}
                   style={{ marginRight: 10, alignSelf: "center" }}
@@ -299,8 +304,8 @@ export default class RecipesScreen extends React.Component {
                 <TextMedium style={styles.switchText} text={"Gluten-Free"} />
                 <Switch
                   trackColor={{
-                    false: Colours.navActiveTint,
-                    true: Colours.navInactiveTint,
+                    false: Colours.toggleSliderNotSelected,
+                    true: Colours.toggleSliderSelected,
                   }}
                   thumbColor={Colours.borderedComponentFill}
                   style={{ marginRight: 10, alignSelf: "center" }}
@@ -354,7 +359,9 @@ export default class RecipesScreen extends React.Component {
               <RecipeResultsScreen
                 onCancel={this.closeModal}
                 heading={
-                  "We Found " + this.state.recipeSearchResult.length + " Recipes"
+                  "We Found " +
+                  this.state.recipeSearchResult.length +
+                  " Recipes"
                 }
                 recipeArray={this.state.recipeSearchResult}
                 imageSource={this.state.imageSourceBase}
@@ -438,7 +445,7 @@ const styles = StyleSheet.create({
   },
   unitText: {
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
     textAlign: "center",
     alignSelf: "center",
   },
@@ -472,7 +479,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
     zIndex: 1,
   },
   confirmButton: {

@@ -65,6 +65,7 @@ export default class VerifyForForgotScreen extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Answer"
+            placeholderTextColor={Colours.placeholderTextColor}
             value={this.state.securityAnswer}
             onChangeText={(text) => this.setState({ securityAnswer: text })}
           />
@@ -110,6 +111,7 @@ export default class VerifyForForgotScreen extends React.Component {
             <TextInput
               style={styles.inputFormat}
               placeholder="sample@email.com"
+              placeholderTextColor={Colours.placeholderTextColor}
               value={this.state.name}
               onChangeText={(text) => this.setState({ email: text })}
             />
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 45,
-    backgroundColor: Colours.borderedComponentFill,
+    backgroundColor: Colours.textInputBackground,
     borderColor: Colours.tint,
     borderWidth: 1,
     borderRadius: 10,
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
   },
   confirmButton: {
     width: 148,

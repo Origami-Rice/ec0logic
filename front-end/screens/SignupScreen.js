@@ -14,7 +14,7 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Ionicons } from "@expo/vector-icons";
 import { Colours } from "../constants/colours.js";
-import { AuthContext } from '../AuthContext';
+import { AuthContext } from "../AuthContext";
 
 export default function SignupScreen(props) {
   const [email, setEmail] = React.useState("");
@@ -22,8 +22,8 @@ export default function SignupScreen(props) {
   const [lastName, setLastName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [hidePassword, setHidePassword] = React.useState(true);
+  const [hideConfirmPassword, setHideConfirmPassword] = React.useState(true);
   const [securityQuestion, setSecurityQuestion] = React.useState("");
   const [securityAnswer, setSecurityAnswer] = React.useState("");
 
@@ -38,24 +38,29 @@ export default function SignupScreen(props) {
   };
 
   const verifyInfo = () => {
-    if (email.length < 5 || !email.includes('@') || !email.includes('.')) {
-      alert('Please enter a valid email');
+    if (email.length < 5 || !email.includes("@") || !email.includes(".")) {
+      alert("Please enter a valid email");
     } else if (firstName.length < 2 || lastName.length < 2) {
-      alert('Please enter a valid name');
+      alert("Please enter a valid name");
     } else if (password.length < 6) {
-      alert('Password must be at least 6 characters')
+      alert("Password must be at least 6 characters");
     } else if (password !== confirmPassword) {
-      alert('Passwords do not match')
+      alert("Passwords do not match");
     } else if (securityQuestion.trim().length < 1) {
-      alert('Security Question cannot be blank');
+      alert("Security Question cannot be blank");
     } else if (securityAnswer.trim().length < 6) {
-      alert('Security answer must be at least 6 characters.')
+      alert("Security answer must be at least 6 characters.");
     } else {
-      authContext.signUp({ 
-        email, firstName, lastName, password, 
-        securityQuestion, securityAnswer });
+      authContext.signUp({
+        email,
+        firstName,
+        lastName,
+        password,
+        securityQuestion,
+        securityAnswer,
+      });
     }
-  }
+  };
 
   return (
     <View
@@ -65,7 +70,10 @@ export default function SignupScreen(props) {
         flex: 1,
       }}
     >
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
         <View
           style={{
             justifyContent: "flex-start",
@@ -121,36 +129,38 @@ export default function SignupScreen(props) {
             <TextInput
               style={styles.inputFormat}
               placeholder="Password"
-              secureTextEntry={showPassword}
+              secureTextEntry={hidePassword}
               onChangeText={setPassword}
             />
             <TouchableOpacity
               style={{ width: 24, height: 35, justifyContent: "center" }}
-              onPress={() => setShowPassword(!showPassword)}
+              onPress={() => setHidePassword(!hidePassword)}
             >
-              {getIcon(showPassword)}
+              {getIcon(hidePassword)}
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputFormat}
               placeholder="Confirm Password"
-              secureTextEntry={showConfirmPassword}
+              secureTextEntry={hideConfirmPassword}
               onChangeText={setConfirmPassword}
             />
             <TouchableOpacity
               style={{ width: 24, height: 35, justifyContent: "center" }}
-              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              onPress={() => setHideConfirmPassword(!hideConfirmPassword)}
             >
-              {getIcon(showConfirmPassword)}
+              {getIcon(hideConfirmPassword)}
             </TouchableOpacity>
           </View>
           <TextRegular
             style={styles.terms}
-            text={"The security question and answer will be used" 
-            + "\n to reset your password if you ever forget it."}
+            text={
+              "The security question and answer will be used" +
+              "\n to reset your password if you ever forget it."
+            }
           />
-          <View style={styles.inputContainer}> 
+          <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputFormat}
               placeholder="Security Question"
@@ -249,7 +259,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
     zIndex: 1,
   },
   confirmButton: {

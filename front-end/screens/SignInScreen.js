@@ -67,6 +67,7 @@ export default class LoginScreen extends React.Component {
     });
   };
 
+  // TODO: add resetPasswordScreen as modal
   onClickForget = () => {
     this.setState({
       visibleModal: 1,
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
     zIndex: 1,
   },
   confirmButton: {

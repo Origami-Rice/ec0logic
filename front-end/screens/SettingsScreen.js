@@ -13,7 +13,7 @@ import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 
-import { AuthContext } from '../AuthContext';
+import { AuthContext } from "../AuthContext";
 
 let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
@@ -48,6 +48,7 @@ export default class SettingsScreen extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="********"
+            placeholderTextColor={Colours.textInputPlaceholder}
             secureTextEntry={true}
             value={this.state.name}
             onChangeText={(text) => this.setState({ newPassword: text })}
@@ -60,7 +61,10 @@ export default class SettingsScreen extends React.Component {
   confirmChangesButton = () => {
     if (this.state.newEmail || this.state.newPassword) {
       return (
-        <TouchableOpacity style={styles.confirmButton} onPress={this.changeEmail}>
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={this.changeEmail}
+        >
           <TextMedium style={styles.confirmText} text={"Confirm Changes"} />
         </TouchableOpacity>
       );
@@ -70,34 +74,34 @@ export default class SettingsScreen extends React.Component {
   signOut = () => {
     console.log("signout pressed");
     this.context.authContext.signOut();
-
-  } 
+  };
 
   changeEmail = () => {
     console.log("Curr:", this.context.user);
-    const { newEmail } = this.state; 
-    const prev = this.context.user; 
+    const { newEmail } = this.state;
+    const prev = this.context.user;
     if (this.context.authContext.updateUser({ newEmail, prev })) {
       console.log("Email changed");
-      console.log("NEW:", this.context.user)
-    };
-  }
+      console.log("NEW:", this.context.user);
+    }
+  };
 
   changePassword = () => {
-
-    send("updatePassword", {}, '/' + this.context.user)
-    .then(response => response.json())
-    .then(json => {
-      if (json.error) {
-        alert("Sorry, you've entered the incorrect password. Please try again.");
-      } else if (json.success) {
-        alert("Password successfully changed."); 
-      }
-    })
-  }
+    send("updatePassword", {}, "/" + this.context.user)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          alert(
+            "Sorry, you've entered the incorrect password. Please try again."
+          );
+        } else if (json.success) {
+          alert("Password successfully changed.");
+        }
+      });
+  };
 
   render() {
-    return ( 
+    return (
       <View style={styles.container}>
         <View style={{ justifyContent: "flex-start", flex: 0, marginTop: 5 }}>
           <View style={[styles.rowContainer, { justifyContent: "flex-start" }]}>
@@ -127,6 +131,7 @@ export default class SettingsScreen extends React.Component {
             <TextInput
               style={styles.inputFormat}
               placeholder="sample@email.com"
+              placeholderTextColor={Colours.textInputPlaceholder}
               value={this.state.name}
               onChangeText={(text) => this.setState({ newEmail: text })}
             />
@@ -134,6 +139,7 @@ export default class SettingsScreen extends React.Component {
             <TextInput
               style={styles.inputFormat}
               placeholder="********"
+              placeholderTextColor={Colours.textInputPlaceholder}
               secureTextEntry={true}
               value={this.state.name}
               onChangeText={(text) => this.setState({ newPassword: text })}
@@ -196,7 +202,7 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 45,
-    backgroundColor: Colours.borderedComponentFill,
+    backgroundColor: Colours.textInputBackground,
     borderColor: Colours.tint,
     borderWidth: 1,
     borderRadius: 10,
@@ -213,7 +219,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
   },
   confirmButton: {
     width: 148,

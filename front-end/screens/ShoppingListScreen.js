@@ -20,7 +20,7 @@ import ShoppingListInputScreen from "./ShoppingListInputScreen";
 import ShoppingListEditScreen from "./ShoppingListEditScreen";
 import send from "../requests/request";
 
-import {AuthContext} from "../AuthContext";
+import { AuthContext } from "../AuthContext";
 
 let username = "/tester";
 
@@ -40,7 +40,7 @@ export default class ShoppingListScreen extends React.Component {
   _loadData = () => {
     this.setState({ isLoaded: false });
     // get user's shopping list from server
-    send("getShoppingList", {},  "/" + this.context.user)
+    send("getShoppingList", {}, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
         this.setState({ shoppingList: json, isLoaded: true });
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
   addButtonLabel: {
     textAlign: "center",
     alignSelf: "center",
-    fontSize: 8,
+    fontSize: 10,
     color: Colours.notice,
   },
   modal: {
