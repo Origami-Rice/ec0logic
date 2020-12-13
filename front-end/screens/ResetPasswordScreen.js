@@ -12,15 +12,13 @@ import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
-
-import { AuthContext } from "../AuthContext";
+import send from "../requests/request";
 
 let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
 };
 
 export default class ResetPasswordScreen extends React.Component {
-  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
@@ -40,7 +38,38 @@ export default class ResetPasswordScreen extends React.Component {
     this._loadFontsAsync();
   }
 
-  resetPassword = () => {};
+  resetPassword = () => {
+    const {newPassword, confirmedPassword} = this.state;
+
+    if (newPassword.length < 6) {
+      alert("Password must be at least 6 characters");
+      return;
+    } else if (newPassword !== confirmedPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const data = {
+      password: "",
+      newPassword: newPassword,
+      key: "abcdef",
+    }
+    console.log("Update Password for", this.props.user);
+    send("updatePassword", data, "/" + this.props.user)
+    .then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        console.log(json.error); 
+        return;
+      }
+
+      if (json.message) {
+        alert("Password successfully updated");
+        this.props.onCancel();
+      }
+
+    });
+  };
 
   render() {
     return (
@@ -98,7 +127,7 @@ export default class ResetPasswordScreen extends React.Component {
               styles.confirmButton,
               { marginBottom: Dimensions.get("window").height * 0.1 },
             ]}
-            onPress={() => this.resetPassword}
+            onPress={this.resetPassword}
           >
             <TextMedium style={styles.confirmText} text={"Change Password"} />
           </TouchableOpacity>

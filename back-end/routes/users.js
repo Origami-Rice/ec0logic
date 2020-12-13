@@ -18,6 +18,7 @@ const {
 
 // How long to save the session cookie in days
 const cookieDays = 2; 
+const SECRET_KEY = 'abcdef';
 
 //Checks all information fields of a user attempting to sign up 
 function fieldsAreValid(username, email, password, firstname, lastname, question, answer){
@@ -272,6 +273,9 @@ router
         const username = request.params.username;
         let password = request.body.password; 
         let newPassword = request.body.newPassword;
+        let skipVerification = (request.body.key == SECRET_KEY);
+        let salt = "";
+
         try {
             const user = await find_user_by_username(username);
             if (!user){
@@ -279,7 +283,8 @@ router
                 .status(404)
                 .json({error: "User with the given username not found or password unchanged."});
             }
-            if (!verifyPassword(user.salt, password, user.password)){
+            salt = user.salt;
+            if (!skipVerification && !verifyPassword(user.salt, password, user.password)){
                 return response
                     .status(401)
                     .json({"error": "old password doesn't match existing password"}); 
@@ -289,7 +294,6 @@ router
         }
         
         // Salt and hash the new password
-        let salt = crypto.randomBytes(16).toString("base64");
         let hash = crypto.createHmac("sha512", salt);
         hash.update(newPassword);
         let saltedHash = hash.digest("base64");
@@ -309,6 +313,7 @@ router
         } catch (error) {
             console.log(error);
         }
+        
     });
 
 

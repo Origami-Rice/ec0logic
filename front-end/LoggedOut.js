@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SignupScreen from './screens/SignupScreen';
-import SignInScreen from './screens/SigninScreen';
+import SignInScreen from './screens/SignInScreen';
 import { Colours } from "./constants/colours.js";
 
 const AuthTab = createBottomTabNavigator();

@@ -14,24 +14,24 @@ import { Colours } from "../constants/colours.js";
 import * as Font from "expo-font";
 import Modal from "react-native-modal";
 import ResetPasswordScreen from "./ResetPasswordScreen";
+import send from "../requests/request";
 
-import { AuthContext } from "../AuthContext";
 
 let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
 };
 
 export default class VerifyForForgotScreen extends React.Component {
-  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
     this.state = {
       email: "",
+      user: "",
       securityQuestion: "question question question?",
       securityAnswer: "",
-      verifiedEmail: true,
-      verifiedAnswer: true,
+      verifiedEmail: false,
+      verifiedAnswer: false,
       fontsLoaded: false,
       visibleModal: 0,
     };
@@ -46,12 +46,54 @@ export default class VerifyForForgotScreen extends React.Component {
     this._loadFontsAsync();
   }
 
-  verifyEmail = () => {};
+  verifyEmail = () => {
+    if (this.state.email.trim() === "") {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    send("getSecurityQuestion", {}, "/" + this.state.email.trim())
+    .then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        alert("This email does not belong to an existing account. Please enter a valid email again.")
+      } else if (json.question) {
+        this.setState({
+          securityQuestion: json.question,
+          verifiedEmail: true,
+          user: this.state.email.trim()
+        });
+      }
+    })
+    .catch (error => console.log(error)); 
+  };
 
   verifyAnswer = () => {
-    if (true) {
-      this.setState({ visibleModal: 1 });
+    if (this.state.securityAnswer.length < 6) {
+      alert("Sorry, that answer was incorrect. Please try again.");
+      return;
     }
+
+    const data = {
+      answer: this.state.securityAnswer
+    }
+
+    send("verifySecurityAnswer", data, "/" + this.state.user)
+    .then(response => response.json())
+    .then(json => {
+      if (json.error) {
+        console.log(json.error);
+        return;
+      }
+
+      if (json.matched) {
+        this.setState({ visibleModal: 1 });
+      }
+      else {
+        alert("Sorry, that answer was incorrect. Please try again.");
+        return; 
+      }
+    })
   };
 
   securityQA = () => {
@@ -75,9 +117,7 @@ export default class VerifyForForgotScreen extends React.Component {
   };
 
   closeModal = () => {
-    this.setState({
-      visibleModal: 0,
-    });
+    this.props.onCancel();
   };
 
   render() {
@@ -143,7 +183,7 @@ export default class VerifyForForgotScreen extends React.Component {
         >
           {
             <View style={styles.modal}>
-              <ResetPasswordScreen onCancel={this.closeModal} />
+              <ResetPasswordScreen user={this.state.user} onCancel={this.closeModal} />
             </View>
           }
         </Modal>
