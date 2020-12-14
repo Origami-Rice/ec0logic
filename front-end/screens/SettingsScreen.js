@@ -77,18 +77,16 @@ export default class SettingsScreen extends React.Component {
   };
 
   changeEmail = () => {
-    console.log("Curr:", this.context.user);
     const { newEmail } = this.state;
-    const prev = this.context.user;
-    if (this.context.authContext.updateUser({ newEmail, prev })) {
-      console.log("Email changed");
-      console.log("NEW:", this.context.user);
-      alert("Email successfully changed.");
-      return; 
-    } else {
-      alert("Email could not be changed. Try entering a different email.");
+
+    if (newEmail.length < 5 || !newEmail.includes("@") || !newEmail.includes(".")) {
+      alert("Please enter a valid email");
       return;
     }
+
+    console.log("Curr:", this.context.user);
+    const prev = this.context.user;
+    this.context.authContext.updateUser({ newEmail, prev });
   };
 
   changePassword = () => {
