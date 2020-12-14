@@ -116,7 +116,7 @@ export default class InventoryInputScreen extends React.Component {
       return (
         <View>
           <TextMedium
-            style={styles.label}
+            style={[styles.label, { marginTop: 10 }]}
             text={`${" "}Estimated Expiry Date: ${this.state.expiryDate.toDateString()}`}
           />
           <TextRegular
@@ -297,6 +297,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   note: {
+    width: "80%",
     textAlign: "center",
     alignSelf: "center",
     fontSize: 12,

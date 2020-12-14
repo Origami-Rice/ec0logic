@@ -39,7 +39,7 @@ const ShoppingListItem = (props) => {
           <MaterialIcons
             name="check"
             size={24}
-            color={checked ? Colours.tint : Colours.filledButton}
+            color={checked ? Colours.filledButtonText : Colours.filledButton}
           />
         </TouchableOpacity>
       </View>

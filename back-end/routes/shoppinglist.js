@@ -23,6 +23,7 @@ router
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
         try{
+            // calls endpoint function from userData.js
             const result = await get_shopping_list(username);
             
             if(result && result.shopping_list){
@@ -51,12 +52,14 @@ router
 
         }
     })
+    // This post request is to add a new item the user's current shoppinglist
     .post(async (request, response) => {
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
-        
+        // assign the item name passed to the endpoint to a variable
         const item = request.body;
         try{
+            // calls endpoint function from userData.js
             const result = await add_item_to_shopping_list(username, item);
             if (result){
                 return response
@@ -74,6 +77,7 @@ router
             console.log(error);
         }
     })
+    // This put request is to replace the user's old shoppinglist with a new one.
     .put(async (request, response) => {
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
@@ -81,6 +85,7 @@ router
         const newList = request.body;
         
         try{
+            // calls endpoint function from userData.js
             const result = await update_shopping_list(username, newList);
             if (result){
                 return response 
@@ -97,6 +102,8 @@ router
     })
 router
     .route('/:username/:item')
+    // Route to /api/shoppinglist/:username/:item
+    //This delete request is to delete the item in the user's shoppinglist
     .delete(async (request, response) => {
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
@@ -104,6 +111,7 @@ router
         const item = request.params.item;
         
         try{ 
+            // calls endpoint function from userData.js
             const result = await remove_item_from_shopping_list(username, item)
             if (result) {
                 return response
