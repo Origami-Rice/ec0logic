@@ -23,7 +23,6 @@ let customFonts = {
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
 };
 
-// NOTE: Login button currently justified to top
 export default class LoginScreen extends React.Component {
   static contextType = AuthContext;
 
@@ -67,7 +66,6 @@ export default class LoginScreen extends React.Component {
     });
   };
 
-  // TODO: add resetPasswordScreen as modal
   onClickForget = () => {
     this.setState({
       visibleModal: 1,

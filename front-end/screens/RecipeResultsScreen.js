@@ -6,31 +6,23 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
-  Linking
 } from "react-native";
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import RecipeCard from "../components/RecipeCard";
 import { Colours } from "../constants/colours.js";
-import Modal from "react-native-modal";
-import ExpandedRecipeCard from "./ExpandedRecipeCard";
-import * as WebBrowser from 'expo-web-browser';
+import * as WebBrowser from "expo-web-browser";
 
-// NOTE: Current items array does not reflect json result from spoonacular
 export default class RecipeResultsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       recipeArray: this.props.recipeArray,
       selectedItem: {},
-      // email: "",
-      visibleModal: 0,
       imageSource: this.props.imageSource,
     };
   }
 
-  // TODO: Add onPressButton as prop for saving
-  // CHANGES FROM ORIGINAL: Not passing email or resultId as props
   populateList = () => {
     return this.state.recipeArray.map((result, i) => (
       <RecipeCard
@@ -45,9 +37,7 @@ export default class RecipeResultsScreen extends React.Component {
           "\nServings: " +
           result.servings
         }
-        imageUri={
-          this.state.imageSource + result.image
-        }
+        imageUri={this.state.imageSource + result.image}
         isDeletable={this.props.isDeletable}
       />
     ));
@@ -55,19 +45,8 @@ export default class RecipeResultsScreen extends React.Component {
 
   expand = (result) => {
     console.log("Opening external link...", result.sourceUrl);
-    // this.setState({
-    //   selectedItem: result,
-    //   visibleModal: 1,
-    // });
     WebBrowser.openBrowserAsync(result.sourceUrl);
-    // Linking.openURL(result.sourceUrl);
   };
-
-  // closeModal = () => {
-  //   this.setState({
-  //     visibleModal: 0,
-  //   });
-  // };
 
   render() {
     return (
@@ -93,26 +72,6 @@ export default class RecipeResultsScreen extends React.Component {
             },
           ]}
         ></View>
-        <Modal
-          isVisible={this.state.visibleModal === 1}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            // <View style={styles.modal}>
-            //   <ExpandedRecipeCard
-            //     imageUri={
-            //       this.state.imageSource + this.state.selectedItem.image
-            //     }
-            //     // title={this.state.selectedItem.title}
-            //     // recipeId={this.state.selectedItem.id}
-            //     // recipeSource={this.state.selectedItem.sourceUrl}
-            //     recipeInfo={this.state.selectedItem}
-            //     onCancel={this.closeModal}
-            //   ></ExpandedRecipeCard>
-            // </View>
-          }
-        </Modal>
       </View>
     );
   }
@@ -178,19 +137,5 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
-  },
-  bottomModal: {
-    justifyContent: "flex-end",
-    margin: 0,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    position: "absolute",
-    top: 0,
-  },
-  modal: {
-    backgroundColor: "white",
-    borderColor: "rgba(0, 0, 0, 0.1)",
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
   },
 });
