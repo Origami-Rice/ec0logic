@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose')
 
+// Template for the data that is stored about an inventory list item.
 const InventoryItemSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -18,11 +19,13 @@ const InventoryItemSchema = new mongoose.Schema({
     }
 });
 
+// Template for the data that is stored about a common food item.
 const CommonFoodSchema = new mongoose.Schema({
     name: String,
     days: Number,
 });
 
+// Template for the data that is stored about a wasted food item.
 const WastedItemSchema = new mongoose.Schema({
     name:  {
         type: String,
@@ -35,10 +38,12 @@ const WastedItemSchema = new mongoose.Schema({
         default: Date.now
     },
     quantity: Number,
-    weight: Number
+    weight: Number,
+    kilograms: Number
 });
 
-const ShoppingListSchema = new mongoose.Schema({
+// Template for the data that is stored about a shopping list item.
+const ShoppingListItemSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -48,9 +53,9 @@ const ShoppingListSchema = new mongoose.Schema({
     quantity: Number,
     checked_off: Boolean,
     unitsOfMeasure: String
-    
 });
 
+// Template for the data that is stored about a recipe.
 const RecipeSchema = new mongoose.Schema({
     id: Number,
     title: String,
@@ -59,11 +64,16 @@ const RecipeSchema = new mongoose.Schema({
     sourceUrl: String,
     image: String,
 });
-// MAY NEED TO MODIFY ????????????????????????????????????????
+
+// Template for the data that is stored about a tip.
 const TipsSchema = new mongoose.Schema({
     tipNum: Number
 });
 
+// Template for the data that is stored about a user. 
+// Note that the usertype field which distinguishes between admin and
+// regular users is currently not in use but can be taken advantage of
+// during future development 
 const UserSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -112,12 +122,11 @@ const UserSchema = new mongoose.Schema({
     },
     inventory_list: [InventoryItemSchema],
     wasted_items: [WastedItemSchema],
-    shopping_list: [ShoppingListSchema],
+    shopping_list: [ShoppingListItemSchema],
     saved_recipes: [RecipeSchema],
     saved_tips: [TipsSchema]
 });
 
-// MAY NEED TO MODIFY ????????????????????????????????????????
 // An example of Mongoose middleware.
 // This function will run immediately prior to saving the document
 // in the database.
@@ -140,5 +149,4 @@ UserSchema.pre('save', function (next) {
 
 const User = mongoose.model('User', UserSchema);
 const CommonFood = mongoose.model("CommonFood", CommonFoodSchema);
-//module.exports = {UserSchema: UserSchema, CommonFoodSchema: CommonFoodSchema};
 module.exports = {User: User, CommonFood: CommonFood};
