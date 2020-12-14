@@ -106,12 +106,15 @@ router
 
 
 router
+    // Route to /api/shoppinglist/:username
     .route('/:username')
     .get(async (request, response) => {
+        //This get request is to get the user's saved recipes list
         console.log('GET request to path /api/recipe/:username');
         // return user's saved recipes
         const username = request.params.username;
         try{
+            // calls endpoint function from userData.js
             const result = await get_saved_recipes(username);
             console.log(result)
             if(result && result.saved_recipes){
@@ -127,6 +130,7 @@ router
             }
         })
     .post(async (request, response) => {
+        //This post request is to add a new recipe the user's saved recipes list
         console.log('POST request to path /api/recipe/:username');
         // add a new recipe to user's list of saved recipes
         const username = request.params.username;
@@ -136,6 +140,7 @@ router
                     .status(404)
                     .json({"error": "Item is missing id."});
         }
+        // calls endpoint function from userData.js
         const saved_recipes = await get_saved_recipes(username);
         var duplicate = false;
         saved_recipes.saved_recipes.map(item=> {
@@ -150,6 +155,7 @@ router
             .json({"error": "Recipe is already saved. Invalid"});
         }else{
             try{
+                // calls endpoint function from userData.js
                 const result = await add_recipe_to_saved_recipes(username, recipe);
                 if (result) {
                     return response
@@ -171,13 +177,16 @@ router
     });
 
 router
+    // Route to /api/shoppinglist/:username/:recipe
     .route('/:username/:recipe')
     .delete(async (request, response) => {
+        //This delete request is to delete a recipe in the user's recipe list
         console.log('GET request to path to /api/recipe/:username/:recipe');
         // delete recipe in user's saved recipes list
         const username = request.params.username;
         const recipeid = Number(request.params.recipe);
         try{
+            // calls endpoint function from userData.js
             const result = await remove_recipe_from_saved_recipes(username, recipeid);
             if(result){
                 return response
