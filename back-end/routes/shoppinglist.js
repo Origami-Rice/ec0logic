@@ -77,6 +77,7 @@ router
             console.log(error);
         }
     })
+    // This put request is to replace the user's old shoppinglist with a new one.
     .put(async (request, response) => {
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
@@ -84,6 +85,7 @@ router
         const newList = request.body;
         
         try{
+            // calls endpoint function from userData.js
             const result = await update_shopping_list(username, newList);
             if (result){
                 return response 
