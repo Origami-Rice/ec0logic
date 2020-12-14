@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 import TextRegular from "./TextRegular";
 import TextSemiBold from "./TextSemiBold";
 import { Colours } from "../constants/colours.js";
@@ -10,10 +10,10 @@ export default class RecentlyWastedTable extends React.Component {
     this.state = {
       items: [{}].concat(this.props.items),
     };
-  }
+  } 
 
   createRows() {
-    return this.state.items.map((item, i) => (
+    return this.props.items.map((item, i) => (
       <View style={styles.row} key={item.date || "header"}>
         <View
           style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
@@ -40,14 +40,14 @@ export default class RecentlyWastedTable extends React.Component {
           {i !== 0 ? (
             <TextRegular
               style={[styles.infoText, { textAlign: "right" }]}
-              text={new Date().toDateString()}
+              text={new Date(item.date).toDateString()}
             />
           ) : (
             <TextSemiBold
               style={[styles.infoText, { textAlign: "right" }]}
               text={"Date Wasted"}
             />
-          )}
+          )} 
         </View>
         <View
           style={
@@ -59,7 +59,7 @@ export default class RecentlyWastedTable extends React.Component {
           {i !== 0 ? (
             <TextRegular
               style={[styles.infoText, { textAlign: "right" }]}
-              text={`${item.quantity.toString()} ${item.unitsOfMeasure}`}
+              text={`${item.quantity} ${item.unitsOfMeasure}`}
             />
           ) : (
             <TextSemiBold

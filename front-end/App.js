@@ -68,6 +68,7 @@ export default function App (props) {
         send("signinUser", data)
         .then(result => {
           if (result.status === 200) {
+            setLoadingComplete(false);
             result.json().then(json => {
               console.log(json);
               console.log('Logged in as', data.username);
@@ -128,6 +129,7 @@ export default function App (props) {
             if (res.error === "User with this username already exists") {
               alert("Email already in use")
             } else {
+              setLoadingComplete(false);
               setIsLoggedIn(true);
               setUser(username);
               console.log("SIGN_UP auth:", isLoggedIn);

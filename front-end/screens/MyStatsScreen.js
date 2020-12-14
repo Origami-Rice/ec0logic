@@ -30,7 +30,7 @@ export default class MyStatsScreen extends React.Component {
       thisWeek: {},
       monthlyBreakdown: { months: [], kg: [], lbs: [] },
       recentlyWasted: [],
-      isLoaded: false,
+      isLoaded: false
     };
   }
 
@@ -82,7 +82,8 @@ export default class MyStatsScreen extends React.Component {
         } else {
           console.log(json);
           this.setState({
-            recentlyWasted: json
+            recentlyWasted: json,
+            showRecentlyWasted: true
           });
         }
       })
@@ -125,7 +126,7 @@ export default class MyStatsScreen extends React.Component {
             flex: 1,
             alignItems: "center",
             justifyContent: "center",
-            padding: 24,
+            padding: 36,
           }}
         >
           <ActivityIndicator animating={true} colour={Colours.notice} />
@@ -239,7 +240,7 @@ export default class MyStatsScreen extends React.Component {
             <View style={styles.divider}></View>
             <TextSemiBold style={styles.subheading} text={"Recently Wasted"} />
             <RecentlyWastedTable
-              items={this.state.recentlyWasted}
+              items={[{}].concat(this.state.recentlyWasted)}
             ></RecentlyWastedTable>
           </ScrollView>
         </View>
