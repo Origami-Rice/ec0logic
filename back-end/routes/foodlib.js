@@ -57,8 +57,7 @@ router
         } catch (error) {
             console.log(error)
         }
-    }); 
-
+    })
 router
     .route('/remove/:name')
     .delete(async (request, response) => {
