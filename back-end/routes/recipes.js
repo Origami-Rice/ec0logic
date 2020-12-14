@@ -149,6 +149,7 @@ router
             }
             return item;
         });
+        // checks if the recipe is already in the saved recipe list
         if (duplicate == true){
             return response
             .status(404)
