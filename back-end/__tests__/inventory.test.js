@@ -48,7 +48,7 @@ const expired = [
 /////////////////// Setup and Teardown ///////////////////
 beforeAll(async () => {
     // create a test user in the database
-    return await add_user(name, "password", "anEmail@gmail.com", "", "firstName", "lastName");
+    return await add_user(name);
 });
 
 afterAll(async () => {
@@ -101,6 +101,8 @@ describe("access and update user's inventory", () => {
     });
 });
 
+
+/* --------------------- Expiring no longer exists ----------------------------
 describe("filter expired and expiring items", () => {
     test("retrieve single item that expires within the week", async () => {
         url = "/api/inventory/expiring/" + name;
@@ -136,4 +138,4 @@ describe("filter expired and expiring items", () => {
         expect(response.body).not.toEqual([]);
         expect(response.body).toEqual(expired);
     });
-});
+}); */

@@ -19,22 +19,28 @@ const newUser = {
     "password": "password",
     "email": "anEmail@gmail.com",
     "firstname": "firstName",
-    "lastname": "lastname"
+    "lastname": "lastname",
+    "question": "what city were you born in?",
+    "answer": "Toronto"
 }
 
-const invalidUser1 = {
-    "username": "",
-    "password": "password",
+const invalidUser1 = {  //empty string for password 
+    "username": "name",
+    "password": "",
     "email": "anEmail@gmail.com",
     "firstname": "firstName",
-    "lastname": "lastname"
+    "lastname": "lastname",
+    "question": "what city were you born in?",
+    "answer": "Toronto"
 }
 
-const invalidUser2 = {
-    "password": "password",
+const invalidUser2 = {  //missing password 
+    "username": "name",
     "email": "anEmail@gmail.com",
     "firstname": "firstName",
-    "lastname": "lastname"
+    "lastname": "lastname",
+    "question": "what city were you born in?",
+    "answer": "Toronto"
 }
 
 

@@ -9,13 +9,13 @@ const {
     remove_user
 } = require('../dataAccess/userData');
 
-const shoppingItem1 = {
-    "item1": {
+const shoppingItem1 = [
+    {
         "name": "Fish",
         "quantity": 2,
         "checked_off": false 
     }
-}
+]
 
 const shoppingList = 
     [
@@ -33,7 +33,7 @@ const shoppingList =
 
 // Setup and Teardown 
 beforeAll(async () => {
-    return await add_user(name, "password", "anEmail@gmail.com", "", "firstName", "lastName");
+    return await add_user(name);
 });
 
 afterAll(async () => {
