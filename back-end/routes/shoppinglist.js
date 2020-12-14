@@ -23,6 +23,7 @@ router
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
         try{
+            // calls endpoint function from userData.js
             const result = await get_shopping_list(username);
             
             if(result && result.shopping_list){
@@ -51,12 +52,14 @@ router
 
         }
     })
+    // This post request is to add a new item the user's current shoppinglist
     .post(async (request, response) => {
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
-        
+        // assign the item name passed to the endpoint to a variable
         const item = request.body;
         try{
+            // calls endpoint function from userData.js
             const result = await add_item_to_shopping_list(username, item);
             if (result){
                 return response
