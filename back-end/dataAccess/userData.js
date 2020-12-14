@@ -1,7 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+const config_param = fs.readFileSync(path.resolve(__dirname, "../config.json"), 'utf-8');
+const configJson = JSON.parse(config_param);
+
 // Name of the database
-const db = "test_wasteless";
+const db = configJson.mongo.user_db;
 // Name of the collection in the database
-const users_collection = "test_users";
+const users_collection = "users";
 // Database query template
 const executeQuery = require('../utilities/mongoConnect').executeQuery;
 // User document schema

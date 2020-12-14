@@ -1,13 +1,11 @@
-// This file is borrowed from the existing code our partner provided us with
-// and has been very slightly modified for our current use.
 const MongoClient = require('mongodb').MongoClient;
-// const fs = require('fs');
-// const path = require('path');
-// const config_param = fs.readFileSync(path.resolve(__dirname, "../config.json"), 'utf-8');
-// const configJson = JSON.parse(config_param);
-// const mongodbUrl = `mongodb+srv://${configJson.mongo.user}:${configJson.mongo.password}@cluster0-oslmy.mongodb.net/test?retryWrites=true&w=majority`;
-const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/inventory?retryWrites=true&w=majority';
+const fs = require('fs');
+const path = require('path');
+const config_param = fs.readFileSync(path.resolve(__dirname, "../config.json"), 'utf-8');
+const configJson = JSON.parse(config_param);
+const mongodbUrl = `mongodb+srv://${configJson.mongo.user}:${configJson.mongo.password}@cluster0-oslmy.mongodb.net/${configJson.mongo.user_db}?retryWrites=true&w=majority`;
 
+// Ensures the connection to the database
 const connectMongo = () => new Promise(async (resolve, reject) => {
     try {
         resolve(await MongoClient.connect(mongodbUrl, {useNewUrlParser: true, useUnifiedTopology: true}));
@@ -15,6 +13,9 @@ const connectMongo = () => new Promise(async (resolve, reject) => {
         reject(err);
     }
 });
+
+// Template to execute a database query from one of the files in 
+// dataAccess
 exports.executeQuery = async (dbName, callbackPromise) => {
     try {
         const client = await connectMongo();

@@ -16,8 +16,9 @@ router
     .route('/')
     .get(async (request, response) => {
         console.log('GET request to path /api/food-library');
-        // Return all the foods in our library of "common food" items
-        // Include their name and approximate shelf life in days, months, or years
+        // Description: Return all the foods in our library of
+        // "common food" items. Include their name and approximate
+        // shelf life in days, months, or years.
 
         try {
             const commonfoods = await get_common_food();
@@ -39,8 +40,8 @@ router
     })
     .post(async (request, response) => {
         console.log('POST request to path /api/food-library');
-        // Add a new item to the library
-        // This item will have a name and shelf life passed in
+        // Description: Add a new item to the library.
+        // This item will have a name and shelf life passed in.
 
         //Json must include name(String) and days(Number)
         const name = request.body.name;
@@ -52,7 +53,7 @@ router
                     .status(200)
                     .json({ success: name + " added with shelf life: " + days +" days"});
             }
-            return response.status(404).json({ error: "Error: Adding common food" });
+            return response.status(404).json({"error": "Error: couldn't add common food" });
         } catch (error) {
             console.log(error)
         }
@@ -60,10 +61,13 @@ router
 
 router
     .route('/remove/:name')
-    .get(async (request, response) => {
-        console.log('GET request to path /api/food-library/remove');
+    .delete(async (request, response) => {
+        console.log('DELETE request to path /api/food-library/remove');
+        // Description: Delete the specified common food item from
+        // the database.
+
+        // assign the parameter name to a variable
         const food_name = request.params.name;
-        console.log(food_name);   //food name
         try {
             const result = await remove_common_food(food_name);
             if(result){
@@ -76,5 +80,6 @@ router
         } catch (error) {
             console.log(error);
         }
-    })
+    });
+    
 module.exports = router;

@@ -17,11 +17,17 @@ app.use(cors());
 // Using the express-session middleware to manage a user's session
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-// consider using a config.json ?????????????????????????????????????????????????????????????????????????????????????????
-const mongodbUrl = 'mongodb+srv://ec0logic:ecologic@inventory.v2ubb.mongodb.net/test_wasteless?retryWrites=true&w=majority';
+// Set up the link that allows for the connection to the database that will
+// store the sessions.
+const fs = require('fs');
+const path = require('path');
+const config_param = fs.readFileSync(path.resolve(__dirname, "./config.json"), 'utf-8');
+const configJson = JSON.parse(config_param);
+const mongodbUrl = `mongodb+srv://${configJson.mongo.user}:${configJson.mongo.password}@cluster0-oslmy.mongodb.net/${configJson.mongo.user_db}?retryWrites=true&w=majority`;
+// Initialize a session
 app.use(session({
     name: 'wasteless.sid',
-    secret: 'please change this secret', // store in config file or .env??????
+    secret: 'please change this secret',
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ url: mongodbUrl })
