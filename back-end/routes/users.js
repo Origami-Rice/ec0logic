@@ -4,7 +4,6 @@ const crypto = require("crypto");
 const express = require("express");
 const cookie = require("cookie");
 const router = express.Router();
-
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
@@ -20,7 +19,7 @@ const {
 const cookieDays = 2; 
 const SECRET_KEY = 'abcdef';
 
-//Checks all information fields of a user attempting to sign up 
+//Checks all information fields of a user attempting to sign up. They all must be non-empty strings. 
 function fieldsAreValid(username, email, password, firstname, lastname, question, answer){
     const fields = [username, email, password, firstname, lastname, question, answer]; 
     var i; var valid = true;  
@@ -32,16 +31,18 @@ function fieldsAreValid(username, email, password, firstname, lastname, question
     return valid; 
 }
 
+//Salts and hashes password to compare with the user's current password 
 function verifyPassword(salt, password, userPassword){
-    // A user with the given username exists
-    // Salt and hash the password given by the user
     console.log(salt);
-    var hash = crypto.createHmac("sha512", salt);
-    hash.update(password);
-    var saltedHash = hash.digest("base64");
-    password = saltedHash;
-
+    password = saltAndHash(salt, password);
     return password === userPassword;
+}
+
+function saltAndHash(salt, info){
+    let hash = crypto.createHmac("sha512", salt);
+    hash.update(info);
+    let saltedHash = hash.digest("base64");
+    return saltedHash; 
 }
 
 router
@@ -70,7 +71,6 @@ router
         let email = request.body.email;
         let firstname = request.body.firstname;
         let lastname = request.body.lastname;
-
         let question = request.body.question; 
         let answer = request.body.answer; 
 
@@ -81,18 +81,9 @@ router
                 .json({ error: "One of the required fields is missing or invalid"});
         }    
 
-        // Salt and hash the password
-        let salt = crypto.randomBytes(16).toString("base64");
-        let hash = crypto.createHmac("sha512", salt);
-        hash.update(password);
-        let saltedHash = hash.digest("base64");
-        password = saltedHash;
-
-        // Salt and hash the security question answer 
-        let answerHash = crypto.createHmac("sha512", salt);  //previous hash object can't be used again after digest 
-        answerHash.update(answer); 
-        let saltedAnswerHash = answerHash.digest("base64"); 
-        answer = saltedAnswerHash;
+        // Salt and hash the password and security question answer 
+        password = saltAndHash(salt, String(password));
+        answer = saltAndHash(salt, String(answer));
 
         // Add a new user to the database
         try {
@@ -179,7 +170,6 @@ router
         if (request.session.username) {
             try {
                 const user = await find_user_by_username(request.session.username);
-                // NOT SURE WHAT EXACTLY SHOULD BE RETURNED / STATUS CODE ??????????????????????????????????????????????????????????
                 return response
                     .json({isauth: true, username: request.session.username, firstname: user.firstname});
             } catch (error) {
@@ -198,7 +188,6 @@ router
         
         // Destroys the current session
         request.session.destroy();
-        // Set a cookie / why / idk if this is needed tbh ??????????????????????????????????????????????????????????????????
         response.setHeader(
             "Set-Cookie",
             cookie.serialize("username", "", {
@@ -219,23 +208,22 @@ router
         // Description: Update the user's email with the new email passed
         // in the body of the request.
         console.log("PATCH request to path /api/users/email/:username");
-        
-        // assign the username passed to the endpoint to a variable
+
         const username = request.params.username;
         const email =  request.body.email;
 
-        // Update the email
         try {
             const attemptedUsernameChange = await (find_user_by_username(email)); 
-            if (attemptedUsernameChange){
+            if (attemptedUsernameChange){ //If a user was found, the username is in use
                 return response 
                     .status(409)
                     .json({"error": "This email is already in use"}); 
             }
-            const result = await update_email(username, email);
+            const result = await update_email(username, email); //updates username and email to email. The previous team had 
+                                                                //both of them as identical. 
             const user = await find_user_by_username(email);
             console.log(user)
-            if (result && result.modifiedCount) { // Maybe remove modifiedCount check??????????????????
+            if (result && result.modifiedCount) { 
                 // await remove_user(String(username)); 
 
                 // Store the user's username in the session
@@ -278,7 +266,7 @@ router
 
         try {
             const user = await find_user_by_username(username);
-            if (!user){
+            if (!user){ //case where a user with the given username couldn't be found 
                 return response
                 .status(404)
                 .json({error: "User with the given username not found or password unchanged."});
@@ -293,16 +281,12 @@ router
             console.log(error); 
         }
         
-        // Salt and hash the new password
-        let hash = crypto.createHmac("sha512", salt);
-        hash.update(newPassword);
-        let saltedHash = hash.digest("base64");
-        newPassword = saltedHash;
+        newPassword = saltAndHash(salt, newPassword);
         
         // Update the password
         try {
             const result = await update_password(username, newPassword, salt);
-            if (result && result.modifiedCount) { // Maybe remove modifiedCount check??????????????????
+            if (result && result.modifiedCount) {
                 return response
                     .status(200)
                     .json({message: `Updated the password of the user ${username}` });
@@ -320,6 +304,7 @@ router
 router 
     .route('/security/:username')
     .get(async (request, response) => {
+        //returns the user's security question 
         console.log('GET request to path /api/users/security/:username')
         const username = request.params.username;
         
@@ -339,6 +324,7 @@ router
         }
     })
     .post(async (request, response) => {
+        //verifies if the sent password matches the user's current security question answer
         console.log('POST request to path /api/users/security/:username');
         const username = request.params.username;
         var answer = request.body.answer; 
@@ -353,11 +339,7 @@ router
             }
 
             let salt = user.salt;
-            console.log(salt);
-            var hash = crypto.createHmac("sha512", salt);
-            hash.update(answer);
-            var saltedHash = hash.digest("base64");
-            answer = saltedHash;
+            answer = saltAndHash(salt, answer);
 
             console.log(user.answer);
             console.log(answer);
