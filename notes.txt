@@ -104,7 +104,10 @@ DESCRPTION OF ENDPOINTS IN RECIPES.JS ------------------------------------------
 - To add an item to the user's saved recipes list
 - On success, returns status 200 and adds the recipe into the user's saved recipe list
 - On failure, returns status 404
-
+3. DELETE REQUEST TO PATH /api/recipe/:username/:recipe
+- To delete a recipe in the user's saved recipe list
+- On success, returns status 200 and deletes the recipe from the saved recipe list
+- On failure returns status 500
 TO DO:
 - recipes
 - test the express-session stuff
