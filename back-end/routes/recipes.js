@@ -106,7 +106,7 @@ router
 
 
 router
-    // Route to /api/shoppinglist/:username
+    // Route to /api/recipe/:username
     .route('/:username')
     .get(async (request, response) => {
         //This get request is to get the user's saved recipes list
@@ -177,7 +177,7 @@ router
     });
 
 router
-    // Route to /api/shoppinglist/:username/:recipe
+    // Route to /api/recipe/:username/:recipe
     .route('/:username/:recipe')
     .delete(async (request, response) => {
         //This delete request is to delete a recipe in the user's recipe list
