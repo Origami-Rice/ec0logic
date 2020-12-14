@@ -114,6 +114,7 @@ router
         // return user's saved recipes
         const username = request.params.username;
         try{
+            // calls endpoint function from userData.js
             const result = await get_saved_recipes(username);
             console.log(result)
             if(result && result.saved_recipes){
@@ -129,6 +130,7 @@ router
             }
         })
     .post(async (request, response) => {
+        //This post request is to add a new recipe the user's saved recipes list
         console.log('POST request to path /api/recipe/:username');
         // add a new recipe to user's list of saved recipes
         const username = request.params.username;
@@ -138,6 +140,7 @@ router
                     .status(404)
                     .json({"error": "Item is missing id."});
         }
+        // calls endpoint function from userData.js
         const saved_recipes = await get_saved_recipes(username);
         var duplicate = false;
         saved_recipes.saved_recipes.map(item=> {
@@ -152,6 +155,7 @@ router
             .json({"error": "Recipe is already saved. Invalid"});
         }else{
             try{
+                // calls endpoint function from userData.js
                 const result = await add_recipe_to_saved_recipes(username, recipe);
                 if (result) {
                     return response
