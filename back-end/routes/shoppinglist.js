@@ -102,6 +102,8 @@ router
     })
 router
     .route('/:username/:item')
+    // Route to /api/shoppinglist/:username/:item
+    //This delete request is to delete the item in the user's shoppinglist
     .delete(async (request, response) => {
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
@@ -109,6 +111,7 @@ router
         const item = request.params.item;
         
         try{ 
+            // calls endpoint function from userData.js
             const result = await remove_item_from_shopping_list(username, item)
             if (result) {
                 return response
