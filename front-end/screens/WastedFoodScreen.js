@@ -44,6 +44,11 @@ export default class WastedFoodScreen extends React.Component {
   }
 
   updateQuantity = () => {
+    if (this.state.quantityToRemove == "") {
+      alert("Please enter a quantity.");
+      return;
+    }
+    
     let quantityToRemove = parseFloat(this.state.quantityToRemove);
     const newQuantity = this.state.quantity - quantityToRemove;
 

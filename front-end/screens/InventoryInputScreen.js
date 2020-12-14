@@ -76,6 +76,10 @@ export default class InventoryInputScreen extends React.Component {
   };
 
   setQuantity = (value) => {
+    if (value == "") {
+      this.setState({ quantity: 0 });
+      return;
+    }
     // Quality DropDown Child will set this value
     const val = parseFloat(value);
     this.setState({ quantity: val });

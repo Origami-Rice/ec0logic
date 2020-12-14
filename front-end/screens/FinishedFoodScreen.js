@@ -41,6 +41,11 @@ export default class FinishedFoodScreen extends React.Component {
   }
 
   updateQuantity = () => {
+    if (this.state.quantityToRemove == "") {
+      alert("Please enter a quantity.");
+      return;
+    }
+    
     var quantityToRemove = parseFloat(this.state.quantityToRemove);
     const newQuantity = this.state.quantity - quantityToRemove;
 
