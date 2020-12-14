@@ -137,7 +137,7 @@ export default class FinishedFoodScreen extends React.Component {
               <TextMedium style={styles.confirmText} text={"Confirm Update"} />
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.confirmButton, { marginBottom: 25 }]}
+              style={[styles.confirmButton, { marginBottom: Dimensions.get("window").height * 0.1 } ]}
               onPress={this.handleCancel}
             >
               <TextMedium style={styles.confirmText} text={"Cancel"} />

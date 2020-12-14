@@ -138,7 +138,7 @@ export default class ShoppingListEditScreen extends React.Component {
               <TextMedium style={styles.confirmText} text={"Confirm Changes"} />
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.confirmButton}
+              style={[styles.confirmButton, { marginBottom: Dimensions.get("window").height * 0.1 }]}
               onPress={this.onDelete}
             >
               <TextMedium style={styles.confirmText} text={"Delete Item"} />

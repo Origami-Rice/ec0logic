@@ -193,7 +193,7 @@ export default class InventoryInputScreen extends React.Component {
           }}
         >
           <TouchableOpacity
-            style={styles.confirmButton}
+            style={[styles.confirmButton, { marginBottom: Dimensions.get("window").height * 0.1 }]}
             onPress={this.saveItem}
           >
             <TextMedium style={styles.confirmText} text={"Confirm"} />
