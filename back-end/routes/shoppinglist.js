@@ -16,7 +16,9 @@ const {
 
 router
     .route('/:username')
+    // Route to /api/shoppinglist/:username
     .get(async (request, response) => {
+        // This get request is to get the user's current shoppinglist
         console.log('GET request to path /api/shoppinglist/:username');
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
@@ -42,7 +44,7 @@ router
                 } catch (error) {
                     console.log(error)
                 }
-                // return response.status(404).json({"error": "No shopping list detected."});
+               
             }
         }catch (error) {
             console.log(error);
