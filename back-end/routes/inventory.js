@@ -14,8 +14,7 @@ router
     .route('/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/inventory/:username');
-        // Decription: return all items in <username>'s inventory
-        // TODO: implement
+        // Decription: return all items in user <username>'s inventory
         
         // assign the username passed to the endpoint to a variable
         const username = request.params.username;
@@ -31,8 +30,10 @@ router
                 return response
                     .status(200)
                     .json(result.inventory_list);
-            }else{
-                return response.status(404).json({"error": "No inventory list detected."});
+            }else{ // no matching document was found
+                return response
+                    .status(404)
+                    .json({"error": "No inventory list detected."});
             }
         } catch (error) {
             console.log(error);
@@ -51,12 +52,14 @@ router
         // Update the inventory
         try {
             const result = await update_inventorylist(username, list);
-            if (result.result.n === 1) { // a document has been found
+            if(result.result.n === 1){ // a document has been found
                 return response
                     .status(200)
                     .json({"success": "Inventory successfully updated."});
             }else{ // no matching document was found
-                return response.status(404).json({"error": "Inventory could not be updated."});
+                return response
+                    .status(404)
+                    .json({"error": "Inventory could not be updated."});
             }
         } catch (error) {
             console.log(error);
@@ -81,7 +84,7 @@ router
 
                 // get the date a specified time from now
                 let deadlineDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
-                // find the items that expire before the 
+                // find the items that expire before the deadline date
                 const priority = []; 
                 // Note that the expiryDate field must be an ISO 8601 string 
                 for (let i = 0; i < inventory.length; i++) {
@@ -98,8 +101,7 @@ router
                 return response
                     .status(200)
                     .json(priority);
-            }else{
-                // This may be wrong
+            }else{ // no matching document was found
                 return response
                     .status(404)
                     .json({"error": "No inventory list detected."});
