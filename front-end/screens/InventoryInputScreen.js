@@ -116,13 +116,13 @@ export default class InventoryInputScreen extends React.Component {
       return (
         <View>
           <TextMedium
-            style={[styles.label, { marginTop: 10 }]}
-            text={`${" "}Estimated Expiry Date: ${this.state.expiryDate.toDateString()}`}
+            style={[styles.label, { marginTop: 25 }]}
+            text={`${" "}Estimated Expiry Date: \n\n ${this.state.expiryDate.toDateString()}`}
           />
           <TextRegular
             style={styles.note}
             text={
-              "This is only an estimate, select a different expiry date by clicking above."
+              "This is only an estimate, select a different \n expiry date by clicking above."
             }
           />
         </View>

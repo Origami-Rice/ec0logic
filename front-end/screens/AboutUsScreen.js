@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: Colours.filledButton,
     margin: 40,
+    marginBottom: Dimensions.get("window").height * 0.1,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",

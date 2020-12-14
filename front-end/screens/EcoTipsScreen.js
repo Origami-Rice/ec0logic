@@ -39,7 +39,7 @@ export default class EcoTipsScreen extends React.Component {
   }
 
   getSavedTips = () => {
-    console.log(this.context.user);
+
     send("getSavedTips", {}, "/" + this.context.user)
       .then((response) => response.json())
       .then((json) => {
@@ -106,7 +106,7 @@ export default class EcoTipsScreen extends React.Component {
           key={data.num}
           tip={data.tip}
           onPressWhole={() => this.expand(data)}
-          onPressCheck={() => this.saveTip(data.num)}
+          onPressCheck={() => this.createSaveWindow(data.num)}
         />
       ));
     } else {
@@ -129,12 +129,52 @@ export default class EcoTipsScreen extends React.Component {
             key={data.num}
             tip={data.tip}
             onPressWhole={() => this.expand(data)}
-            onPressCheck={() => this.deleteTip(data.num, i)}
+            onPressCheck={() => this.createDeleteWindow(data.num, i)}
           />
         ));
       }
     }
   };
+
+  createSaveWindow = (tipNum) => {
+    Alert.alert(
+      "Save Tip",
+      "Would you like to save this tip for later?",
+      [
+        {
+          text: "Save",
+          onPress: () => this.saveTip(tipNum),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  createDeleteWindow = (tipNum, i) => {
+    Alert.alert(
+      "Delete Tip",
+      "Would you like to delete this tip from your saved list?",
+      [
+        {
+          text: "Delete",
+          onPress: () => this.deleteTip(tipNum, i),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+
 
   expand = (data) => {
     this.setState({
@@ -148,7 +188,7 @@ export default class EcoTipsScreen extends React.Component {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        alert("Tip successfully added.");
+        alert("Tip successfully saved.");
         this.setState({ visibleModal: 0, isLoaded: false });
       });
   };
@@ -158,7 +198,7 @@ export default class EcoTipsScreen extends React.Component {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        alert("Tip successfully removed.");
+        alert("Tip successfully deleted.");
         let prev = this.state.savedTips;
         prev.splice(i, 1);
         this.setState({
