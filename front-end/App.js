@@ -149,10 +149,12 @@ export default function App (props) {
           if (json.message) {
             console.log("Username changed", newEmail.toLowerCase());
             setUser(newEmail.toLowerCase());
-            return true;
+            alert("Successfully changed email");
+            return; 
           } else {
             console.log(json);
-            return false; 
+            alert("Email could not be updated. Try entering a different email.");
+            return;
           } 
         })
         .catch(err => console.log(err))
