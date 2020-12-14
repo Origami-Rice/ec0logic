@@ -24,11 +24,6 @@ router
         const query = request.body.query;
         const diet = request.body.diet;
         const intolerances = request.body.intolerances;
-        // Log body variables
-        console.log(query);
-        console.log(diet);
-        console.log(intolerances);
-
         const url = new URL("https://api.spoonacular.com/recipes/search");
         const parameters = {apiKey: api_key, query: query, diet: diet, intolerances:intolerances, number: 20, sort: "popularity"};
         Object.keys(parameters).forEach(param => url.searchParams.append(param, parameters[param]));
@@ -54,7 +49,6 @@ router
     .route('/:id/ingredients')
     .get(async (request, response) => {
     // Given a spoonacular recipe id, return ingridients involved
-    console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/ingredientWidget.json`);
     url.searchParams.append("apiKey", api_key);
     fetch(url)
@@ -74,8 +68,7 @@ router
     .route('/:id/information')
     .get(async (request, response) => {
         // Given a spoonacular recipe id, return the recipe's information
-    console.log('path /recipe/');
-    console.log(request.params);
+    console.log('Get request to /api/recipe/:id/information');
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/information?includeNutrition=false`);
     url.searchParams.append("apiKey", api_key);
     fetch(url)
@@ -95,8 +88,7 @@ router
     .route('/:id/analyzedInstructions')
     .get(async (request, response) => {
     // Given a spoonacular recipe id, return cooking steps
-    console.log('path /recipe/');
-    console.log(request.params);
+    console.log('Get request to path /api/recipe/:id/analyzedInstructions');
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/analyzedInstructions`);
     url.searchParams.append("apiKey", api_key);
     fetch(url)
@@ -131,6 +123,7 @@ router
             }
         }catch (error) {
                 console.log(error);
+                response.status(500).send("500: Internal Server Error");
             }
         })
     .post(async (request, response) => {
@@ -172,6 +165,7 @@ router
                 
             } catch (error) {
                 console.log(error);
+                response.status(500).send("500: Internal Server Error");
             }
         }
     });
@@ -179,11 +173,10 @@ router
 router
     .route('/:username/:recipe')
     .delete(async (request, response) => {
-        console.log('GET request to path for deleting recipe');
+        console.log('GET request to path to /api/recipe/:username/:recipe');
         // delete recipe in user's saved recipes list
         const username = request.params.username;
         const recipeid = Number(request.params.recipe);
-        console.log(recipeid);
         try{
             const result = await remove_recipe_from_saved_recipes(username, recipeid);
             if(result){
@@ -195,6 +188,7 @@ router
             }
         }catch (error) {
                 console.log(error);
+                response.status(500).send("500: Internal Server Error");
             }
         })
 module.exports = router;
