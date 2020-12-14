@@ -100,6 +100,10 @@ DESCRPTION OF ENDPOINTS IN RECIPES.JS ------------------------------------------
 - To get the user's current saved recipe list
 - On success, returns status 200 and the user's saved recipe list.
 - On failure returns status 500
+2. POST REQUEST TO PATH /api/recipe/:username
+- To add an item to the user's saved recipes list
+- On success, returns status 200 and adds the recipe into the user's saved recipe list
+- On failure, returns status 404
 
 TO DO:
 - recipes
