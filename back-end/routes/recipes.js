@@ -177,13 +177,16 @@ router
     });
 
 router
+    // Route to /api/shoppinglist/:username/:recipe
     .route('/:username/:recipe')
     .delete(async (request, response) => {
+        //This delete request is to delete a recipe in the user's recipe list
         console.log('GET request to path to /api/recipe/:username/:recipe');
         // delete recipe in user's saved recipes list
         const username = request.params.username;
         const recipeid = Number(request.params.recipe);
         try{
+            // calls endpoint function from userData.js
             const result = await remove_recipe_from_saved_recipes(username, recipeid);
             if(result){
                 return response
