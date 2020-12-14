@@ -80,7 +80,7 @@ DESCRPTION OF ENDPOINTS IN SHOPPINGLIST.JS -------------------------------------
 - On success, returns status 200 and updates the user's shoppinglist
 - On failure, returns status 404
 
-4. DELETRE REQUEST TO PATH /api.shoppinglist/:username/:item
+4. DELETE REQUEST TO PATH /api.shoppinglist/:username/:item
 - To delete a specified item in the user's shoppinglist
 - On success, returns status 200 and deletes the item from the user's shoppinglist
 - On failure, returns status 404
