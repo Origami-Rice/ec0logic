@@ -1,10 +1,8 @@
 const app = require('../server'); // Link to your server file
 const supertest = require('supertest');
 const request = supertest(app);
-const {
-    remove_user
-} = require('../dataAccess/userData');
 
+//NOTE: I think the tests occasionally fail because they don't run in order
 //if some idiot calls themselves test91, test92, or test93, the tests won't work 
 const name = "test91"; const name2 = "test92"; const name3 = "test93";
 const signupUrl = "/api/users/signup";
@@ -17,7 +15,7 @@ const deleteUrl = "/api/users/deleteuser"
 const newUser = {
     "username": name,
     "password": "password",
-    "email": "anEmail@gmail.com",
+    "email": name,
     "firstname": "firstName",
     "lastname": "lastname",
     "question": "what city were you born in?",
@@ -27,7 +25,7 @@ const newUser = {
 const newUser2 = { 
     "username": name2,
     "password": "password",
-    "email": "anEmail@gmail.com",
+    "email": name2,
     "firstname": "firstName",
     "lastname": "lastname",
     "question": "what city were you born in?",
@@ -110,6 +108,7 @@ describe("Sign in", () => {
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "user " + name + " signed in"});
     });
+
     test("Rejects sign in of non-existent username", async () => {
         const response = await request 
             .post(signinUrl)
@@ -118,6 +117,7 @@ describe("Sign in", () => {
         expect(response.status).toBe(409);
         expect(response.body).toEqual({"error": "User with this username does not exist."});
     });
+
     test("Rejects sign in if password is incorrect", async () => {
         const response = await request 
             .post(signinUrl)
@@ -128,7 +128,7 @@ describe("Sign in", () => {
     });
 });
 
-describe("user info modification", () => {
+describe("user info modification and user deletion", () => {
     test("Changes password if the old password matches the current password", async () => {
         const response = await request 
             .patch(passwordUrl + name)
@@ -136,6 +136,7 @@ describe("user info modification", () => {
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"message": "Updated the password of the user " + name});
     });
+
     test("Rejects password change if old password doesn't match the current password", async () => {
         const response = await request 
             .patch(passwordUrl + name)
@@ -143,19 +144,19 @@ describe("user info modification", () => {
         expect(response.status).toBe(401);
         expect(response.body).toEqual({"error": "old password doesn't match existing password"});
     });
-    // note that email and username are identical fields. users.js checks the usernames for a matching email. 
+    // note that email and username are (or at leaset should be) identical. users.js checks the usernames for a matching email. 
     test("Rejects email change if another user is already using that email", async () => {
         //first creates a new user with username of "name2"
-        const response = await request
+        await request
             .post(signupUrl)
             .set("Accept", "application/json")
             .send(newUser2);
-        //Attempt to change username of user with to 
-        const response2 = await request 
+        //Then attempts to change the email of newUser to name2
+        const response = await request 
             .patch(emailUrl + name)
             .send(invalidEmailChange);
-        expect(response2.status).toBe(409);
-        expect(response2.body).toEqual({"error": "This email is already in use"});
+        expect(response.status).toBe(409);
+        expect(response.body).toEqual({"error": "This email is already in use"});
     });
 
     test("Changes email if no user is using the email", async () => {
@@ -164,10 +165,8 @@ describe("user info modification", () => {
             .send(validEmailChange);
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"message": "Updated the email of the user " + name + " to " + name3});
-    })
-})
+    });
 
-describe("user deletion", () => {
     test("Succesfully deletes an existing user", async () => {
         const response = await request 
             .post(deleteUrl)
@@ -175,9 +174,10 @@ describe("user deletion", () => {
         const response2 = await request 
             .post(deleteUrl)
             .send({"username": name2}); 
+
         expect(response.status).toBe(200); 
         expect(response.body).toEqual({"success": "user " + name3 + " deleted"});
         expect(response2.status).toBe(200); 
         expect(response2.body).toEqual({"success": "user " + name2 + " deleted"});
-    })
-});
+    });
+})
