@@ -83,6 +83,11 @@ export default class SettingsScreen extends React.Component {
     if (this.context.authContext.updateUser({ newEmail, prev })) {
       console.log("Email changed");
       console.log("NEW:", this.context.user);
+      alert("Email successfully changed.");
+      return; 
+    } else {
+      alert("Email could not be changed. Try entering a different email.");
+      return;
     }
   };
 
@@ -135,7 +140,7 @@ export default class SettingsScreen extends React.Component {
               value={this.state.name}
               onChangeText={(text) => this.setState({ newEmail: text })}
             />
-            <TextRegular style={styles.label} text={"Update Password:"} />
+            {/* <TextRegular style={styles.label} text={"Update Password:"} />
             <TextInput
               style={styles.inputFormat}
               placeholder="********"
@@ -144,7 +149,7 @@ export default class SettingsScreen extends React.Component {
               value={this.state.name}
               onChangeText={(text) => this.setState({ newPassword: text })}
             />
-            {this.currentPasswordInput()}
+            {this.currentPasswordInput()} */}
           </View>
         </View>
         <View style={{ flex: 1, justifyContent: "flex-end" }}>
