@@ -9,7 +9,7 @@ const endpoints = {
         method: 'POST',
     }, 
     getExpiring: {
-        endpoint: '/api/inventory/expiring', 
+        endpoint: '/api/inventory/priority', 
         method: 'GET',
     }, 
     getExpired: {
@@ -29,8 +29,13 @@ const endpoints = {
 
     // History of Wasted Foods
     getWastedHistory: {
-        endpoint: '/api/history',
+        endpoint: '/api/history/mostrecent',
         method: 'GET',
+    },
+
+    addWastedItem: {
+        endpoint: '/api/history',
+        method: 'POST',
     },
 
     // Shopping List
@@ -47,6 +52,95 @@ const endpoints = {
     updateShoppingList: {
         endpoint: '/api/shoppinglist',
         method: 'PUT',
+    },
+
+    // GHG Calculator
+    getGHG: {
+        endpoint: '/api/ghgcalculator/history',
+        method: 'POST',
+    },
+
+    getMonthlyGHGBreakdown: {
+        endpoint: '/api/ghgcalculator/history/breakdown',
+        method: 'GET',
+    },
+
+    // Authentication
+    signupUser: {
+        endpoint: '/api/users/signup',
+        method: 'POST',
+    },
+
+    signinUser: {
+        endpoint: '/api/users/signin',
+        method: 'POST',
+    },
+
+    signoutUser: {
+        endpoint: '/api/users/signout',
+        method: 'POST',
+    },
+
+    getAuthenticated: {
+        endpoint: '/api/users/isauthenticated',
+        method: 'GET',
+    },
+
+    updateEmail: {
+        endpoint: '/api/users/email',
+        method: 'PATCH',
+    },
+
+    updatePassword: {
+        endpoint: '/api/users/password',
+        method: 'PATCH',
+    },
+
+    getSecurityQuestion: {
+        endpoint: '/api/users/security',
+        method: 'GET',
+    },
+
+    verifySecurityAnswer: {
+        endpoint: '/api/users/security',
+        method: 'POST',
+    },
+
+    // Tips
+    addTip: {
+        endpoint: '/api/tips/add',
+        method: 'POST',
+    },
+
+    deleteTip: {
+        endpoint: '/api/tips/delete',
+        method: 'POST',
+    },
+    
+    getSavedTips: {
+        endpoint: '/api/tips',
+        method: 'GET',
+    },
+
+    // Recipes
+    searchRecipes: {
+        endpoint: '/api/recipe/search',
+        method: 'POST',
+    },
+
+    addRecipe: {
+        endpoint: '/api/recipe',
+        method: 'POST',
+    },
+
+    removeRecipe: {
+        endpoint: '/api/recipe',
+        method: 'DELETE',
+    },
+
+    getSavedRecipes: {
+        endpoint: '/api/recipe',
+        method: 'GET'
     }
 }
 

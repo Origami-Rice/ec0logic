@@ -1,26 +1,24 @@
 import * as React from "react";
 import {
-  Text,
   View,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   TextInput,
   Dimensions,
   Platform,
 } from "react-native";
+import TextRegular from "../components/TextRegular";
+import TextMedium from "../components/TextMedium";
+import { Colours } from "../constants/colours.js";
 import Modal from "react-native-modal";
-import Constants from "expo-constants";
+import { MaterialIcons } from "@expo/vector-icons";
 import * as Font from "expo-font";
-import { AppLoading } from "expo";
 import QuantityDropdown from "../components/QuantityDropdown";
 import DatePicker from "../components/DatePicker";
 import FoodSearchScreen from "./FoodSearchScreen";
 
 let customFonts = {
-  Montserrat_400Regular: require("../fonts/Montserrat-Regular.ttf"),
   Montserrat_500Medium: require("../fonts/Montserrat-Medium.ttf"),
-  Montserrat_600SemiBold: require("../fonts/Montserrat-SemiBold.ttf"),
 };
 
 export default class InventoryInputScreen extends React.Component {
@@ -117,14 +115,16 @@ export default class InventoryInputScreen extends React.Component {
     if (this.state.estimateGiven) {
       return (
         <View>
-          <Text style={styles.label}>
-            {" "}
-            Estimated Expiry Date: {this.state.expiryDate.toDateString()}
-          </Text>
-          <Text style={styles.note}>
-            This is only an estimate, select a different expiry date by clicking
-            above.
-          </Text>
+          <TextMedium
+            style={styles.label}
+            text={`${" "}Estimated Expiry Date: ${this.state.expiryDate.toDateString()}`}
+          />
+          <TextRegular
+            style={styles.note}
+            text={
+              "This is only an estimate, select a different expiry date by clicking above."
+            }
+          />
         </View>
       );
     }
@@ -133,83 +133,83 @@ export default class InventoryInputScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView
-        style={{
-          height: Dimensions.get("window").height,
-          width: Dimensions.get("window").width,
-        }}
-      >
-        <View style={styles.container}>
-          <View
-            style={{
-              justifyContent: "flex-start",
-              width: Dimensions.get("window").width,
-            }}
-          >
-            <View style={styles.topButtonsContainer}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => this.setState({ visibleModal: 1 })}
-              >
-                <Text style={styles.cancelText}>s</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => this.props.navigation.goBack(null)}
-              >
-                <Text style={styles.cancelText}>x</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.inputFormat}
-                placeholder="Enter New Food Item"
-                value={this.state.name}
-                onChangeText={(text) => this.setItemName(text)}
-              />
-              <Text style={styles.label}>Quantity:</Text>
-              <QuantityDropdown
-                setParentQuantity={this.setQuantity}
-                setParentUnit={this.setUnit}
-              ></QuantityDropdown>
-              <Text style={styles.label}>Select Expiry Date:</Text>
-              <DatePicker
-                setParentExpiry={this.setExpiryDate}
-                defaultDate={this.state.expiryDate}
-              />
-              {this.displayEstimate()}
-            </View>
-          </View>
-          <View
-            style={{
-              justifyContent: "flex-end",
-              flex: 1,
-              zIndex: -1,
-            }}
-          >
+      <View style={styles.container}>
+        <View
+          style={{
+            justifyContent: "flex-start",
+            width: Dimensions.get("window").width,
+            ...(Platform.OS !== "android" && {
+              zIndex: 1,
+            }),
+          }}
+        >
+          <View style={styles.topButtonsContainer}>
             <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={this.saveItem}
+              style={styles.cancelButton}
+              onPress={() => this.setState({ visibleModal: 1 })}
             >
-              <Text style={styles.confirmText}>Confirm</Text>
+              <MaterialIcons
+                name="search"
+                size={18}
+                color={Colours.tint}
+                style={{ alignSelf: "center" }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => this.props.navigation.goBack(null)}
+            >
+              <TextRegular style={styles.cancelText} text={"x"} />
             </TouchableOpacity>
           </View>
-          <Modal
-            isVisible={this.state.visibleModal === 1}
-            style={styles.bottomModal}
-            avoidKeyboard={false}
-          >
-            {
-              <View style={styles.modal}>
-                <FoodSearchScreen
-                  setSearchItem={this.setSearchedItem}
-                  onCancel={() => this.setState({ visibleModal: 0 })}
-                ></FoodSearchScreen>
-              </View>
-            }
-          </Modal>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.inputFormat}
+              placeholder="Enter New Food Item"
+              value={this.state.name}
+              onChangeText={(text) => this.setItemName(text)}
+            />
+            <TextMedium style={styles.label} text={"Quantity:"} />
+            <QuantityDropdown
+              setParentQuantity={this.setQuantity}
+              setParentUnit={this.setUnit}
+            ></QuantityDropdown>
+            <TextMedium style={styles.label} text={"Select Expiry Date:"} />
+            <DatePicker
+              setParentExpiry={this.setExpiryDate}
+              defaultDate={this.state.expiryDate}
+            />
+            {this.displayEstimate()}
+          </View>
         </View>
-      </ScrollView>
+        <View
+          style={{
+            justifyContent: "flex-end",
+            flex: 1,
+          }}
+        >
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={this.saveItem}
+          >
+            <TextMedium style={styles.confirmText} text={"Confirm"} />
+          </TouchableOpacity>
+        </View>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          style={styles.bottomModal}
+          avoidKeyboard={false}
+        >
+          {
+            <View style={styles.modal}>
+              <FoodSearchScreen
+                setSearchItem={this.setSearchedItem}
+                onCancel={() => this.setState({ visibleModal: 0 })}
+              ></FoodSearchScreen>
+            </View>
+          }
+        </Modal>
+      </View>
     );
   }
 }
@@ -221,15 +221,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginVertical: 5,
-    backgroundColor: "#ffffff",
-    zIndex: 1,
+    backgroundColor: Colours.screenBackground,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
+    position: "absolute",
+    top: 0,
+    ...Platform.select({
+      ios: {
+        zIndex: 1,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   inputContainer: {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    ...(Platform.OS !== "android" && {
+      zIndex: 1,
+    }),
   },
   topButtonsContainer: {
     flexDirection: "row",
@@ -238,20 +250,19 @@ const styles = StyleSheet.create({
   cancelText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
     fontSize: 14,
-    zIndex: 1,
+    color: Colours.tint,
   },
   cancelButton: {
     width: 37,
     height: 37,
     borderRadius: 37,
     borderWidth: 1,
+    borderColor: Colours.tint,
     justifyContent: "center",
     alignSelf: "flex-end",
-    backgroundColor: "#ffffff",
+    backgroundColor: Colours.borderedComponentFill,
     margin: 25,
-    zIndex: 1,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(0,0,0, .5)",
@@ -267,40 +278,36 @@ const styles = StyleSheet.create({
   inputFormat: {
     width: "80%",
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.borderedComponentFill,
+    borderColor: Colours.tint,
     borderBottomWidth: 1,
     fontSize: 14,
+    color: Colours.tint,
     padding: 5,
     paddingLeft: 10,
     margin: 10,
     textAlign: "center",
     fontFamily: "Montserrat_500Medium",
-    zIndex: 1,
   },
   label: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
+    color: Colours.tint,
     marginVertical: 5,
-    zIndex: 1,
   },
   note: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_400Regular",
-    fontSize: 11,
+    fontSize: 12,
     marginVertical: 5,
-    color: "#828282",
-    zIndex: 1,
+    color: Colours.notice,
   },
   confirmText: {
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Montserrat_500Medium",
     fontSize: 14,
-    zIndex: 1,
+    color: Colours.filledButtonText,
   },
   confirmButton: {
     width: 148,
@@ -308,7 +315,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#d8d8d8",
+    backgroundColor: Colours.filledButton,
     margin: 40,
     ...Platform.select({
       ios: {
@@ -321,7 +328,6 @@ const styles = StyleSheet.create({
         elevation: 4,
       },
     }),
-    zIndex: 1,
   },
   bottomModal: {
     justifyContent: "flex-end",
@@ -332,7 +338,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   modal: {
-    backgroundColor: "white",
+    backgroundColor: Colours.screenBackground,
     borderColor: "rgba(0, 0, 0, 0.1)",
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,

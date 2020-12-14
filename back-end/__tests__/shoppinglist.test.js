@@ -9,29 +9,13 @@ const {
     remove_user
 } = require('../dataAccess/userData');
 
-const shoppingItem1 = {
-    "item1": {
+const shoppingItem1 = [
+    {
         "name": "Fish",
         "quantity": 2,
         "checked_off": false 
     }
-}
-
-const shoppingItem2 = {
-    "item2": {
-        "name": "Pizza",
-        "quantity": 1,
-        "checked_off": true 
-    }
-}
-
-const shoppingItem3 = {
-    "item1": {
-        "name": "",
-        "quantity": 1,
-        "checked_off": false 
-    }
-}
+]
 
 const shoppingList = 
     [
@@ -105,15 +89,4 @@ describe("access and update shopping list", () => {
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "item Pizza deleted." });
     });
-    
-    /*test("rejects items with no name", async() => {
-        url = "/api/shoppingList/" + name;
-        const response = await request
-            .post(url)
-            .set("Accept", "application/json")
-            .send(shoppingItem3);
-
-        expect(response.status).toBe(404);
-        expect(response.body).toEqual({"error": "Item could not be added to history."});
-    })*/
 });

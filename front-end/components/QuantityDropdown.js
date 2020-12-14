@@ -1,6 +1,14 @@
 import React from "react";
-import { TextInput, View, StyleSheet, Dimensions } from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from "react-native";
+import { Colours } from "../constants/colours.js";
 import DropDownPicker from "react-native-dropdown-picker";
+import { MaterialIcons } from "@expo/vector-icons";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 
@@ -42,26 +50,52 @@ export default class QualityDropdown extends React.Component {
           <TextInput
             style={styles.inputFormat}
             placeholder="Amount"
-            keyboardType = 'decimal-pad'
-            returnKeyType='done'
+            placeholderTextColor={Colours.textInputPlaceholder}
+            keyboardType="decimal-pad"
+            returnKeyType="done"
             onChangeText={(text) => this.onChangeQuantity(text)}
           />
           <View>
             <DropDownPicker
               label="Units"
               items={[
-                { label: "Units", value: "Units", selected: true },
+                { label: "units", value: "units" },
+                { label: "lbs", value: "lbs" },
                 { label: "g", value: "g" },
-                { label: "mg", value: "mg" },
                 { label: "kg", value: "kg" },
                 { label: "oz", value: "oz" },
                 { label: "ml", value: "mL" },
+                { label: "l", value: "L" },
               ]}
+              defaultValue={this.props.defaultUnit || "units"}
               arrowStyle={styles.dropArrow}
               containerStyle={styles.dropContainer}
+              dropDownStyle={{
+                elevation: 5000,
+                backgroundColor: Colours.textInputBackground,
+              }}
+              style={{
+                borderColor: Colours.tint,
+                borderWidth: 1,
+                backgroundColor: Colours.textInputBackground,
+              }}
               itemStyle={{ justifyContent: "flex-start" }}
               selectedLabelStyle={styles.dropItem}
               labelStyle={styles.dropItem}
+              customArrowDown={() => (
+                <MaterialIcons
+                  name="expand-less"
+                  size={24}
+                  color={Colours.tint}
+                />
+              )}
+              customArrowUp={() => (
+                <MaterialIcons
+                  name="expand-more"
+                  size={24}
+                  color={Colours.tint}
+                />
+              )}
               onChangeItem={(item) => this.onSelectUnit(item.value)}
               zIndex={5000}
             />
@@ -81,41 +115,58 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 5,
-    zIndex: 5000,
+    ...(Platform.OS !== "android" && {
+      zIndex: 5000,
+    }),
   },
-
   dropContainer: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    borderColor: "black",
-    borderWidth: 1,
-    zIndex: 5000,
   },
-
   dropArrow: {
-    height: 19,
+    height: 24,
     flexDirection: "row",
     justifyContent: "flex-start",
-    zIndex: 5000,
+    ...Platform.select({
+      ios: {
+        zIndex: 5000,
+      },
+      android: {
+        elevation: 5000,
+      },
+    }),
   },
-
   inputFormat: {
     width: Dimensions.get("window").width * 0.25,
     height: 31,
-    backgroundColor: "#ffffff",
-    borderColor: "black",
+    backgroundColor: Colours.textInputBackground,
+    borderColor: Colours.tint,
     borderWidth: 1,
     fontSize: 11,
     padding: 5,
     paddingLeft: 10,
     fontFamily: "Montserrat_400Regular",
-    zIndex: 5000,
+    color: Colours.tint,
+    ...Platform.select({
+      ios: {
+        zIndex: 5000,
+      },
+      android: {
+        elevation: 5000,
+      },
+    }),
   },
-
   dropItem: {
     fontSize: 11,
     fontFamily: "Montserrat_400Regular",
-    color: "#000000",
-    zIndex: 5000,
+    color: Colours.tint,
+    ...Platform.select({
+      ios: {
+        zIndex: 5000,
+      },
+      android: {
+        elevation: 5000,
+      },
+    }),
   },
 });
