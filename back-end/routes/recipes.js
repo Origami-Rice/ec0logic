@@ -106,8 +106,10 @@ router
 
 
 router
+    // Route to /api/shoppinglist/:username
     .route('/:username')
     .get(async (request, response) => {
+        //This get request is to get the user's saved recipes list
         console.log('GET request to path /api/recipe/:username');
         // return user's saved recipes
         const username = request.params.username;
