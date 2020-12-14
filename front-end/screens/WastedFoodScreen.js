@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   confirmText: {
     textAlign: "center",
     fontSize: 14,
-    color: Colours.tint,
+    color: Colours.filledButtonText,
   },
   confirmButton: {
     width: 148,
