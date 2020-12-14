@@ -20,6 +20,7 @@ router
     .route('/search')
     .post(async (request, response) => {
         console.log('GET request to path /api/recipe/search');
+        // Uses spoonacular api to search for recipes with the following ingridients, diet type and intolerances
         const query = request.body.query;
         const diet = request.body.diet;
         const intolerances = request.body.intolerances;
@@ -52,6 +53,7 @@ router
 router
     .route('/:id/ingredients')
     .get(async (request, response) => {
+    // Given a spoonacular recipe id, return ingridients involved
     console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/ingredientWidget.json`);
     url.searchParams.append("apiKey", api_key);
@@ -71,6 +73,7 @@ router
 router
     .route('/:id/information')
     .get(async (request, response) => {
+        // Given a spoonacular recipe id, return the recipe's information
     console.log('path /recipe/');
     console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/information?includeNutrition=false`);
@@ -91,6 +94,7 @@ router
 router
     .route('/:id/analyzedInstructions')
     .get(async (request, response) => {
+    // Given a spoonacular recipe id, return cooking steps
     console.log('path /recipe/');
     console.log(request.params);
     const url = new URL(`https://api.spoonacular.com/recipes/${request.params.id}/analyzedInstructions`);
@@ -113,7 +117,7 @@ router
     .route('/:username')
     .get(async (request, response) => {
         console.log('GET request to path /api/recipe/:username');
-        // assign the username passed to the endpoint to a variable
+        // return user's saved recipes
         const username = request.params.username;
         try{
             const result = await get_saved_recipes(username);
@@ -131,11 +135,10 @@ router
         })
     .post(async (request, response) => {
         console.log('POST request to path /api/recipe/:username');
-        // assign the username passed to the endpoint to a variable
+        // add a new recipe to user's list of saved recipes
         const username = request.params.username;
         const recipe = request.body;
-        // console.log(recipe);
-        if (!("id" in recipe)) { //no id in body
+        if (!("id" in recipe)) { //no id in body: cancel operation
             return response
                     .status(404)
                     .json({"error": "Item is missing id."});
@@ -144,7 +147,7 @@ router
         var duplicate = false;
         saved_recipes.saved_recipes.map(item=> {
             if (recipe.id == item.id){
-                duplicate = true;   // Iterate through saved recipes to check if there is a duplicate id
+                duplicate = true;
             }
             return item;
         });
@@ -180,7 +183,7 @@ router
         // delete recipe in user's saved recipes list
         const username = request.params.username;
         const recipeid = Number(request.params.recipe);
-        console.log(recipeid);  //Note that it's a number and not a string in the database
+        console.log(recipeid);
         try{
             const result = await remove_recipe_from_saved_recipes(username, recipeid);
             if(result){
