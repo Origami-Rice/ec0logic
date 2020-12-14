@@ -33,7 +33,7 @@ export default function App (props) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
       } finally {
-        setLoadingComplete(true);
+        // setLoadingComplete(true);
         // SplashScreen.hide();
       }
     }
@@ -50,6 +50,7 @@ export default function App (props) {
         setIsLoggedIn(true);
         setUser(session.username);
       }
+      setLoadingComplete(true);
       console.log('AUTH SESSION:', session)
     }).catch(err => console.log('Error getting session:', err));
 

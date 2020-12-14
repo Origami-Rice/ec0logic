@@ -14,7 +14,7 @@ export default class RecentlyWastedTable extends React.Component {
 
   createRows() {
     return this.state.items.map((item, i) => (
-      <View style={styles.row}>
+      <View style={styles.row} key={item.date || "header"}>
         <View
           style={i !== 0 ? styles.cell : [styles.cell, { borderTopWidth: 1 }]}
         >
@@ -40,7 +40,7 @@ export default class RecentlyWastedTable extends React.Component {
           {i !== 0 ? (
             <TextRegular
               style={[styles.infoText, { textAlign: "right" }]}
-              text={item.dateWasted}
+              text={new Date().toDateString()}
             />
           ) : (
             <TextSemiBold
@@ -59,7 +59,7 @@ export default class RecentlyWastedTable extends React.Component {
           {i !== 0 ? (
             <TextRegular
               style={[styles.infoText, { textAlign: "right" }]}
-              text={`${item.quantity} ${item.unitsOfMeasure}`}
+              text={`${item.quantity.toString()} ${item.unitsOfMeasure}`}
             />
           ) : (
             <TextSemiBold

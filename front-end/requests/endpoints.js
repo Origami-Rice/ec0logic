@@ -29,7 +29,7 @@ const endpoints = {
 
     // History of Wasted Foods
     getWastedHistory: {
-        endpoint: '/api/history',
+        endpoint: '/api/history/mostrecent',
         method: 'GET',
     },
 

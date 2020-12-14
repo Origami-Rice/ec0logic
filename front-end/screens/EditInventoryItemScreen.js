@@ -11,7 +11,6 @@ import {
 import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import { Colours } from "../constants/colours.js";
-import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import DatePicker from "../components/DatePicker";
 

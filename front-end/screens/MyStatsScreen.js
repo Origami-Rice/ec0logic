@@ -7,6 +7,7 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Colours } from "../constants/colours.js";
@@ -16,6 +17,9 @@ import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
 import { AuthContext } from "../AuthContext";
 
+const offset = 10;
+
+
 export default class MyStatsScreen extends React.Component {
   static contextType = AuthContext;
   constructor(props) {
@@ -23,12 +27,19 @@ export default class MyStatsScreen extends React.Component {
     this.state = {
       imperial: false,
       emissionsThisWeek: {},
-      emissionsLastWeek: {},
+      thisWeek: {},
       monthlyBreakdown: { months: [], kg: [], lbs: [] },
+      recentlyWasted: [],
+      isLoaded: false,
     };
   }
 
   _loadData = () => {
+
+    this.setState({
+      isLoaded: false 
+    });
+
     let weekAgo = new Date();
     weekAgo.setDate(weekAgo.getDate() - 7);
 
@@ -42,20 +53,13 @@ export default class MyStatsScreen extends React.Component {
       .then((json) => {
         this.setState({
           emissionsThisWeek: json.emissions,
+          thisWeek: {
+            start: weekAgo.toDateString(), 
+            end: new Date().toDateString()},
+          isLoaded: true
         });
 
         console.log(json);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    send("getGHG", timePeriod, "/" + this.context.user)
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({
-          emissionsThisWeek: json.emissions,
-        });
       })
       .catch((error) => {
         console.log(error);
@@ -69,6 +73,19 @@ export default class MyStatsScreen extends React.Component {
       .catch((error) => {
         console.log(error);
       });
+
+    send("getWastedHistory", {}, "/" + this.context.user + "/" + offset)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          console.log(json);
+        } else {
+          console.log(json);
+          this.setState({
+            recentlyWasted: json
+          });
+        }
+      })
   };
 
   componentDidMount() {
@@ -101,6 +118,20 @@ export default class MyStatsScreen extends React.Component {
   };
 
   displayItems = () => {
+    if (!this.state.isLoaded) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+          }}
+        >
+          <ActivityIndicator animating={true} colour={Colours.notice} />
+        </View>
+      );
+    }
     // Dynamically
     if (this.state.imperial) {
       return (
@@ -208,20 +239,7 @@ export default class MyStatsScreen extends React.Component {
             <View style={styles.divider}></View>
             <TextSemiBold style={styles.subheading} text={"Recently Wasted"} />
             <RecentlyWastedTable
-              items={[
-                {
-                  name: "Pineapple",
-                  dateWasted: "blah",
-                  quantity: 50,
-                  unitsOfMeasure: "g",
-                },
-                {
-                  name: "Blueberries",
-                  dateWasted: "blah",
-                  quantity: 30,
-                  unitsOfMeasure: "g",
-                },
-              ]}
+              items={this.state.recentlyWasted}
             ></RecentlyWastedTable>
           </ScrollView>
         </View>

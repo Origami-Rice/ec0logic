@@ -35,6 +35,7 @@ function MainNavigation() {
           fontFamily: "Montserrat_600SemiBold",
         },
       }}
+      initialRouteName={"Inventory"}
     >
       <Tab.Screen
         name="My Stats"
