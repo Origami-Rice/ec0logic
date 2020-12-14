@@ -82,6 +82,7 @@ router
         }    
 
         // Salt and hash the password and security question answer 
+        let salt = crypto.randomBytes(16).toString("base64");
         password = saltAndHash(salt, String(password));
         answer = saltAndHash(salt, String(answer));
 
