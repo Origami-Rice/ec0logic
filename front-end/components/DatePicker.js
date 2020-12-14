@@ -35,7 +35,7 @@ export default function DatePicker(props) {
             onPress={showDatepicker}
           >
             <TextRegular
-              style={{ colour: Colours.filledButton }}
+              style={{ color: Colours.filledButton }}
               text={date.toDateString()}
             ></TextRegular>
           </TouchableOpacity>
