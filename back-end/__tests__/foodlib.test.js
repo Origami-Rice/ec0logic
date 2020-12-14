@@ -30,7 +30,7 @@ describe("access and update food library", () => {
     
     test("successfully removed an item from food-library", async () => {
         url = "/api/food-library/remove/" + test_food_1.name;
-        const response = await request.get(url);
+        const response = await request.delete(url);
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({"success": "Successfully deleted item from food library"});
