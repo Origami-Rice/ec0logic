@@ -16,6 +16,7 @@ import InfoModals from "../constants/InfoModals";
 import RecentlyWastedTable from "../components/RecentlyWastedTable";
 import send from "../requests/request.js";
 import { AuthContext } from "../AuthContext";
+import TextRegular from "../components/TextRegular";
 
 const offset = 10;
 
@@ -24,10 +25,14 @@ export default class MyStatsScreen extends React.Component {
   static contextType = AuthContext;
   constructor(props) {
     super(props);
+    
+    let weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
     this.state = {
       imperial: false,
       emissionsThisWeek: {},
-      thisWeek: {},
+      weekAgo: weekAgo,
       monthlyBreakdown: { months: [], kg: [], lbs: [] },
       recentlyWasted: [],
       isLoaded: false
@@ -40,11 +45,8 @@ export default class MyStatsScreen extends React.Component {
       isLoaded: false 
     });
 
-    let weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-
     let timePeriod = {
-      start: weekAgo,
+      start: this.state.weekAgo,
       end: new Date(),
     };
     // Getting the GHG for the last week
@@ -53,9 +55,6 @@ export default class MyStatsScreen extends React.Component {
       .then((json) => {
         this.setState({
           emissionsThisWeek: json.emissions,
-          thisWeek: {
-            start: weekAgo.toDateString(), 
-            end: new Date().toDateString()},
           isLoaded: true
         });
 
@@ -199,6 +198,9 @@ export default class MyStatsScreen extends React.Component {
                 style={styles.statsDescription}
                 text={"of CO2 this week"}
               />
+              <TextRegular 
+                style={styles.noticeDescription}
+                text={`Based on food wasted during \n ${this.state.weekAgo.toDateString()} - ${new Date().toDateString()}`}/>
             </View>
             <View style={styles.divider}></View>
             <TextSemiBold style={styles.subheading} text={"History"} />
@@ -299,6 +301,14 @@ const styles = StyleSheet.create({
     color: Colours.tint,
     textAlign: "center",
     alignSelf: "center",
+  },
+  noticeDescription: {
+    fontSize: 10,
+    color: Colours.tint,
+    textAlign: "center",
+    alignSelf: "center",
+    marginTop: 10,
+    marginBottom: 10
   },
   unitText: {
     fontSize: 14,

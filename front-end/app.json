@@ -6,9 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#58AB00"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -27,6 +27,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Track your food expiry dates and inventory. Log your wasted food and measure the greenhouse gas emissions resulting from those emissions. Add your shopping list, and search for recipes to use up expiring foods."
   }
 }
