@@ -33,7 +33,7 @@ export default class LoginScreen extends React.Component {
       fontsLoaded: false,
       email: "",
       password: "",
-      showPassword: false,
+      hidePassword: true,
       visibleModal: 0,
     };
   }
@@ -50,7 +50,7 @@ export default class LoginScreen extends React.Component {
   }
 
   getIcon = () => {
-    if (this.state.showPassword) {
+    if (this.state.hidePassword) {
       return <Ionicons name="md-eye-off" size={24} color="#ffffff" />;
     } else {
       return <Ionicons name="md-eye" size={24} color="#ffffff" />;
