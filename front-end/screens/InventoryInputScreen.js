@@ -76,6 +76,10 @@ export default class InventoryInputScreen extends React.Component {
   };
 
   setQuantity = (value) => {
+    if (value == "") {
+      this.setState({ quantity: 0 });
+      return;
+    }
     // Quality DropDown Child will set this value
     const val = parseFloat(value);
     this.setState({ quantity: val });
@@ -189,7 +193,7 @@ export default class InventoryInputScreen extends React.Component {
           }}
         >
           <TouchableOpacity
-            style={styles.confirmButton}
+            style={[styles.confirmButton, { marginBottom: Dimensions.get("window").height * 0.1 }]}
             onPress={this.saveItem}
           >
             <TextMedium style={styles.confirmText} text={"Confirm"} />
