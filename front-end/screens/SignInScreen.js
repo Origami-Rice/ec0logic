@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ImageBackground,
   Dimensions,
   Platform,
 } from "react-native";
@@ -32,7 +33,7 @@ export default class LoginScreen extends React.Component {
       fontsLoaded: false,
       email: "",
       password: "",
-      hidePassword: true,
+      showPassword: false,
       visibleModal: 0,
     };
   }
@@ -49,10 +50,10 @@ export default class LoginScreen extends React.Component {
   }
 
   getIcon = () => {
-    if (this.state.hidePassword) {
-      return <Ionicons name="md-eye-off" size={24} color={Colours.tint} />;
+    if (this.state.showPassword) {
+      return <Ionicons name="md-eye-off" size={24} color="#ffffff" />;
     } else {
-      return <Ionicons name="md-eye" size={24} color={Colours.tint} />;
+      return <Ionicons name="md-eye" size={24} color="#ffffff" />;
     }
   };
 
@@ -66,6 +67,7 @@ export default class LoginScreen extends React.Component {
     });
   };
 
+  // TODO: add resetPasswordScreen as modal
   onClickForget = () => {
     this.setState({
       visibleModal: 1,
@@ -80,84 +82,94 @@ export default class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View
+      <ImageBackground
+        source={require("../assets/green-background.png")}
         style={{
           height: Dimensions.get("window").height,
           width: Dimensions.get("window").width,
           flex: 1,
-          backgroundColor: Colours.screenBackground,
         }}
       >
-        <ScrollView
-          styles={styles.container}
-          contentContainerStyle={styles.contentContainer}
+        <View
+          style={{
+            height: Dimensions.get("window").height,
+            width: Dimensions.get("window").width,
+            flex: 1,
+          }}
         >
-          <View
-            style={{
-              justifyContent: "flex-start",
-              flex: 1,
-              alignItems: "center",
-            }}
+          <ScrollView
+            styles={styles.container}
+            contentContainerStyle={styles.contentContainer}
           >
-            <Image
-              source={require("../assets/wasteless-logo.png")}
-              style={{ height: 83, width: 100, marginTop: 50 }}
-            />
-            <TextSemiBold style={styles.header} text={"Log In Below"} />
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.inputFormat}
-                placeholder="Email"
-                value={this.state.email}
-                onChangeText={(text) => this.setState({ email: text })}
+            <View
+              style={{
+                justifyContent: "flex-start",
+                flex: 1,
+                alignItems: "center",
+              }}
+            >
+              <Image
+                source={require("../assets/wasteless-logo-white.png")}
+                style={{ height: 83, width: 100, marginTop: 50 }}
               />
+              <TextSemiBold style={styles.header} text={"Log In Below"} />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.inputFormat}
+                  placeholderTextColor="#dadbd4"
+                  placeholder="Email"
+                  value={this.state.email}
+                  onChangeText={(text) => this.setState({ email: text })}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.inputFormat}
+                  placeholderTextColor="#dadbd4"
+                  placeholder="Password"
+                  value={this.state.password}
+                  secureTextEntry={this.state.hidePassword}
+                  textContentType={"password"}
+                  onChangeText={(text) => this.setState({ password: text })}
+                />
+                <TouchableOpacity
+                  style={{ width: 24, height: 35, justifyContent: "center" }}
+                  onPress={() =>
+                    this.setState({ hidePassword: !this.state.hidePassword })
+                  }
+                >
+                  {this.getIcon()}
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.inputFormat}
-                placeholder="Password"
-                value={this.state.password}
-                secureTextEntry={this.state.hidePassword}
-                textContentType={"password"}
-                onChangeText={(text) => this.setState({ password: text })}
-              />
+            <View style={{ justifyContent: "flex-end", flex: 1 }}>
               <TouchableOpacity
-                style={{ width: 24, height: 35, justifyContent: "center" }}
-                onPress={() =>
-                  this.setState({ hidePassword: !this.state.hidePassword })
-                }
+                style={styles.confirmButton}
+                onPress={() => this.signIn()}
               >
-                {this.getIcon()}
+                <TextMedium style={styles.confirmText} text={"Sign In"} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.onClickForget}>
+                <TextMedium
+                  style={[styles.confirmText, { color: "#dadbd4" }]}
+                  text={"Forgot your password?"}
+                />
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={{ justifyContent: "flex-end", flex: 1 }}>
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => this.signIn()}
-            >
-              <TextMedium style={styles.confirmText} text={"Sign In"} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onClickForget}>
-              <TextMedium
-                style={[styles.confirmText, { color: Colours.notice }]}
-                text={"Forgot your password?"}
-              />
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-        <Modal
-          isVisible={this.state.visibleModal === 1}
-          style={styles.bottomModal}
-          avoidKeyboard={false}
-        >
-          {
-            <View style={styles.modal}>
-              <VerifyForForgotScreen onCancel={this.closeModal} />
-            </View>
-          }
-        </Modal>
-      </View>
+          </ScrollView>
+          <Modal
+            isVisible={this.state.visibleModal === 1}
+            style={styles.bottomModal}
+            avoidKeyboard={false}
+          >
+            {
+              <View style={styles.modal}>
+                <VerifyForForgotScreen onCancel={this.closeModal} />
+              </View>
+            }
+          </Modal>
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -171,7 +183,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     zIndex: 1,
-    backgroundColor: Colours.screenBackground,
   },
   contentContainer: {
     justifyContent: "space-between",
@@ -180,7 +191,7 @@ const styles = StyleSheet.create({
   header: {
     textAlign: "center",
     fontSize: 28,
-    color: Colours.tint,
+    color: "#ffffff",
     margin: 30,
     marginTop: 15,
   },
@@ -190,8 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: Colours.borderedComponentFill,
-    borderColor: Colours.tint,
+    borderColor: "#ffffff",
     borderBottomWidth: 1,
     flex: 0,
     marginVertical: 10,
@@ -200,7 +210,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.8 - 24,
     height: 31,
     fontSize: 14,
-    color: Colours.tint,
+    color: "#ffffff",
     padding: 5,
     paddingLeft: 10,
     marginVertical: 10,

@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ImageBackground,
   Dimensions,
   Platform,
 } from "react-native";
-import TextRegular from "../components/TextRegular";
 import TextMedium from "../components/TextMedium";
 import TextSemiBold from "../components/TextSemiBold";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -36,7 +36,7 @@ export default function SignupScreen(props) {
         <Ionicons
           name="md-eye-off"
           size={24}
-          color={Colours.tint}
+          color="#ffffff"
           style={{ alignSelf: "center" }}
         />
       );
@@ -45,7 +45,7 @@ export default function SignupScreen(props) {
         <Ionicons
           name="md-eye"
           size={24}
-          color={Colours.tint}
+          color="#ffffff"
           style={{ alignSelf: "center" }}
         />
       );
@@ -78,142 +78,158 @@ export default function SignupScreen(props) {
   };
 
   return (
-    <KeyboardAvoidingView
+    <ImageBackground
+      source={require("../assets/green-background.png")}
       style={{
         height: Dimensions.get("window").height,
         width: Dimensions.get("window").width,
         flex: 1,
       }}
-      behavior={Platform.OS == "ios" ? "padding" : null}
-      enabled={true}
     >
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
+      <KeyboardAvoidingView
+        style={{
+          height: Dimensions.get("window").height,
+          width: Dimensions.get("window").width,
+          flex: 1,
+        }}
+        behavior={Platform.OS == "ios" ? "padding" : null}
+        enabled={true}
       >
-        <View
-          style={{
-            justifyContent: "flex-start",
-            flex: 1,
-            alignItems: "center",
-          }}
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
         >
-          <Image
-            source={require("../assets/wasteless-logo.png")}
-            style={{ height: 83, width: 100, marginTop: 50 }}
-          />
-          <TextSemiBold style={styles.header} text={"Sign Up Below"} />
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Email"
-              onChangeText={setEmail}
-            />
-          </View>
-          <View style={styles.namesInputContainer}>
-            <View
-              style={[
-                styles.inputContainer,
-                { width: Dimensions.get("window").width * 0.35 },
-              ]}
-            >
-              <TextInput
-                style={[
-                  styles.inputFormat,
-                  { width: Dimensions.get("window").width * 0.35 },
-                ]}
-                placeholder="First Name"
-                onChangeText={setFirstName}
-              />
-            </View>
-            <View
-              style={[
-                styles.inputContainer,
-                { width: Dimensions.get("window").width * 0.35 },
-              ]}
-            >
-              <TextInput
-                style={[
-                  styles.inputFormat,
-                  { width: Dimensions.get("window").width * 0.35 },
-                ]}
-                placeholder="Last Name"
-                onChangeText={setLastName}
-              />
-            </View>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Password"
-              secureTextEntry={hidePassword}
-              onChangeText={setPassword}
-            />
-            <TouchableOpacity
-              style={{ width: 24, height: 35, justifyContent: "center" }}
-              onPress={() => setHidePassword(!hidePassword)}
-            >
-              {getIcon(hidePassword)}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Confirm Password"
-              secureTextEntry={hideConfirmPassword}
-              onChangeText={setConfirmPassword}
-            />
-            <TouchableOpacity
-              style={{ width: 24, height: 35, justifyContent: "center" }}
-              onPress={() => setHideConfirmPassword(!hideConfirmPassword)}
-            >
-              {getIcon(hideConfirmPassword)}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Security Question"
-              onChangeText={setSecurityQuestion}
-            />
-            <TouchableOpacity
-              style={{ width: 24, height: 35, justifyContent: "center" }}
-              onPress={() =>
-                alert(
-                  "The security question and answer will be used to reset your password if you ever forget it."
-                )
-              }
-            >
-              <MaterialIcons
-                name="info-outline"
-                size={24}
-                color={Colours.tint}
-                style={{ alignSelf: "center" }}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputFormat}
-              placeholder="Security Answer"
-              onChangeText={setSecurityAnswer}
-            />
-          </View>
-          <TextRegular
-            style={styles.terms}
-            text={"By signing up, you agree to our terms and conditions."}
-          />
-        </View>
-        <View style={{ justifyContent: "flex-end", flex: 1 }}>
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={() => verifyInfo()}
+          <View
+            style={{
+              justifyContent: "flex-start",
+              flex: 1,
+              alignItems: "center",
+            }}
           >
-            <TextMedium style={styles.confirmText} text={"Sign Up"} />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+            <Image
+              source={require("../assets/wasteless-logo-white.png")}
+              style={{ height: 83, width: 100, marginTop: 50 }}
+            />
+            <TextSemiBold style={styles.header} text={"Sign Up Below"} />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholderTextColor="#dadbd4"
+                placeholder="Email"
+                onChangeText={setEmail}
+              />
+            </View>
+            <View style={styles.namesInputContainer}>
+              <View
+                style={[
+                  styles.inputContainer,
+                  { width: Dimensions.get("window").width * 0.35 },
+                ]}
+              >
+                <TextInput
+                  style={[
+                    styles.inputFormat,
+                    { width: Dimensions.get("window").width * 0.35 },
+                  ]}
+                  placeholderTextColor="#dadbd4"
+                  placeholder="First Name"
+                  onChangeText={setFirstName}
+                />
+              </View>
+              <View
+                style={[
+                  styles.inputContainer,
+                  { width: Dimensions.get("window").width * 0.35 },
+                ]}
+              >
+                <TextInput
+                  style={[
+                    styles.inputFormat,
+                    { width: Dimensions.get("window").width * 0.35 },
+                  ]}
+                  placeholderTextColor="#dadbd4"
+                  placeholder="Last Name"
+                  onChangeText={setLastName}
+                />
+              </View>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholderTextColor="#dadbd4"
+                placeholder="Password"
+                secureTextEntry={hidePassword}
+                onChangeText={setPassword}
+              />
+              <TouchableOpacity
+                style={{ width: 24, height: 35, justifyContent: "center" }}
+                onPress={() => setHidePassword(!hidePassword)}
+              >
+                {getIcon(hidePassword)}
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholderTextColor="#dadbd4"
+                placeholder="Confirm Password"
+                secureTextEntry={hideConfirmPassword}
+                onChangeText={setConfirmPassword}
+              />
+              <TouchableOpacity
+                style={{ width: 24, height: 35, justifyContent: "center" }}
+                onPress={() => setHideConfirmPassword(!hideConfirmPassword)}
+              >
+                {getIcon(hideConfirmPassword)}
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholderTextColor="#dadbd4"
+                placeholder="Security Question"
+                onChangeText={setSecurityQuestion}
+              />
+              <TouchableOpacity
+                style={{ width: 24, height: 35, justifyContent: "center" }}
+                onPress={() =>
+                  alert(
+                    "The security question and answer will be used to reset your password if you ever forget it."
+                  )
+                }
+              >
+                <MaterialIcons
+                  name="info-outline"
+                  size={24}
+                  color="#ffffff"
+                  style={{ alignSelf: "center" }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputFormat}
+                placeholderTextColor="#dadbd4"
+                placeholder="Security Answer"
+                onChangeText={setSecurityAnswer}
+              />
+            </View>
+            <TextMedium
+              style={styles.terms}
+              text={"By signing up, you agree to our terms and conditions."}
+            />
+          </View>
+          <View style={{ justifyContent: "flex-end", flex: 1 }}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={() => verifyInfo()}
+            >
+              <TextMedium style={styles.confirmText} text={"Sign Up"} />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 }
 
@@ -230,7 +246,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     zIndex: 1,
-    backgroundColor: Colours.screenBackground,
   },
   contentContainer: {
     justifyContent: "space-between",
@@ -239,7 +254,7 @@ const styles = StyleSheet.create({
   header: {
     textAlign: "center",
     fontSize: 28,
-    color: Colours.tint,
+    color: "#ffffff",
     margin: 30,
     marginTop: 15,
   },
@@ -255,8 +270,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: Colours.borderedComponentFill,
-    borderColor: Colours.tint,
+    borderColor: "#ffffff",
     borderBottomWidth: 1,
     flex: 0,
     marginVertical: 10,
@@ -265,7 +279,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.8 - 24,
     height: 31,
     fontSize: 14,
-    color: Colours.tint,
+    color: "#ffffff",
     padding: 5,
     paddingLeft: 10,
     marginVertical: 10,
@@ -275,7 +289,7 @@ const styles = StyleSheet.create({
   },
   terms: {
     fontSize: 14,
-    color: Colours.tint,
+    color: "#ffffff",
     textAlign: "center",
     marginVertical: 10,
     marginHorizontal: 25,
